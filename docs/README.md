@@ -4,7 +4,7 @@ heroImage: /img/logo.jpeg
 heroText: Stay hungry Stay foolish
 tagline:
 actionText: 快速上手 →
-actionLink: /guide/
+actionLink: /leetcode/
 features:
     - title:
       details: 搬砖民工也会建成自己的“罗马帝国”
