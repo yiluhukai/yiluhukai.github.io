@@ -8,10 +8,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@master
+              uses: actions/checkout@gh-pages
 
             - name: Build and Deploy
-              uses: JamesIves/github-pages-deploy-action@master
+              uses: yiluhukai/yiluhukai.github.io@gh-pages
               env:
                   ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN}}
                   BRANCH: master
