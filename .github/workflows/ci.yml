@@ -1,0 +1,19 @@
+name: GitHub Actions Build and Deploy Demo
+on:
+    push:
+        branches:
+            - gh-pages
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@gh-pages
+
+            - name: Build and Deploy
+              uses: yiluhua/github-pages-deploy-action@gh-pages
+              env:
+                  ACCESS_TOKEN: ${{ 2ea33a5ab641f97bfb39e8dfa03ab07765805ee8 }}
+                  BRANCH: master
+                  FOLDER: .vuepress/dist
+                  BUILD_SCRIPT:yarn install && yarn run docs:build
