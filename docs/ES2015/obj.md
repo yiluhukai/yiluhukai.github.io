@@ -179,7 +179,162 @@ proxy.push(20)
 
 > 可以自动检测属性的变化，比如数组的下标
 
+## Reflect 
 
+Reflect是一个内置的对象，它提供拦截 JavaScript 操作的方法。这些方法与[proxy handlers](https://wiki.developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler)的方法相同。`Reflect`不是一个函数对象，因此它是不可构造的。
+
+* Reflect的作用
+
+  * 提供了proxy对象中拦截方法的默认实现
+
+  ```js
+  const obj = {
+  	name: 'tom'
+  }
+  
+  const proxy = new Proxy(obj, {
+  	get(target, property) {
+  		console.log('watch get')
+  		return Reflect.get(target, property)
+  	}
+  })
+  
+  console.log(proxy.name)
+  // watch get
+  // tom
+  ```
+
+  * 该对象统一提供了一套操作对象的api
+
+  ```js
+  const obj = {
+  	name: 'tom'
+  }
+  // 以前
+  name in obj
+  Object.keys(obj)
+  delete obj.name
+  // 使用Reflect
+  
+  Reflect.has(obj, 'name')
+  Reflect.ownKeys(obj)
+  Reflect.deleteProperty(obj, 'name')
+  ```
+
+  
+
+
+
+##  Promise
+
+Promise对象是一种全新的异步编程解决方案。
+
+## Class
+
+* ES2015中的class语法，本质上是一种构造函数创建对象的语法糖。
+
+```js
+function Person(name) {
+	this.name = name
+}
+
+Person.prototype.say = function () {
+	console.log('say hello')
+}
+const p = new Person('tom')
+
+p.say() //hello,tom
+```
+
+* 使用class语法
+
+```js
+function Person(name) {
+	this.name = name
+}
+
+Person.prototype.say = function () {
+	console.log(`hello,${this.name}`)
+}
+const p = new Person('tom')
+
+p.say() //hello,tom
+
+```
+
+* 静态方法
+
+```js
+class Person {
+	constructor(name) {
+		this.name = name
+	}
+
+	say() {
+		console.log(`hello,${this.name}`)
+	}
+	static create(name) {
+		return new this(name)
+		//return new Perosn(name)
+	}
+}
+
+const p = Person.create('tom')
+
+p.say() //hello,tom
+```
+
+:::warning
+
+静态方法中的this指向的是当前class.
+
+:::
+
+* 类的继承
+
+```js
+class Person {
+	constructor(name) {
+		this.name = name
+	}
+
+	say() {
+		console.log(`hello,${this.name}`)
+	}
+	static create(name) {
+		return new this(name)
+		//return new Perosn(name)
+	}
+}
+
+class Student extends Person {
+	constructor(name, age) {
+		//  调用父类的构造函数
+		super(name)
+		this.age = age
+	}
+
+	say() {
+		// 调用父类的方法
+		super.say()
+		console.log('this is student')
+	}
+}
+
+const s = new Student('tom', 26)
+
+s.say()
+
+// hello,tom
+// this is student
+
+```
+
+:::warning 
+
+本质上还是基于原型的继承。使用super关键字可以调用父类的方法
+
+:::
 
 
 
