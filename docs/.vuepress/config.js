@@ -1,3 +1,4 @@
+const router = require('./router/router')
 module.exports = {
 	title: 'yiluhuakai',
 	//description: 'Just playing around',
@@ -8,8 +9,9 @@ module.exports = {
 			{ text: 'Home', link: '/' },
 			{ text: 'LeetCode', link: '/leetcode/' },
 			{ text: 'Go', link: '/golang/' },
-			{ text: 'C语言', link: '/clang/lin/' },
-			{ text: '前端', link: 'https://google.com/3' }
+			{ text: 'Mysql', link: '/mysql/' },
+			{ text: 'C语言', link: '/clang/' },
+			{ text: '前端', link: '/es/' }
 			//  下拉列表
 			// {
 			// 	text: 'Languages',
@@ -21,9 +23,7 @@ module.exports = {
 			// }
 		],
 		//sidebar: 'auto',
-		sidebar: {
-			// '/leetcode/': ['' /* /readme.html/ */, 'link' /* /leetcode/link.html */, 'array' /* /leetcode/array.html */]
-		},
+		sidebar: router,
 		//sidebarDepth:, // 侧边栏显示2级
 		//  展示所有级别的标题
 		displayAllHeaders: true,
@@ -39,7 +39,17 @@ module.exports = {
 	},
 	// markdown的配置
 	markdown: {
-		lineNumbers: true
+		lineNumbers: true,
+		//toc: { includeLevel: [1, 2, 3, 4, 5] },
+		extendMarkdown: md => {
+			md.use(require('markdown-it-table-of-contents'), {
+				includeLevel: [1, 2, 3, 4, 5]
+			})
+		},
+		extractHeaders: ['h2', 'h3', 'h4']
 	},
-	plugins: ['@vuepress/active-header-links', 'autobar']
+	plugins: ['@vuepress/active-header-links'],
+	extraWatchFiles: [
+		'.vuepress/router/router.js' // 使用相对路径
+	]
 }

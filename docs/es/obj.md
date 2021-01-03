@@ -88,7 +88,7 @@ console.log(Object.is(NaN, NaN)) // true
 
 * ES2015之前监视对象的属性的读写需要使用使用Object.defineProperty().
 
-```
+```js
 const o = {}
 
 Object.defineProperty(o, 'name', {
@@ -249,12 +249,18 @@ p.say() //hello,tom
 * 使用class语法
 
 ```js
-function Person(name) {
-	this.name = name
-}
+class Person {
+	constructor(name) {
+		this.name = name
+	}
 
-Person.prototype.say = function () {
-	console.log(`hello,${this.name}`)
+	say() {
+		console.log(`hello,${this.name}`)
+	}
+	static create(name) {
+		return new this(name)
+		//return new Perosn(name)
+	}
 }
 const p = new Person('tom')
 
