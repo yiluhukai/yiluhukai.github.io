@@ -3,7 +3,7 @@ module.exports = {
 		'/leetcode/hanota',
 		'/leetcode/link',
 		'/leetcode/longestSubStr',
-		'/leetcode/reverseWordsInAString',
+		'/leetcode/ReverseWordsInAString',
 		'/leetcode/specialBinaryString'
 	],
 	'/mysql': ['/mysql/mysql1', '/mysql/mysql2'],
