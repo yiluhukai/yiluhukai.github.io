@@ -7,7 +7,7 @@ module.exports = {
 		'/leetcode/specialBinaryString'
 	],
 	'/mysql': ['/mysql/mysql1', '/mysql/mysql2'],
-	'/es': ['/es/const_let', '/es/obj', '/es/func', '/es/string', '/es/set_map', '/es/deconstruction'],
+	'/es': ['/es/const_let', '/es/obj', '/es/func', '/es/string', '/es/set_map', '/es/deconstruction', '/es/Symbol', '/es/for_of'],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
 		'/clang/Linux命令',
