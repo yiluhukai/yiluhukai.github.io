@@ -41,10 +41,10 @@ const myset = new Set()
 myset.add(1).add(5).add(12)
 
 for (const item of myset) {
-    console.log(myset)
-//     Set { 1, 5, 12 }
-// Set { 1, 5, 12 }
-// Set { 1, 5, 12 }
+    console.log(item)
+//1
+//5
+//12  
 }
 
 
@@ -68,9 +68,9 @@ for (const [key, val] of mymap) {
 }
 ```
 
-:::tips
+:::tip
 
-​	使用for...of遍历map的时候可以对变量进行解构操作
+使用for...of遍历map的时候可以对变量进行解构操作
 
 :::
 
