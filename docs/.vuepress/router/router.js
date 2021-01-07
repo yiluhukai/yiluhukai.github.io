@@ -17,7 +17,8 @@ module.exports = {
 		'/es/Symbol',
 		'/es/for_of',
 		'/es/es2016_17',
-		'/es/Ts'
+		'/es/Ts',
+		'/es/flow'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
