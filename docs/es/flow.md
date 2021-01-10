@@ -179,51 +179,327 @@ info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this comm
   
   * 每次都去运行yarn flow命令检测代码中的类型错误很麻烦，vscode中有对应的插件可以直接去查看错误，安装flow的编辑器插件Flow Language Support
 
-      
+### flow的语法规则
 
-    
+* 类型推断
 
-    
+```js
+/**
+ * 类型推断
+ * @flow
+ */
 
-    
+function multip(n) {
+  //Cannot perform arithmetic operation because  string [1] is not a number.Flow(unsafe-addition)
+	return n * n
+}
 
-    
+multip(10)
 
-    
+multip('10')
+```
 
-    
+:::tip
 
-    
+上面的n在函数中做了乘法操作，所以参数会被推断成number类型。当我们穿入字符串类型的参数时会报出错误。
 
-    
+:::
 
-    
+* 类型注解
+  * 类型注解可以用在变量的声明，函数的参数和返回值位置
+  * flow的类型注解不是强制使用的
 
-    
+```js
+/**
+ * 类型注解
+ * @flow
+ */
 
-    
+function sum(n: number): number {
+	return n + 1
+}
 
-    
+let a: string = 'abc'
+```
 
-    
+* flow中支持的原始类型
 
-    
+  * flow支持js中的原始数据类型
 
-    
+  * boolean、string、number、undefined、null、symbol
+```js
+/**
+ * 原始类型
+ * flow
+ */
 
-    
+let n: number = 10 //NaN //Infinity
 
-    
+let str: string = 'abs'
 
-    
+let b: boolean = true //false
 
-    
+let nu: null = null
 
-      
-    
-      
-    
-    ​	
+let un: void = undefined
+
+let s: Symbol = Symbol()
+```
+
+*  数组类型
+
+```js
+/**
+ * 数组类型
+ *
+ * @flow
+ */
+
+const arr: Array<number> = [1, 2, 3, 4]
+
+const arr1: string[] = ['ab', 'cd']
+
+// 固定长度的数组 -> 元组
+
+const a: [string, number] = ['', 11]
+
+```
+
+* 对象
+
+```js
+
+/**
+ * 对象
+ *
+ * @flow
+ */
+
+const o: { foo: string, bar: number } = {
+	foo: 'foo',
+	bar: 10
+}
+
+// 可选的属性
+
+const obj: { foo?: string, bar: number } = {
+	bar: 10
+}
+
+const obj1: { foo?: string, bar: number } = {
+	bar: 10,
+	foo: 'ss'
+}
+
+// 限定对应中键值对的类型
+
+const objs: { [string]: string } = {}
+
+objs['bar'] = 'bar'
+obj.foo = '10'
+
+```
+
+* 函数类型
+
+```js
+/**
+ * 函数类型
+ *
+ * @flow
+ */
+
+function foo(callback: (number, string) => void) {
+	callback(10, 'a')
+}
+
+foo(function (n, str) {
+	// n => number
+	// str=> string
+})
+
+```
+
+:::tip
+
+传入foo中的函数的参数会被推断成number和string
+
+:::
+
+* 特殊类型
+
+  * 自定义类型
+
+  * 联合类型
+
+  * 类型别名
+
+  * maybe类型
+```js
+/**
+ * 特殊类型
+ *
+ * @flow
+ */
+//变量的值只能是'foo’
+const a: 'foo' = 'foo'
+
+//联合类型，值只能是其中的几个
+
+const t: 'foo' | 'bar' | 'far' = 'foo'
+
+//类型别名
+
+type StringOrNumber = string | number
+
+let s: StringOrNumber = '10'
+
+s = 10
+
+// maybe类型
+
+const m: ?number = undefined //null//10
+
+// 上面的maybe类型等价于下面的联合类型
+
+const m1: number | null | void = undefined
+```
+
+
+  * mixed和any类型
+
+    * mixed和any都可以表示任意类型
+    * mixed是类型安全的，而any不是
+    * mixed中使用对应的类型前必须使用typeof去判断
+    * any可以使用任意类型的方法而不会报错，只有在运行阶段才能发现错误，使用any主要是为了兼容老代码
+
+```js
+/**
+ * mixed和any
+ *
+ * @flow
+ */
+
+function postMixed(val: mixed) {
+	if (typeof val === 'string') {
+		val.substr(1)
+	}
+	if (typeof val === 'number') {
+		val * val
+	}
+}
+
+function postAny(val: any) {
+	val.substr(1)
+	val * val
+}
+
+postMixed(100)
+postMixed('foo')
+
+postAny(100)
+postAny('foo')
+
+```
+
+### flow类型文档
+
+* [官方类型文档](https://flow.org/en/docs/types/)
+
+* [第三方的类型文档](https://www.saltycrane.com/cheat-sheets/flow-type/latest/) 需要翻墙才能访问到
+
+### 运行环境api
+
+* js需要执行需要运行环境(browser/node)的支持,不同的环境提供了不同的api,api中的内置对象也是有类型的。
+
+```js
+/**
+ * 内置对象类型
+ * @flow
+ *
+ */
+
+const element: HTMLElement | null = document.getElementById('app')
+
+```
+
+* 这些类型声明可以官网的中找到对应的类型文档
+  * [js标准类型](https://github.com/facebook/flow/blob/master/lib/core.js)
+  * [Js浏览器对象](https://github.com/facebook/flow/blob/master/lib/dom.js) 
+  * [js中dom类型](https://github.com/facebook/flow/blob/master/lib/dom.js)
+  * [node环境内置类型](https://github.com/facebook/flow/blob/master/lib/node.js)
+
+
+
+
+
+
+
+
+
+​		
+
+  
+
+  
+
+
+
+
+
+  
+
+​    
+
+​      
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+​    
+
+
+​    
+​    
+​    
+​    
+​    
+​      
+​    
+​      
+​    
+​    	
 
 
 

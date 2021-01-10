@@ -2,13 +2,13 @@
 
 ## 一、启动 mysql 服务
 
-```
+```shell
 #windows
 net stop mysql
 net start mysql
 ```
 
-```
+```shell
 #macos
 
 #通过homebrew
@@ -26,7 +26,7 @@ mysql.server start/stop/restart
 
 ## 二、通过命令行连接 mysql
 
-```
+```shell
 #连接
 mysql [-h localhost] [-P 3306] -u root -p [password]
 
@@ -36,7 +36,7 @@ exit或者ctrl+C
 
 ## 三、常用的 mysql 指令
 
-```
+```shell
 #查看所有的数据库
 mysql>show databases
 
@@ -72,7 +72,7 @@ name varchar(11)
 
 ## 四、修改 mysql 的配置
 
-```
+```shell
  #windows
  安装目录下的my.ini文件，修改后需要重新启动mysql服务
 
@@ -96,7 +96,7 @@ mysql.server restart
 
 配置内容
 
-```
+```shell
 # Example MySQL config file for small systems.
 #
 # This is for a system with little memory (<= 64M) where MySQL is only used
@@ -194,28 +194,31 @@ interactive-timeout
 
 ## 五、mysql 语法规范
 
-1.不区分大小写，但是建议关键字大写，列名和表名小写。 2.每条语句最好用分号结尾。 3.每条语句可以根据需要换行缩进。 4.注释
-单行注释：#注释内容
-单行注释：-- 注释内容（中间有空格）
-多行注释：/_ 注释文字_/
-eg:mysql>#select \* from user;
-// 这条语句被注释，执行后没有任何效果。
+1. 不区分大小写，但是建议关键字大写，列名和表名小写。
+
+2. 每条语句最好用分号结尾。
+3. 每条语句可以根据需要换行缩进。 
+4. 注释
+   * 单行注释：#注释内容
+   * 单行注释：-- 注释内容（中间有空格）
+   * 多行注释：/_ 注释文字_/
+   * eg:mysql>#select \* from user;// 这条语句被注释，执行后没有任何效果。
 
 ## 六、sql 中的分类
 
-1.SQL（Structure Query Language）结构化查询语言
-2.DQL（data query language）数据查询语言 select 操作
-3.DML（data manipulation language）数据操作语言，主要是数据库增删改三种操作
-4.DDL（data defination language）数据库定义语言，主要是建表、删除表、修改表字段等操作
-5.DCL（data control language）数据库控制语言，如 commit，revoke 之类的，在默认状态下，只有 sysadmin,dbcreator,db_owner 或 db_securityadmin 等人员才有权力执行 DCL
+1. SQL（Structure Query Language）结构化查询语言
+2. DQL（data query language）数据查询语言 select 操作
+3. DML（data manipulation language）数据操作语言，主要是数据库增删改三种操作
+4. DDL（data defination language）数据库定义语言，主要是建表、删除表、修改表字段等操作
+5. DCL（data control language）数据库控制语言，如 commit，revoke 之类的，在默认状态下，只有 sysadmin,dbcreator,db_owner 或 db_securityadmin 等人员才有权力执行 DCL
 
 ## 七、DQL
 
-1. select 查询对象 [from table];
+#### select 查询对象 [from table];
 
 查询的对象可以可以是表格的字段，一个常量或者表达式，一个函数。查询的结果将以一个虚拟的表格输出。表格中的列名是字段名、常量和表达式、函数.
 
-```
+```sql
 #建议先指定所使用的数据库
 use myemployees;
 #单个字段的查询
@@ -230,7 +233,7 @@ select * from employees;
 # 查询常量
 
 select 100; // 列名为100切有一行数据为100
-select 100 from employees;//列名为100切输出数据库中总数条100
+select 100 from employees;//列名为100且输出总数100条，内容也为100
 
 # 查询一个表达式
 select 100*98;
@@ -242,13 +245,13 @@ select version()
 
 当查询的字段中包含有关键字的时候，可以使用着重符(`)将关键字转为字段。
 
-```
+```sql
 select `name` from user;
 ```
 
 查询的结果输出时，表格的列名可能是常量、表达式、函数名、字段名。有时候可读性不好。可以使用 as 给他们起一个别名。
 
-```
+```sql
 # 别名
 select first_name as 名,last_name as 姓 from employees;
 
@@ -259,31 +262,32 @@ select salary as "out put" from employees;
 
 使用 distict 对查询结果去重
 
-```
+```sql
 select distinct department_id from employees;
 ```
 
 加号运算符和 concat(a,b)函数.
 
-1.加号的两边数字，相当于查询一个数字常量：
-select 10+20 ==> select 30; 2.当一边是数字一边是字符串时，字符串可以被转化为数字。相当于查询一个数字常量。
-select 10+'30' ==> select 40;
+1. 加号的两边数字，相当于查询一个数字常量：
+   select 10+20 ==> select 30; 
+2. 当一边是数字一边是字符串时，字符串可以被转化为数字。相当于查询一个数字常量。
+   select 10+'30' ==> select 40;
 
-3.当一边是数字一边是字符串时，字符串不可以被转化为数字时，会将字符串转为数字 0.
-select 10+'john' ==> select 10;
+3. 当一边是数字一边是字符串时，字符串不可以被转化为数字时，会将字符串转为数字 0.
+   select 10+'john' ==> select 10;
 
-4.当一边为 null 时，相当于查询 null
+4. 当一边为 null 时，相当于查询 null
 
-select 1+null ==> select null;
+   select 1+null ==> select null;
 
-```
+```sql
 # select 30 from employees;
 select 10+20 from employees;
 ```
 
 如果相见查询的多个字段（大于等于 2）连接起来，可以使用 concat().
 
-```
+```sql
 select concat(first_name,' ',last_name) as 姓名 from employees;
 ```
 
@@ -291,7 +295,7 @@ select concat(first_name,' ',last_name) as 姓名 from employees;
 
 ifnull()函数可以用来给字段默认值。
 
-```
+```sql
 select  ifnull(commission_pct,0) as 奖金率,commission_pct from employees;
 ```
 
@@ -299,14 +303,15 @@ select  ifnull(commission_pct,0) as 奖金率,commission_pct from employees;
 
 concat 函数会吧多个字段连接成一个新的字段输出，当其中一个字段为 null 时，查询结构就为 null.我们可以将 concat()函数和 ifnull()结合起来使用。
 
-```
+```sql
 select concat(first_name,ifnull(last_name,'')) from employees;
 ```
 
-2.条件查询
+* 条件查询
+
 select 查询列表 from table where 条件；
 
-```
+```sql
 简单的条件查询：>,<,=,!=,<>(相当于!=),>=,<=
 
 逻辑运算符：and(&&) ,or(||),not(!)
@@ -316,14 +321,14 @@ select 查询列表 from table where 条件；
 
 简单的条件查询
 
-```
+```sql
 select * from employees where salary > 12000;
 select last_name,department_id from employees where department_id <> 90;
 ```
 
 使用运算符可以将多个查询条件连接起来
 
-```
+```sql
 select * from employees where salary >1200 and department_id = 90;
 
 select * from employees where salary >1200 or department_id = 90;
@@ -331,11 +336,11 @@ select * from employees where salary >1200 or department_id = 90;
 select * from employees where not salary >12000;
 ```
 
-like 和通配符进行模糊查询
+ like 和通配符进行模糊查询
 
-通配符：%,*
-%代表任意多个字符，包括 0 个字符
-*代表一个字符
+* 通配符：%,*
+* %代表任意多个字符，包括 0 个字符
+* *代表一个字符
 
 ```
 # 查询last_name第二个字母是a/A的所有记录。
@@ -344,7 +349,7 @@ select  * from employees where last_name like '_a%'
 
 当需要查询的字段中含有字符\_’时，可以使用转义字符为\或者自定义转义字符。
 
-```
+```sql
 select  * from employees where last_name like 'K\_ing%';
 #指定$作为转义字符
 select  * from employees where last_name like 'K$_ing%' escape '$';
@@ -352,7 +357,7 @@ select  * from employees where last_name like 'K$_ing%' escape '$';
 
 between...and...
 
-```
+```sql
 
 select * from employees where salary between 12000 and 20000;
 #和下面的语句等价
@@ -360,20 +365,24 @@ select * from employees where salary between 12000 and 20000;
 select * from employees where salary >=12000 and salary <=20000;
 ```
 
-between... and ...包含两个临界值，切两个临界值顺序不能颠倒。
+:::warning
+
+between... and ...包含两个临界值，且两个临界值顺序不能颠倒。
+
+:::
 
 in 可以一次匹配同一字段的多个值。值的类型应该和字段的类型一致，否则没有意义。
 
-```
+```sql
 select * from employees where job_id  = 'AD_VP' or job_id = 'AC_MGR' or job_id =100;
 
 #相当于 上面的查询语句
 select * from employees where job_id in('AD_VP','AC_MGR',19);
 ```
 
-= 和 <>不能判断 null,我们需要查询某个字段为 null 时，可以 is null,不为 null,使用 is not null;
+= 和 <>不能判断 null,我们需要查询某个字段为 null 时，可以使用 is null,不为 null,使用 is not null;
 
-```
+```sql
 select * from employees where commission_pct is null;
 
 select * from employees where commission_pct is not null;
@@ -383,7 +392,7 @@ select * from employees where commission_pct is not null;
 
 安全等于几可以判断 null 又可以判断普通值，相当于 = 和 is null 的结合体。
 
-```
+```sql
 select  * from employees where commission_pct <=> null;
 
 select  * from employees where salary <=> 12000;
@@ -393,26 +402,30 @@ isnull(exp)
 
 当数据库中有这个字段不为 null 时返回 1，否则返回 0.
 
-```
+```sql
 select isnull(commission_pct),commission_pct from employees;
 ```
 
-### 查询结果是否一样
+查询结果是否一样
 
 select \* from employees;
 
 select \* from employees where commisson_pct like "%%";
 
+:::tip
+
 当 commission_pct 中有 null 时，结果不一样，没有 null 时，查询结果一样。
 
-2.排序查询
+:::
+
+* 排序查询
 
 asc(ascending order)/ （descending order）
 默认使用升序排列的。不需要 where,字段在 asc/desc 前面。
 order by 字句后面可以跟单个字段、多个字段、表达式、别名、函数。
 order by 字句一般放到查询结果的最后面。limit 字句除外。
 
-```
+```sql
 #asc 可以省略
 select * from employees order by salary desc/（asc）;
 
@@ -440,7 +453,7 @@ select salary,last_name,length(last_name) as length from employees order by leng
 select * from employees order by salary asc,hiredate desc;
 ```
 
-### mysql 常用函数
+#### mysql 常用函数
 
 单行函数和分组函数。
 
@@ -450,81 +463,75 @@ ifnull(),concat()
 分组函数：传入一组值，最终返回一个值。又称为统计函数或者聚合函数。作用于多行。
 sum,count,avg.
 
-1.字符函数
+1. 字符函数
 
-#### length
+* length 返回字符串所占用的字节数(和说使用的字符集有关系)
 
-返回字符串所占用的字节数(和说使用的字符集有关系)
-
-```
+```sql
 #查看字符集
 show variables like '%char%';
 #  使用length返回字节长度
 select length("hello 北京") as 'length'; // 12
 ```
 
-#### concat()
+* concat() 拼接多个字符串
 
-拼接多个字符串
-
-```
-select concat(first_name,'-',last_name)  as 姓名 from employees;
+```sql
+select concat(first_name,'-',last_name)  as 姓名 from employees;s
 ```
 
-#### upper,lower
+* upper,lower
 
-```
+```sql
 select upper('john') // JOH0N
 
 select lower('joHN') // john
 
 ```
 
-#### substr,substring
+* substr,substring
 
 两个函数是一样，字符串的下标是从 1 开始的，第二个参数是截取的开始位置。第三个参数是截取的字符个数。
 
-```
+```sql
 
 select substring("hello",3) as 'len'; // llo
 
 select substring("hello",1,3) as 'len';//hel
 ```
 
-#### instr
+* instr
 
 返回子串开始的下标，找不到返回 0.
 
-```
+```sql
 select instr('hello wolrd','lr') as 'index';
 ```
 
-#### trim
+* trim 默认是去除字符两个的空格，但是可以去除字符两边的其他字符。
 
-默认是去除字符两个的空格，但是可以去除字符两边的其他字符。
-
-```
+```sql
 select trim(" hello      ") as 'str';// hello
 
 #去除其他的字符
-select trim('aa'from "aaaHelloaaa") as 'str'; // aHelloa
+select trim('aa' from "aaaHelloaaa") as 'str'; // aHelloa
 
 ```
 
-#### lpad、rpad
+* lpad、rpad
 
 左填充和右填充:当字符大于要填充的字符会被截断
 
-```
+```sql
 select lpad('li', 10,'***') as 'name'; // ********li
 
 select rpad('li',10,'***') as 'name';// li********
 ```
 
-#### replace
+* replace
 
-全局替换子串中的特地昂字符。
+全局替换子串中的特定的字符。
 
-```
+```sql
 select replace('aaabbbaaa','a','c') as 'str'; //cccbbbccc
 ```
