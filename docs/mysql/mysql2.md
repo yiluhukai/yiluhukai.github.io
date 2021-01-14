@@ -341,9 +341,29 @@ where e.department_id = d.department_id and d.location_id = l.location_id;
 
 ```
 
+* 非等值连接查寻
+  * 只要连接条件不是等于的都属于非等值连接
+  * 非等值连接查询添加筛选条件、group by、order by 等
 
+```sql
+select e.first_name,e.salary,j.grade_level grade_level from employees e, job_grades j
+where e.salary between  j.lowest_sal and j.highest_sal and grade_level = 'A';
+```
 
+* 自连接查询
+  * 自连接查询是一种特殊的等值连接查询
+  * 连接的两张表都是自己
 
+```sql
+select e.first_name `employee_name`,m.first_name `manager_name` from employees e,employees m
+where e.manager_id = m.employee_id 
+```
+
+:::tip
+
+员工和领导都在员工表中，我们查询的时候连接这张表，然后查询员工和它领导的名字
+
+:::
 
 
 

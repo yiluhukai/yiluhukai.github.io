@@ -344,7 +344,367 @@ sum(1, 5);
 
 :::
 
+### ts的原始类型
 
+* 当``tsconfig.json`中` "strict": true,`或者`"strictNullChecks": true, `打开时，undefined和null不能设置给其他类型
+
+```js
+const s: string = 'hello'
+
+const b: boolean = false
+
+const n: number = Infinity //10 //NaN
+
+const v: void = undefined
+
+const u: undefined = undefined
+
+const nl: null = null
+```
+
+* 当关闭上面的选项时,undefined和null可以设置给其他类型
+
+```js
+const str: string = null //undefined
+
+const v1: void = null //undefined
+
+const u1: undefined = null
+```
+
+* 使用ES2015中的类型
+  * 当target设置的是es5时会报错，这个时候的默认标准库文件是`lib.es5.d.ts`文件，不包含Symbol的声明
+  * 当我们修改target为ES2015的时候，这个时候的默认标准库文件是`lib.es2015.d.ts`文件，包含Symbol的声明
+  * 当我们即想编译到es版本，又想使用使用es2015的语法，我们可以设置配置：   `"lib": ["ES2015","DOM"]`, /* *Specify library files to be included in the compilation.* */,DOM中包含了BOM和DOM的类型声明
+  * 高版本的TS好像没有上面的问题，可以自动引用标准库文件
+  * 标准库就是内置类型对应的声明文件
+
+```js
+const sym: symbol = Symbol()
+```
+
+### 中文错误消息
+
+* tsc在编译ts文件的时候，默认会根据开发工具的语言来提示错误信息。
+* 当我们的编辑器默认语言为英文，但是我们想编译时提示中文消息，我们可以在编译选项后面添加`--local`选项
+
+```shell
+yarn tsc --locale zh-CN
+```
+
+* 编辑器中显示的中文提示可以在vscode ->settings->typescript-locale->zh
+
+### TS作用域问题
+
+`a.ts`文件
+
+```js
+const s: string = 'hello'
+
+```
+
+`b.ts`文件
+
+```js
+const s: string = 'hello world'
+```
+
+这个时候报出错误：Cannot redeclare block-scoped variable 's'.原因他们没有导出，都属于全局作用域
+
+* 方法一:使用自执行函数隔离作用域，修改`a.ts`
+
+```js
+;(function () {
+	const s: string = 'hello'
+})()
+```
+
+* 方法二:在文件中导出一个对象，这个时候文件会被作为一个模块对待
+
+```js
+
+const s: string = 'hello'
+
+export = {}
+
+```
+
+### TS中的类型注解
+
+* 对象类型
+
+```js
+/**
+ *
+ * 对象类型
+ */
+
+const o: object = [] //function () {} //{}
+
+// 使用对象字面的方式限制对象的类型
+
+const obj: { foo: string; bar: number } = { foo: 'hello', bar: 100 }
+
+```
+
+:::tip
+
+对象类型可以是普通对象、数组、函数。还可以使用对象字面量和接口的方式设置对象的类型
+
+:::
+
+* 数组类型
+
+```js
+/**
+ *
+ * 数组类型
+ *
+ */
+
+// 范型的方式
+
+const arr: Array<string> = ['a', 'b']
+
+// 第二种方式
+
+const arr1: number[] = [1, 2, 3]
+
+// 使用ts数组类型
+
+function sumArr(...arr: number[]) {
+	return arr.reduce((a, b) => a + b, 0)
+}
+
+console.log(sumArr(1, 2, 3))
+```
+
+* 元组类型
+
+```js
+
+/**
+ * 元组类型：长度明确，每个位置元素的类型明确的数组
+ *
+ */
+
+const tuple: [string, number] = ['foo', 12]
+
+// 返回值是一个元组数组
+
+const res: [string, number][] = Object.entries({ hello: 123 })
+
+```
+
+* 枚举类型
+
+  * 使用枚举类型可以是代码可读性更高
+
+  ```js
+  /**
+   *
+   * 枚举类型
+   *
+   */
+  // 使用对象
+  // const postStatus = {
+  // 	Draft: 0,
+  // 	UnPublished: 1,
+  // 	Published: 2
+  // }
+  
+  // 使用TS中的枚举类型
+  
+  enum postStatus {
+  	Draft = 0,
+  	UnPublished = 1,
+  	Published = 2
+  }
+  
+  const post = {
+  	title: 'foo',
+  	content: 'foo...',
+  	status: postStatus.Draft //0
+  }
+  postStatus[0]; // Draft
+  ```
+
+  * ts中的枚举类型是侵入式的，会在编译后的代码中出现
+
+  ```js
+  
+  "use strict";
+  /**
+   *
+   * 枚举类型
+   *
+   */
+  // 使用对象
+  // const postStatus = {
+  // 	Draft: 0,
+  // 	UnPublished: 1,
+  // 	Published: 2
+  // }
+  // 使用TS中的枚举类型
+  var postStatus;
+  (function (postStatus) {
+      postStatus[postStatus["Draft"] = 0] = "Draft";
+      postStatus[postStatus["UnPublished"] = 1] = "UnPublished";
+      postStatus[postStatus["Published"] = 2] = "Published";
+  })(postStatus || (postStatus = {}));
+  var post = {
+      title: 'foo',
+      content: 'foo...',
+      status: postStatus.Draft //0
+  };
+  postStatus[0]; // Draft
+  //# sourceMappingURL=07-ts-enum.js.map
+  
+  ```
+
+  * 如果在可以通过枚举的值获取枚举变量的名称，当确定不使用枚举变量时，可以使用常量枚举
+
+  ```js
+  
+  /**
+   *
+   * 枚举类型
+   *
+   */
+  // 使用对象
+  // const postStatus = {
+  // 	Draft: 0,
+  // 	UnPublished: 1,
+  // 	Published: 2
+  // }
+  
+  // 使用TS中的枚举类型
+  
+  const enum postStatus {
+  	Draft = 0,
+  	UnPublished = 1,
+  	Published = 2
+  }
+  
+  const post = {
+  	title: 'foo',
+  	content: 'foo...',
+  	status: postStatus.Draft //0
+  }
+  
+  ```
+
+  * 编译后
+
+  ```js
+  "use strict";
+  /**
+   *
+   * 枚举类型
+   *
+   */
+  // 使用对象
+  // const postStatus = {
+  // 	Draft: 0,
+  // 	UnPublished: 1,
+  // 	Published: 2
+  // }
+  var post = {
+      title: 'foo',
+      content: 'foo...',
+      status: 0 /* Draft */ //0
+  };
+  //# sourceMappingURL=07-ts-enum.js.map
+  
+  ```
+
+  * 当枚举类型的值是数字时可以自增，当枚举类型的值为字符串时不可以
+
+  ```js
+  enum statuses {
+  	closed = 1,
+  	opened //2
+  }
+  
+  enum others {
+  	others = 'other',
+  	math = 'math'
+  }
+  
+  statuses.closed
+  
+  others.math
+  
+  ```
+
+  ```js
+  var statuses;
+  (function (statuses) {
+      statuses[statuses["closed"] = 1] = "closed";
+      statuses[statuses["opened"] = 2] = "opened"; //2
+  })(statuses || (statuses = {}));
+  var others;
+  (function (others) {
+      others["others"] = "other";
+      others["math"] = "math";
+  })(others || (others = {}));
+  statuses.closed;
+  others.math;
+  ```
+
+* 函数类型
+
+  * 函数声明
+
+  ```js
+  /**
+   *
+   *  函数类型
+   *
+   */
+  export = {}
+  // 可选参数
+  function Hello(a: number, b?: number): string {
+  	return 'hello'
+  }
+  
+  Hello(1)
+  
+  Hello(2)
+  
+  // 默认值参数
+  function Hello1(a: number, b: number = 100): string {
+  	return 'hello'
+  }
+  
+  Hello1(1)
+  
+  Hello1(1, 100)
+  
+  // 剩余参数
+  
+  function Hello2(...arg: number[]): string {
+  	return 'hello'
+  }
+  
+  ```
+
+  * 函数字面量
+
+  ```js
+  //  函数字面量
+  // 可以类型推断出来变量f的类型
+  const f = function (a: number): string {
+  	return 'f'
+  }
+  //限定形参的类型
+  function res(callback: (a: number) => string): string {
+  	return callback(10)
+  }
+  
+  ```
+
+  
 
 
 
