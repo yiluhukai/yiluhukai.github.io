@@ -704,16 +704,388 @@ const res: [string, number][] = Object.entries({ hello: 123 })
   
   ```
 
+
+* any类型
+
+```js
+/***
+ *
+ *  使用any来接受任意类型值
+ *
+ */
+export = {}
+
+function stringfy(obj: any): string {
+	//  JSON.stringify的第一个参数就是any类型的
+	return JSON.stringify(obj)
+}
+
+stringfy('hello')
+
+stringfy(100)
+
+const obj: any = {}
+
+// 语法上不会报错，所以any类型不是类型安全的
+obj.hello()
+
+```
+
+:::warning
+
+TS的any类型不是类型安全的。 
+
+:::
+
+*  隐式类型推断
+
+```js
+/**
+ *
+ *  类型推断
+ *
+ */
+
+export = {}
+
+let a = 'string' // let a:string="string"
+//Type '100' is not assignable to type 'string'
+// a = 100
+
+let o // let o:any = undfined
+
+o = 100
+
+o = {}
+
+// 不推荐使用any类型，不利于后期代码维护
+
+```
+
+* 类型断言
+  * 类型断言：有时候TS无法去类型推到出变量的具体类型，而开发者可以明确知道变量的类型的，这个时候我们可以使用类型断言
+  * 使用<>的方式断言在jsx中是不被允许的，会和标签`<a></a>`产生冲突
+
+```ts
+
+/**
+ *
+ *  类型断言：有时候TS无法去类型推到出变量的具体类型，而开发者可以明确知道变量的类型的，这个时候我们可以使用类型断言
+ *
+ */
+
+export = {}
+
+const arr = [1, -2, 10]
+// 编辑器会推到成const res:number|undefined
+const res = arr.find(item => item > 0)
+
+// 我们根据数组知道肯定不会返回undefined
+
+// Object is possibly 'undefined'.
+// const sum = res + res
+
+// 使用类型断言
+
+const sum = (res as number) + (res as number)
+
+// 另一种方式
+
+const sum1 = <number>res + <number>res
+
+```
+
+* 接口
+
+  * 用来约束对象的成员
+
+    ```js
+    
+    /**
+     *
+     *  接口：用来约束对象的成员
+     *
+     */
+    
+    export = {}
+    
+    interface person {
+    	name: string
+    	age: number
+    }
+    
+    function foo(o: person) {
+    	console.log(o.name, o.age)
+    }
+    ```
+
+  * 接口不会存在于编译后的代码中
+
+  * 接口中中可以设置对象的属性可选和只读
+
+  ```js
+  interface Post {
+  	title: string
+  	content: string
+  	subTitle?: string
+  	readonly author: string
+  }
   
+  const p: Post = {
+  	title: 'ts',
+  	content: 'ts is ....',
+  	subTitle: '',
+  	author: 'yluhuakai'
+  }
+  // Cannot assign to 'author' because it is a read-only property.ts(2540)
+  //p.author = ''
+  ```
 
+  * 动态成员
 
+  ```js
+  
+  interface Caches {
+  	[prop: string]: string
+  }
+  
+  const cache: Caches = {
+  	name: ''
+  }
+  ```
 
+* class
 
+  * ts中的类和JS的类语法大致相似，但是也有自己一些特有的地方
+  * ts的类的成员在构造前必须声明，且声明或者构造函数中有一个地方要初始化
 
+  ```js
+  class Person {
+  	name: string
+  	age: number = 10
+  	constructor(name: string, age: number) {
+  		this.name = name
+  		this.age = age
+  	}
+  }
+  ```
 
+  * 类的成员可以设置修饰符，public(默认的)、private(类内部访问)、protected(可以被子类继承，只能类和其子类中被访问)
 
-​	
+  ```js
+  export = {}
+  
+  class Person {
+  	name: string
+  	age: number = 10
+  	protected gender: boolean
+  	constructor(name: string, age: number) {
+  		this.name = name
+  		this.age = age
+  		this.gender = true
+  	}
+  
+  	public sayHi() {
+  		console.log(`Hi!,${this.name}`)
+  	}
+  }
+  
+  class Student extends Person {
+  	studentId: number
+  	// 只能通过静态方法创建对象
+  	private constructor(name: string, age: number, studentId: number) {
+  		super(name, age)
+  		this.studentId = studentId
+  	}
+  
+  	public static create(name: string, age: number, studentId: number) {
+  		return new this(name, age, studentId)
+  	}
+  
+  	public getGender() {
+  		// protected类型的，只能在类和子类中被访问
+  		this.gender ? '男' : '女'
+  	}
+  }
+  
+  const s = Student.create('li', 26, 157806)
+  
+  s.sayHi()
+  
+  ```
 
+  * 类的成员边两可以设置成只读的 ,当设置成只读的，那么只能被初始化一次
+
+  ```js
+  
+  class Student extends Person {
+  	public readonly studentId: number
+  	// 只能通过静态方法创建对象
+  	private constructor(name: string, age: number, studentId: number) {
+  		super(name, age)
+  		this.studentId = studentId
+  	}
+  
+  	public static create(name: string, age: number, studentId: number) {
+  		return new this(name, age, studentId)
+  	}
+  
+  	public getGender() {
+  		// protected类型的，只能在类和子类中被访问
+  		this.gender ? '男' : '女'
+  	}
+  }
+  
+  ```
+
+* 接口和类
+  * 使用接口可以去约束类中需要实现的方法签名
+  * 类去实现接口后必须去实现对应的方法
+  * 相比较于通过从父类继承方法而言，接口只要求你有这个方法，而继承需要两个子类在方法在父类中有共性。
+
+```js
+/**
+ *
+ *  类和接口
+ *
+ */
+export = {}
+interface Runable {
+	run(): void
+}
+
+interface Eetable {
+	eat(food: string): void
+}
+
+class Person implements Runable, Eetable {
+	public eat(food: string) {
+		console.log(`Person eat ${food}`)
+	}
+
+	public run() {
+		console.log(`Person run on foot`)
+	}
+}
+
+class Dog implements Runable, Eetable {
+	public eat(food: string) {
+		console.log(`dog eat ${food}`)
+	}
+
+	public run() {
+		console.log(`dog run on foot`)
+	}
+}
+
+const d = new Dog()
+
+d.eat('meat')
+d.run()
+
+```
+
+* 抽象类
+  * 抽象类和接口类似，可以约束子类中必须有某个成员
+  * 抽象类本身不能被实例化
+  * 抽象类中定义的方法可以设置修饰符
+
+```js
+
+export = {}
+abstract class Animale {
+	public abstract run(): void
+}
+
+class Dog extends Animale {
+	public run() {
+		console.log(`dog is runing on the road`)
+	}
+}
+
+const d = new Dog()
+
+d.run()
+
+```
+
+* 泛型
+
+  * 所谓的泛型就是在定义函数、接口、方法的时候我们不去指定具体的类型，而是在调用的时候穿入具体的类型
+
+  * 使用泛型可以减少代码的冗余，增加代码的可服用性
+
+  * 不使用泛型的代码
+
+    ```js
+    
+    export = {}
+    
+    // 创建数字数组
+    function createArrayNumber(length: number, value: number): number[] {
+    	return Array<number>(length).fill(value)
+    }
+    
+    // 创建字符串数组
+    
+    function createArrayString(length: number, value: string): string[] {
+    	return Array<string>(length).fill(value)
+    }
+    
+    const numArr = createArrayNumber(10, 12)
+    
+    const strArr = createArrayString(10, 'helo')
+    
+    ```
+
+  * 使用泛型
+
+    ```js
+    // 创建任意类型的数组并填充
+    
+    function createAnyArray<T>(length: number, value: T): T[] {
+    	return Array<T>(length).fill(value)
+    }
+    
+    const numArr = createAnyArray(10, 12)
+    
+    const strArr = createAnyArray(10, 'helo')
+    
+    ```
+
+  * 上面的Array就是TS中用泛型实现的函数，我们调用的时候再穿入具体的值。
+
+  
+* 类型声明
+
+  * TS之所以能对类型进行校验，是因为有类型声明文件
+  * 当我们安装第三方的npm包时，有可能没有对应的类型声明文件，这时候ts就没有强类型的体验了 
+  * 我们自己手动添加类型声明文件
+
+  ```js
+  /**
+   *
+   * 类型声明文件
+   */
+  
+  export = {}
+  
+  import { cloneDeep } from 'lodash'
+  
+  //手动添加类型声明
+  
+  declare function cloneDeep(params: object): object
+  
+  // 类型被推断成any
+  //warning 'obj' is declared but its value is never read.
+  const obj = cloneDeep({})
+  ```
+
+  * 更好的方法是：点击上面lodash的警告，我们可以提示我们安装·npm install @types/lodash`.一般常用的第三方包都有了对应类型声明文件，我们可以直接去使用它，直接安装到开发依赖即可。
+  * 甚至一些第三方包中已经存在这样的类型声明文件了。我们不需要手动安装，如query-string.
+  * 关于ts的类型声明，我们可以去查看[文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
+
+  
 
 
 
