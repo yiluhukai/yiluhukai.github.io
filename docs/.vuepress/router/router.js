@@ -4,7 +4,8 @@ module.exports = {
 		'/leetcode/link',
 		'/leetcode/longestSubStr',
 		'/leetcode/ReverseWordsInAString',
-		'/leetcode/specialBinaryString'
+		'/leetcode/specialBinaryString',
+		'/leetcode/findMedianSortedArrays'
 	],
 	'/mysql': ['/mysql/mysql1', '/mysql/mysql2'],
 	'/es': [
