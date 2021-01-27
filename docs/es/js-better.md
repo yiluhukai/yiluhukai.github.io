@@ -281,6 +281,191 @@ JS中有基础数据类型和对象数据类型，v8的垃圾回收主要是针�
 
   ![增量标记算法](/frontEnd/increament.png)
 
+### 使用performance
+
+* 为什么要使用performance
+  * GC是为了实现内存空间的良好循环
+  * 良好循环的基础是合理使用
+  * 时刻关注才能确定是否使用合理
+  * 而performance提供了多种监控方式
+  
+* performance的使用方式
+  * 打开浏览器输入网址
+  * 进入开发人员工具面板，选择性能
+  * 开启录制功能，访问具体的页面
+  * 执行用户的行为，一段时间后停止录制
+  
+* 内存问题的外在表现
+  * 页面出现延迟加载或者经常性暂停
+  * 页面持续性出现糟糕的性能
+  * 页面的性能随时间越来越长
+  
+* 界定内存问题的标准
+  * 内存泄露：内存使用持续升高
+  * 内存膨胀：在大多数设备上都存在性能问题
+  * 频繁的垃圾回收：通过内存变化图进行分析
+  
+* 监控内存的几种方式
+  * 浏览器任务管理器
+  * Timeline时序图记录
+  * 堆快照查找分离dom
+
+*  使用任务管理器监控内存
+
+  * 创建一个html文件,文件中嵌入js脚本
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>创建数组</title>
+  </head>
+  
+  <body>
+      <button id="btn">创建数组</button>
+      <script>
+          const btn = document.getElementById("btn")
+          btn.addEventListener("click", function () {
+              console.log("click")
+              let array = Array(10000).fill(1)
+          })
+      </script>
+  </body>
+  
+  </html>
+  ```
+
+  * 在浏览器中执行后打开浏览器的任务管理器(更多工具里面选择任务管理器)
+
+    ![image-20210122211653612](/Users/lijunjie/Library/Application Support/typora-user-images/image-20210122211653612.png)
+
+  * 前面的内存占用的dom占用的内存空间，后面的js使用的内存，其中`()`中的js中所有可达对象占用的内存。
+  * 如果前面的内存空间一直变化，说明存在频发的dom操作，而后面`()`中的内存一直增长，说明我们在创建对象。
+
+* 使用timeline工具
+
+  * 使用timeline工具可以实时的检测内存的变化,更方便的定位问题
+
+  * html文件
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    
+    <body>
+        <button id="btn">add</button>
+        <script>
+            const arrList = []
+            const fun = function () {
+                //  向dom元素上添加新的dom节点
+                for (let i = 0; i < 10000; i++) {
+                    document.body.append(document.createElement("p"))
+                }
+                //  向数组中存放字符串
+                arrList.push(new Array(10000).join('x'))
+            }
+            document.getElementById("btn").addEventListener('click', fun)
+        </script>
+    </body>
+    
+    </html>
+    ```
+
+    ![timeline](/frontEnd/timeline.png)
+  
+  * 由于我们创建了一个很大的数组去生成字符串，数组不是活动对象，在函数执行完成后会被回收掉，当我们点击几次按钮，会看到js堆上的内存在上下起伏。
+  
+* 堆快照查找分离dom
+
+  * 堆快照位于浏览器工具的memory下
+
+  * ![堆快照](/frontEnd/heapsnap.png)
+
+  * 分离dom和垃圾dom
+
+    * 界面元素存在于dom树上
+    * 分离dom指的是没有挂载在页面的dom树上但是有其他的引用指向它的dom节点
+    * 垃圾dom指的是没有挂载在页面的dom树上，也没有其他的引用指向它，会被GC回收。
+    
+  * html
+
+    * ```html
+      <!DOCTYPE html>
+      <html lang="en">
+      
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      
+      <body>
+          <!-- 分离dom -->
+          <button id="btn"></button>
+      
+          <script>
+              var temp
+      
+              function test(params) {
+                  let ul = document.createElement('ul')
+      
+                  for (let i = 0; i < 10; i++) {
+                      let li = document.createElement('li')
+                      ul.appendChild(li)
+                  }
+      
+                  temp = ul
+              }
+      
+              document.getElementById("btn").addEventListener("click", test)
+          </script>
+      </body>
+      
+      </html>
+      ```
+
+    * 在我们点击按钮之前，先生成一张js堆快照。然后搜索deta搜索不到，说明没有分离dom对象
+
+    * 点击按钮后我们再去生成一张快照，然后搜索deta搜索不到，可以分离的dom节点
+
+      ![分离对象](/frontEnd/deta.png)
+
+    * 我们可以将temp赋值null后，上面的对象会变成垃圾dom被回收
+
+  ### 如何判断是否存在频繁的GC
+
+  * 任务管理器监控内存频繁的增加和减小
+  * timelIne中内存频繁的升降
+
+  ### 频繁GC的带来的问题
+
+  * GC工作时应用程序是停止工作的 
+
+  * 频繁过程的GC会导致应用假死
+
+  * 用户使用中会感觉到卡顿
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
   
 
   
