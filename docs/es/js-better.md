@@ -449,10 +449,158 @@ JS中有基础数据类型和对象数据类型，v8的垃圾回收主要是针�
   ### 频繁GC的带来的问题
 
   * GC工作时应用程序是停止工作的 
-
   * 频繁且过长的GC会导致应用假死
-
   * 用户使用中会感觉到卡顿
+
+  ### 代码优化介绍
+
+  * 如何精准的测试Javascript的性能
+     * 本质上就是采集大量的执行样本进行数学统计和分析
+     * 使用基于Benchmark.js的https://jsperf.com/ 完成
+
+  * JsPerf使用流程
+    * 使用GitHub账号登陆
+    * 填写个人信息(非必须)
+    * 填写详细的测试用例信息(title、slug)
+    * 填写准备代码(dom操作时经常使用)
+    * 填写必要的setup(执行前的设置)和teardown(执行完成后的)代码
+    * 填写测试代码片段
+
+  * 慎用全局变量
+
+    * 全局变量定义在全局执行上下文上，是所有作用域链的顶端，在局部作用域中使用全局变量需要更多的查找
+
+    * 全局执行上下文一直存在于上下文执行栈，直到程序退出
+
+    * 如果某个局部作用域出现了同名变量则会遮蔽或污染全局变量
+
+    * 在JsPerf中测试代码
+
+    * ```js
+      
+      var i,
+      	str = ''
+      
+      for (i = 0; i < 1000; i++) {
+      	str += i
+      }
+      ```
+
+    * ```js
+      
+      
+      
+      // 局部变量的代码片段
+      
+      for (let i = 0; i < 1000; i++) {
+      	let str = ''
+      	str += i
+      }
+      
+      
+      ```
+
+    * 对比会发现局部作用域变量的代码的性能要更好
+
+  * 缓存全局变量
+
+    * 将使用中无法避免的全局变量混存到局部可以提高性能
+
+    * 准备代码
+
+    * ```html
+      <!DOCTYPE html>
+      <html lang="en">
+      
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      
+      <body>
+          <input type="button" value="btn" id="btn1">
+          <input type="button" value="btn" id="btn2">
+          <input type="button" value="btn" id="btn3">
+          <input type="button" value="btn" id="btn4">
+          <p>111</p>
+          <input type="button" value="btn" id="btn5">
+          <input type="button" value="btn" id="btn6">
+          <input type="button" value="btn" id="btn7">
+          <input type="button" value="btn" id="btn8">
+          <p>222</p>
+      
+          <input type="button" value="btn" id="btn9">
+          <input type="button" value="btn" id="btn10">
+         
+      </body>
+      
+      </html>
+      ```
+
+    * 测试代码段
+
+    * ```js
+      
+      	//一
+              function getBtn1() {
+                  let oBtn1 = document.getElementById("btn1")
+                  let oBtn1 = document.getElementById("btn2")
+                  let oBtn1 = document.getElementById("btn3")
+                  let oBtn1 = document.getElementById("btn5")
+                  let oBtn1 = document.getElementById("btn7")
+                  let oBtn1 = document.getElementById("btn9")
+              }
+      			//二
+              function getBtn2() {
+                  let obj = document
+                  let oBtn1 = obj.getElementById("btn1")
+                  let oBtn1 = obj.getElementById("btn2")
+                  let oBtn1 = obj.getElementById("btn3")
+                  let oBtn1 = obj.getElementById("btn5")
+                  let oBtn1 = obj.getElementById("btn7")
+                  let oBtn1 = obj.getElementById("btn9")
+              }
+      ```
+
+    
+
+  * 通过原型对象添加附加的方法
+
+    * 创建对象的时候我们可以给对象的构造函数的原型上添加对象的公有方法
+
+    * 也可以在构造函数内部为每个对象创建一个方法
+
+    * 两种方法都可以为新创建的对象添加一个公有方法，但是原型上添加的代码效率更高
+
+    * ```js
+      /**
+       *
+       * 原型上添加方法
+       */
+      
+      function Foo() {}
+      
+      Foo.prototype.SayHello = function () {
+      	console.log('hello world')
+      }
+      
+      const f1 = new Foo()
+      
+      // 构造函数内部添加
+      
+      function Foo1() {
+      	this.SayHello = function () {
+      		console.log('hello world')
+      	}
+      }
+      
+      const f2 = new Foo1()
+      ```
+
+      
+
+  
 
   
 
