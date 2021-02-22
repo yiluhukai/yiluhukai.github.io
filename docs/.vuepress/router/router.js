@@ -20,7 +20,8 @@ module.exports = {
 		'/es/es2016_17',
 		'/es/Ts',
 		'/es/flow',
-		'/es/js-better'
+		'/es/js-better',
+		'/es/project'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [

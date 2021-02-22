@@ -466,6 +466,8 @@ JS中有基础数据类型和对象数据类型，v8的垃圾回收主要是针�
     * 填写必要的setup(执行前的设置)和teardown(执行完成后的)代码
     * 填写测试代码片段
 
+  * [JSBench](https://jsbench.me/)可以替代上面的JsPerf.
+
   * 慎用全局变量
 
     * 全局变量定义在全局执行上下文上，是所有作用域链的顶端，在局部作用域中使用全局变量需要更多的查找
@@ -598,13 +600,547 @@ JS中有基础数据类型和对象数据类型，v8的垃圾回收主要是针�
       const f2 = new Foo1()
       ```
 
+  * 闭包陷阱
+
+     * 使用闭包可以访问其他作用域的变量的，但是也很容易出现内存泄露的问题
+
+     * ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        
+        <body>
+            <button id="btn">add</button>
+            <script>
+                function foo() {
+                    const btn = document.getElementById('btn')
+                    btn.onclick = function () {
+                        console.log(btn.id)
+                    }
+                }
+        
+                foo()
+            </script>
+        </body>
+        
+        </html>
+        ```
+
+     * dom节点的click方法保存了函数引用，所以函数作用域链上的变量不会被回收。上面的代码中btn指向的dom节点在有两个引用指向它，一个是dom树，一个是btn变量,当我们从dom树上移除这个节点时，这个节点并不会被GC回收。
+
+     * 解决上面问题的办法就是在使用完btn将其设置为null，这样子dom节点的引用计数器就变成了1，当我们把dom节点从dom树中移除后，引用变为0，就会被GC回收
+
+     * ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        
+        <body>
+            <button id="btn">add</button>
+            <script>
+                function foo() {
+                    const btn = document.getElementById('btn')
+                    btn.onclick = function () {
+                        console.log(btn.id)
+                    }
+                  	btn = null
+                }
+                foo()
+            </script>
+        </body>
+        
+        </html>
+        ```
+
+  * 避免使用属性访问方法
+
+     * ```js
+        /***
+         *
+         * 避免去使用属性访问方法
+         */
+        
+        // 属性访问方法
+        function Person() {
+        	this.name = 'name'
+        	this.age = 23
+        	this.getAge = function () {
+        		return this.age
+        	}
+        }
+        
+        const p = new Person()
+        const age = p.getAge()
+        
+        // 直接访问属性
+        function Person1() {
+        	this.name = 'name'
+        	this.age = 23
+        }
+        
+        const p1 = new Person1()
+        const age1 = p1.age
+        
+        
+        ```
+
+     * 在JsPerf中对比两个代码会发现直接访问比属性访问方法快。
+
+  * for循环优化
+
+     * ```js
+        
+        const arr = new Array(10).fill(11)
+        
+        for (let i = 0; i < arr.length; i++) {
+        	console.log(arr[i])
+        }
+        // 下面两种更好
+        for (let i = 0, len = arr.length; i < len; i++) {
+        	console.log(arr[i])
+        }
+        
+        for (let i = arr.length - 1; i >= 0; i++) {
+        	console.log(arr[i])
+        }
+        
+        ```
+
+  * 最优的for循环
+
+     * ```js
+        /**
+         *
+         * 最优的for循环
+         *
+         */
+        
+        const arr = new Array(10).fill(1)
+        
+        // forEach  最快
+        
+        arr.forEach(item => {
+        	console.log(item)
+        })
+        
+        // 普通的for循环 中间
+        
+        for (let i = arr.length - 1; i >= 0; i--) {
+        	console.log(arr[i])
+        }
+        
+        // for-in  最慢
+        
+        for (let key in arr) {
+        	console.log(arr[key])
+        }
+        
+        ```
+
+  * 使用文档碎片优化节点添加
+
+    * ```html
+      <!DOCTYPE html>
+      <html lang="en">
       
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      
+      <body>
+          <script>
+              for (let i = 0; i < 10; i++) {
+                  const p = document.createElement('p')
+                  p.innerHTML = i
+                  document.body.appendChild(p)
+              }
+          </script>
+      </body>
+      
+      </html>
+      
+      ```
 
+    * ```html
+      <!DOCTYPE html>
+      <html lang="en">
+      
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      
+      <body>
+          <script>
+              // for (let i = 0; i < 10; i++) {
+              //     const p = document.createElement('p')
+              //     p.innerHTML = i
+              //     document.body.appendChild(p)
+              // }
+              const Fragment = document.createDocumentFragment()
+              for (let i = 0; i < 10; i++) {
+                  const p = document.createElement('p')
+                  p.innerHTML = i
+                  Fragment.appendChild(p)
+              }
+      
+              document.body.appendChild(Fragment)
+          </script>
+      </body>
+      
+      </html>
+      ```
+
+    * 第二种方式先闯将一个文档碎片，向代码碎片里面添加新创建的节点，最终将文档碎片添加body节点下，这样子可以减少浏览器的重绘次数。
+
+  * 克隆优化节点操作
+
+    * 当我们需要向文档中添加一个新的节点且这个文档中已经存在相似的节点时，采用克隆节点的效率更高
+
+    * ```html
+      <!DOCTYPE html>
+      <html lang="en">
+      
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+      </head>
+      
+      <body>
+          <p id="box1">ceate node</p>
+          <script>
+              //   创建
+              for (let i = 0; i < 10; i++) {
+                  const p = document.createElement("p")
+                  p.innerHTML = i
+                  document.body.appendChild(p)
+              }
+      
+              // 克隆
+      
+              const pNode = document.getElementById('box1')
+      
+              for (let i = 0; i < 10; i++) {
+                  const p = pNode.cloneNode(false)
+                  p.innerHTML = i
+                  document.body.appendChild(p)
+              }
+          </script>
+      </body>
+      
+      </html>
+      ```
+
+  * 字面量替换new构造函数
+
+    * ```js
+      /**
+       *
+       * 字面量替换new Object
+       *
+       */
+      
+      const arr = [1, 2, 3]
+      
+      const arr1 = new Array(1, 2, 3)
+      
+      ```
+
+    * 使用字面的创建对象的效率更高
+    
+    * 当用字面量方式创建基础数据类型的时候比创建对应的对象效率高很多
+  
+    * ```js
+    var str="hello world"
+      // 对象
+      var str1 = new String("hello world")
+      ```
+    
+    * 所以不管是基础数据类型还是引用数据类型，优先使用字面量的方式声明
+    
+    * 字面量的方式更快是因为字面量直接在内存中分配空间的，而构造函数的方式需要调用函数去开辟栈空间
+    
+  *  js执行时的堆栈
+  
+     ![堆栈](/frontEnd/heapAndStack.png)
+  
+     * 代码在开始执行前会先创建一个执行栈，整个代码作为匿名函数去执行，所以全局变量在该栈空间下
+     * Vo和Ao代表的当前栈的作用域
+     * <>里面时作用域链
+     * AB1和AB2代表的是堆上分配的空间
+     * 栈上的空间由语言自身回收，而堆上的空间由GC去回收
+     * arguements代码的是一个类数组对象
+  
+  * 减少判断层级
+  
+    * ```js
+      function doSomething(part, chapter) {
+      	const parts = ['es2015', 'Vue', 'React']
+      	if (part) {
+      		console.log('part存在')
+      		if (parts.includes(part)) {
+      			console.log('对应的课程存在')
+      			if (chapter > 5) {
+      				console.log('这些章节是vip课程')
+      			}
+      		}
+      	} else {
+      		console.log('part不存在')
+      	}
+      }
+      // 放入teardown部分
+      doSomething('es2015', 6)
+      ```
+  
+    * ```js
+      function doSomething(part, chapter) {
+      	const parts = ['es2015', 'Vue', 'React']
+      	if (!part) {
+      		console.log('part不存在')
+      		return
+      	}
+      	console.log('part存在')
+      	if (!parts.includes(part)) {
+      		return
+      	}
+      	console.log('对应的课程存在')
+      	if (chapter > 5) {
+      		console.log('这些章节是vip课程')
+      	}
+      }
+      // 放入teardown部分
+      doSomething('es2015', 6)
+      ```
+  
+    * 第二部分的代码层级更少，测试可以发现执行的更快
+  
+  * 减少作用域链的查找
+  
+    * ```js
+      var name = 'foo'
+      
+      function foo() {
+      	name = 'baz'
+      	function baz() {
+      		var age = 27
+      		console.log(age, name)
+      	}
+      	baz()
+      }
+      // 放入teardown部分
+      foo()
+      ```
+  
+    * ```js
+      var name = 'foo'
+      
+      function foo() {
+      	var name = 'baz'
+      	function baz() {
+      		var age = 27
+      		console.log(age, name)
+      	}
+      	baz()
+      }
+      // 放入teardown部分
+      foo()
+      ```
+  
+    * 在JSBench中测试可以发现下面的代码的执行效率更高，但是下面的代码的创建了一个新的变量，会增加内存的消耗
+    
+  * 减少数据的读取次数
+    
+    * 对象和数组等引用类型的变量访问的时候需要先根据地址去堆区查找，找到对象后访问对象的属性需要在对象的属性或者作用域链上查找
+    
+    * 减少对象属性的嵌套作用域的长度可以提高数据的读取速度
+    
+    * 同时我们还以对对象中后面需要用到的属性进行缓存，避免多次查找
+    
+    * ```html
+       <!DOCTYPE html>
+       <html lang="en">
+       
+       <head>
+           <meta charset="UTF-8">
+           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+           <title>Document</title>
+       </head>
+       
+       <body>
+           <button id="skip" class="skip">skip</button>
+           <script>
+               var btn = document.getElementById("skip")
+       
+               function hasSkip(ele, className) {
+                   return ele.className === className
+               }
+       
+               hasSkip(btn, 'skip')
+           </script>
+       </body>
+       
+       </html>
+       ```
+    
+    * ```html
+       <!DOCTYPE html>
+       <html lang="en">
+       
+       <head>
+           <meta charset="UTF-8">
+           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+           <title>Document</title>
+       </head>
+       
+       <body>
+           <button id="skip" class="skip">skip</button>
+           <script>
+           		//setup 
+           		// setup js
+               var btn = document.getElementById("skip")
+       			
+          
+               //test case
+               function hasSkip(ele, className) {
+                   var cl = ele.className
+                   return cl === className
+               }
+       				// teardown
+               hasSkip(btn, 'skip')
+           </script>
+       </body>
+       
+       </html>
+       ```
+    
+       * 使用局部作用域去缓存对象的属性，可以在后面的时候减少对象的查找次数，速度会更快
+    
+  *   减少代码中的语句和声明数
+    
+    * 更多的代码会在底层以为更多的指令，更多的指令需要更多的执行时间
+      
+    * ```js
+      var a=1,b=2,c=3
+      
+      var a1= 1
+      var b1= 2
+      var c1= 3 
+      ```
+    
+    * 上面的第一种学法执行效率更少，但是可读性不如第二种
+    
+  * 事件委托机制
+  
+     * 所谓的事件委托机制就是利用js中的事件的冒泡机制将原本绑定在子元素上的事件委托给了父元素
+  
+     * 采用事件委托可以减少事件注册，提高代码在初始化时(注册事件)的效率
+  
+     * 但是由于每个事件都是从子元素触发然后在父元素上的绑定事件中处理的，这样可能会比在子元素上直接处理要慢
+  
+     * ```js
+        
+        <!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        
+        <body>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </ul>
+        
+            <script>
+                var liList = document.querySelectorAll("li")
+        
+                for (const li of liList) {
+                    li.addEventListener('click', function (e) {
+                        console.log(e.target.innerHTML)
+                    })
+                }
+            </script>
+        </body>
+        
+        </html>
+        ```
+  
+     * ```html
+        <!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Document</title>
+        </head>
+        
+        <body>
+            <ul>
+                <li>1</li>
+                <li>2</li>
+                <li>3</li>
+                <li>4</li>
+                <li>5</li>
+            </ul>
+        
+            <script>
+                var ul = document.querySelector("ul")
+        
+                // for (const li of liList) {
+                //     li.addEventListener('click', function (e) {
+                //         console.log(e.target.innerHTML)
+                //     })
+                // }
+        
+                ul.addEventListener('click', function (e) {
+                    var obj = e.target
+                    if (obj.nodeName.toLowerCase() === 'li') {
+                        console.log(obj.innerHTML)
+                    }
+                }, true)
+            </script>
+        </body>
+        
+        </html>
+        
+        ```
+  
+     
+  
+  
+  
   
 
-  
+​     
 
-  
+​     
+
+​     
+
+​     
+
+​     
 
   
 
