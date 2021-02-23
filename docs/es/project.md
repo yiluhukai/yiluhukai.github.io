@@ -126,16 +126,16 @@
 
    ###  自定义generator
 
-   * yeoman的generator本质上是一个npm模块
+* yeoman的generator本质上是一个npm模块
 
-   * yeoman的generator有自己的命名规则，自定义generator必须遵从这个规则,
+* yeoman的generator有自己的命名规则，自定义generator必须遵从这个规则,
 
-     * generator必须以generator-开头，基本形式为generator-name
+* generator必须以generator-开头，基本形式为generator-name
 
-   * 自定义generator是对整个包的文件夹也是有要求的
+* 自定义generator是对整个包的文件夹也是有要求的
 
-     * ![generator](/frontEnd/generator.png)
-     * 上面的是只有一个generator的，下面的是包含其他的sub generator的
+   * ![generator](/frontEnd/generator.png)
+   * 上面的是只有一个generator的，下面的是包含其他的sub generator的
 
    * yeoman-generator包中提供了一个generator的基类，提供了一些声明周期方法，可以帮助创建生成器
 
@@ -623,23 +623,147 @@
 
      * 在需要创建文件的目录下执行`cli-demo`去创建文件
 
-       
+### 自动化构建
 
-       
+* 自动化构建指的是利用机器去代替手工去完成代码转化的工作
+* 从源代码自动化构建到生产环境代码的过程叫自动化构建工作流
+* 自动化构建的目的是为了将运行环境不支持的语法、语言转化到可以直接在运行环境执行的代码，提高开发效率。
 
-     
+![自动化构建](/frontEnd/auto-build.png)
 
-   
+### 自动化构建初体验
 
-   
+* 在开发过程中使用scss代替css.
 
-   
+* 首先在项目中创建一个index.html和index.sass文件 
 
-   
+  * ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    
+    <body>
+        <h1>scss</h1>
+    </body>
+    
+    </html>
+    ```
 
-   
+  * ```scss
+    $body-color:red;
+    
+    h1 {
+        color: $body-color
+    }
+    ```
 
-   
+* scss文件不能直接在浏览器中使用，我们使用sass(npm包)将scss编译成css.
+
+  * ```shell
+    npm install -D sass
+    npx sass index.scss index.css 
+    ```
+
+  * 在浏览器直接打开html文件可以看到我们样式生效了
+
+* 但是我们可以看到每次都要手动去构建比较麻烦，我们可以使用`npm script`,在package.json中加入下面的代码
+
+  * ```json
+    ....
+    
+    "scripts": {
+    		"build": "sass index.scss index.css"
+     },
+    
+    ...
+    ```
+
+* 同时我们还想代码可以在浏览器中直接打开
+
+  * 安装browser-sync
+
+    * ```shell
+      npm install -D browser-sync
+      ```
+
+  * 在package.json中加入新的脚本
+
+    * ```json
+      "serve": "browser-sync ."
+      ```
+
+    * 上面的.代表当前目录，执行脚本会自动启动一个服务
+
+* 此外，我们还想在每次启动服务之前都先构建一次，可以使用npm钩子
+
+  * 在package.json中加入如下的代码
+
+  * ```json
+    "scripts": {
+        "build": "sass index.scss index.css",
+        "preserve":"npm run build",
+    		"serve": "browser-sync ."
+    	},
+    ```
+
+  * preserve会在serve之前执行，所以当我们启动这个服务时总会先去构建一次scss文件
+
+* 我们还想在修改scss文件之后可以自动构建，那么我们可以这么修改package.json文件
+
+  * ```json
+    "scripts": {
+        "build": "sass index.scss index.css --watch",
+        "preserve":"npm run build",
+    		"serve": "browser-sync ."
+    	},
+    ```
+
+  * 此时执行npm run serve会发现不能启动一个新的服务,原因是加入--watch后阻塞后续命令的执行，为了让两个命令都执行，我们需要借助一个npm包
+
+  * ```shell
+    npm i -D npm-run-all
+    ```
+
+  * 然后重新修改package.json文件
+
+  * ```json
+    "scripts": {
+    		"build": "sass index.scss index.css --watch",
+    		"serve": "browser-sync .",
+    		"start": "run-p build serve"
+    	},
+    ```
+
+* 使用上面的`npm run start`我们会发现改变了scss文件后重新生成了css文件，但是服务没有刷新去重新加载
+
+  * 为此我们需要服务去监听项目下css文件变化，我们可以修改脚本
+
+  * ```json
+    	"scripts": {
+    		"build": "sass index.scss index.css --watch",
+    		"serve": "browser-sync . --files \"*.css\"",
+    		"start": "run-p build serve"
+    	},
+    ```
+
+  * 此时我们修改scss文件就会自动刷新页面
+
+
+
+
+
+
+
+
+
+
+
 
 
 
