@@ -754,7 +754,109 @@
 
   * 此时我们修改scss文件就会自动刷新页面
 
+### 常用的自动化构建工具
 
+* grunt
+
+  * grunt的插件生态非常丰富，几乎支持所以你要想要的自动化任务
+  * grunt的构建过程是基于临时文件的，构建过程中每一步都会产生临时文件，下一个步骤读取这个临时文件继续执行其他的任务
+  * 由于临时文件的原因需要频繁的io操作，所以当项目比较大的时候构建比较慢
+
+* gulp
+
+  * gulp是基于流去实现的，相比grunt构建更快
+
+  * gulp支持同时多任务
+
+  * gulp的使用相比grunt也更简单直观，插件生态也同样丰富
+
+* FIS
+  * FIS是一个大而全的构建工具，
+  * FIS对很多的需求都做了集成，可以很容易的完成资源加载、模块化开发、代码部署、性能优化等
+  * 更适合新手
+
+### grunt的基本使用
+
+* 创建一个项目grunt-sample,然后执行npm init去初始化package.json
+
+* ```
+  npm install -D grunt
+  ```
+
+* 创建grunt的入口文件grunt file.js
+
+  * ```js
+    /**
+     *
+     * gruntfile.js是grunt的入口文件，让我们定义一些自动化任务
+     * 需要导出一个函数，函数接受grunt作为形参，里面提供了一些构建任务可以用的api
+     *
+     */
+    
+    module.exports = function (grunt) {
+    	// 定义一个简单的任务
+    	// 第一个参数是任务的名称
+    	// npx grunt bar
+    	grunt.registerTask('foo', function () {
+    		console.log('hello')
+    	})
+    	//第二个参数是一个任务描述
+    	grunt.registerTask('baz', 'this is task', function () {
+    		console.log('hello')
+    	})
+    
+    	// 定义一个默认任务
+    	//  npx grunt
+    	// grunt.registerTask('default', function () {
+    	// 	console.log('this is default task')
+    	// })
+    
+    	// 使用默认任务去串联其他的任务
+    
+    	grunt.registerTask('default', ['foo', 'baz'])
+    
+    	// 异步任务
+    	// grunt的任务默认是同步执行的，所以不会执行console.log
+    	grunt.registerTask('async-task', function () {
+    		setTimeout(() => {
+    			console.log('async task')
+    		}, 1000)
+    	})
+    
+    	// 想要执行异步的任务，需要使用this.async获取一个函数，执行这个函数grunt才回去结束任务
+    	grunt.registerTask('async-task', function () {
+    		const done = this.async()
+    		setTimeout(() => {
+    			console.log('async task')
+    			done()
+    		}, 1000)
+    	})
+    }
+    ```
+
+  * gruntfile.js是grunt的入口文件，让我们定义一些自动化任务
+
+  * gruntfile.js需要导出一个函数，函数接受grunt作为形参，里面提供了一些构建任务可以用的api
+
+  * grunt中使用grunt.registerTask()去注册任务。
+
+  * 使用`npx grunt [taskName]`去执行任务，当为默认任务时可以省略任务的名称
+
+  * 使用`npx grunt --help`可以查看到可以使用的任务名称
+
+  * grunt的任务默认是同步执行的，也就是说不会等待异步任务执行就会结束当前的任务
+
+  * 想要执行一个异步任务，需要在异步任务结束时调用this.async()返回的回调函数去告知grunt接受任务。
+
+    
+
+    
+
+​    
+
+​    
+
+​    
 
 
 
