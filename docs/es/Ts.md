@@ -1086,7 +1086,138 @@ d.run()
   * 甚至一些第三方包中已经存在这样的类型声明文件了。我们不需要手动安装，如query-string.
   * 关于ts的类型声明，我们可以去查看[文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
 
+### TS的polyfill(垫片)
+
+* polyfill就是去添加浏览器不支持的特性
+
+  * ```js
+    if(typeof Object.is ==='undefined'){
+      Object.is =function(){
+        .....
+      }
+    }
+    ```
+
+* 使用tsc 命令去编译TS到JS,这个过程中会对新的语法做转化，但是不会对新的API做转化。
+  * ```js
+    // ts
+    interface People {
+    	name: string
+    	age: number
+    	gender: 'female' | 'male'
+    }
+    
+    const p: People = { name: 'sss', age: 20, gender: 'female' }
+    
+    for (const [key, value] of Object.entries(p)) {
+    	console.log(key, value)
+    }
+    
+    export = {}
+    ```
+    
+  * ```js
+    "use strict";
+    var p = { name: 'sss', age: 20, gender: 'female' };
+    for (var _i = 0, _a = Object.entries(p); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], value = _b[1];
+        console.log(key, value);
+    }
+    module.exports = {};
+    
+    ```
+
+  * 我们看到const被换成了var,但是Object.entries()这个函数还是存在，再低版本的运行环境中肯定会出错。
   
+* 首先Object.entries()是ES2018的新特性，TS的检查器会报错，我们可以`"lib": ["DOM", "ES2018"],`,其中添加DOM是为了让console.log()不报错。
+
+* 使用lib可以让TS语法检查通过，但是并不能对新的API做转化,这个时候我们可以使用polyfile目前最流行的polyfill是core.js
+
+  * 使用core.js首先需要安装，安装完成后再TS中导入即可
+
+  * core.js会对能polyfill的api都做polypill,Object.defineProperty就不可以通过polyfill实现，我们可以直接引入core.js,也可以只引入部分我们需要的特性
+
+  * ```js
+    npm i core.js
+    ```
+
+  * ```js
+    //import 'core.js'
+    import 'core.js/feature/Object'
+    interface People {
+    	name: string
+    	age: number
+    	gender: 'female' | 'male'
+    }
+    
+    const p: People = { name: 'sss', age: 20, gender: 'female' }
+    
+    for (const [key, value] of Object.entries(p)) {
+    	console.log(key, value)
+    }
+    
+    export = {}
+    ```
+
+  * ```js
+    "use strict";
+    //import 'core.js'
+    require("core.js/feature/Object");
+    var p = { name: 'sss', age: 20, gender: 'female' };
+    for (var _i = 0, _a = Object.entries(p); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], value = _b[1];
+        console.log(key, value);
+    }
+    module.exports = {};
+    ```
+
+  * 使用polyfill我们仍可以看到Object.entries()，但是我们再执行前引入了polyfill，他会给Object.entries()做定义，所以我们可以在低版本的运行环境中执行
+
+  * 另一种方式就是我先用tsc将TS的语法转成js,然后让babel去给我们做语法转化，这个时需要将target设置成esnext,代表使用最新的ES特性。
+
+  * 我们还可以直接使用babel去转化TS,这个时候不会对TS文件做检查。
+
+    * 安装babel
+
+    * ```shell
+      npm install --save-dev @babel/core @babel/cli @babel/preset-env
+      npm install --save @babel/polyfill
+      ```
+
+    * 在项目的根目录下创建一个命名为 `babel.config.json` 的配置文件
+
+    * ```json
+      {
+        "presets": [
+          [
+            "@babel/env",
+            {
+              "targets": {
+                "edge": "17",
+                "firefox": "60",
+                "chrome": "67",
+                "safari": "11.1"
+              },
+              "useBuiltIns": "usage",
+              "corejs": "3.6.5"
+            }
+          ]
+        ]
+      }
+      ```
+
+    * ```shell
+      npx babel --presets @babel/preset-typescript index.ts
+      #npx babel index.ts -o  index.js 报错，暂未找到原因
+      ```
+
+    * 
+
+
+
+  
+
+​    
 
 
 

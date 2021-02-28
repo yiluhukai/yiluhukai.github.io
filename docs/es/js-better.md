@@ -1126,11 +1126,29 @@ JS中有基础数据类型和对象数据类型，v8的垃圾回收主要是针�
         
         ```
   
-     
+### 遍历对象
+
+* 不去给对象实现iterable接口，直接使用Object.entries()方法，只会遍历对象的自身属性
   
-  
-  
-  
+```js
+const a = {
+  x: 1,
+  y: 2
+}
+
+for (const [key, val] of Object.entries(a)) {
+  console.log(key, val)
+}
+```
+
+* **`for...in`语句**以任意顺序遍历一个对象的除[Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)以外的[可枚举](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Enumerability_and_ownership_of_properties)属性(可以位于原型上)
+```js
+for (const key in a) {
+  console.log(key, a[key])
+}
+```
+
+
 
 ​     
 
