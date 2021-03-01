@@ -24,7 +24,7 @@ module.exports = {
 		],
 		//sidebar: 'auto',
 		sidebar: router,
-		//sidebarDepth:, // 侧边栏显示2级
+		sidebarDepth: 4, // 侧边栏显示2级
 		//  展示所有级别的标题
 		displayAllHeaders: true,
 		//设置最后的更新时间
