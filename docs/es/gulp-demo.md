@@ -571,6 +571,229 @@ function styles() {
 
 ```
 
+#### 处理生产环境的路径问题
+
+```html
+ <!-- build:css assets/styles/vendor.css -->
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+  <!-- endbuild -->
+  <!-- build:css assets/styles/main.css -->
+  <link rel="stylesheet" href="assets/styles/main.css">
+  <!-- endbuild -->
+```
+
+我们在开发环境中/node_modules下的文件的处理方式是配置一个新的路由，去node_modules文件下找。
+
+```js
+routes: {
+				'/node_modules': 'node_modules'
+}
+```
+
+但是当我们在生产环境去使用的时候这些文件是找不到的，最简单的方式对这些文件也以gulp任务的方式copy出来。我们还可以使用gulp-useref插件处理这些问题，gulp-use-ref主要html中的构建注释操作做处理，将注释内引用的资源文件copy到注释中制定的文件中，可以对多个文件做合并操作。
+
+```shell
+npm install --save-dev gulp-useref
+```
+
+使用gulp-useref插件
+
+```js
+// 使用gulp-load-plugins自动加载插件
+//const useref = require('gulp-useref');
+
+
+// 使用gulp-useref处理文件的路径
+function useref() {
+	// 对构建后的html文件做处理，
+	return (
+		src('dist/*.html', { base: 'dist' })
+			// 搜索引用文件的路径
+			.pipe(plugins.useref({ searchPath: ['dist', '.'] }))
+			// 处理后的文件有html、js、css三部分，开始路径和目标路径一样可能会导致文件写入不进去的问题，所以又该目标路径为release
+			.pipe(dest('release'))
+	)
+}
+```
+
+gulp-useref配合gulp-if、gulp-uglify、gulp-clean-css可以实现对文件压缩操作
+
+```shell
+npm install --dev-save gulp-if gulp-uglify gulp-clean-css gulp-htmlmin
+```
+
+使用插件压缩文件
+
+```js
+
+// 使用gulp-useref处理文件的路径
+function useref() {
+	// 对构建后的html文件做处理，
+	return (
+		src('dist/*.html', { base: 'dist' })
+			// 搜索引用文件的路径
+			.pipe(plugins.useref({ searchPath: ['dist', '.'] }))
+			// 压缩文件
+			.pipe(plugins.if('*.js', plugins.uglify()))
+			.pipe(plugins.if('*.css', plugins.cleanCss()))
+			.pipe(plugins.if('*.html', plugins.htmlmin({ collapseWhitespace: true, minifyCss: true, minifyJs: true })))
+			// 处理后的文件有html、js、css三部分，开始路径和目标路径一样可能会导致文件写入不进去的问题，所以又该目标路径为release
+			.pipe(dest('release'))
+	)
+}
+```
+
+修改目录结构，之前我们把构建完成的代码放在了dist目录下面，useref后代码移动到了release目录下，这不是我们期望的，我们可以把原本放在dist目录下的文件先放到temp目录下面，最后的所有的文件在用useref任务构建到dist目录下面，然后在clean任务中加入对temp的删除，同时我们需要将useref任务加入到build中，这个任务是要对compile后的内容做处理，所以要和compile串行。最终的文件如下：
+
+```js
+const { src, dest, parallel, series, watch } = require('gulp')
+const bs = require('browser-sync').create()
+const plugins = require('gulp-load-plugins')()
+const del = require('del')
+
+const data = {
+	menus: [
+		{
+			name: 'Home',
+			icon: 'aperture',
+			link: 'index.html'
+		},
+		{
+			name: 'Features',
+			link: 'features.html'
+		},
+		{
+			name: 'About',
+			link: 'about.html'
+		},
+		{
+			name: 'Contact',
+			link: '#',
+			children: [
+				{
+					name: 'Twitter',
+					link: 'https://twitter.com/w_zce'
+				},
+				{
+					name: 'About',
+					link: 'https://weibo.com/zceme'
+				},
+				{
+					name: 'divider'
+				},
+				{
+					name: 'About',
+					link: 'https://github.com/zce'
+				}
+			]
+		}
+	],
+	pkg: require('./package.json'),
+	date: new Date()
+}
+// 处理scss
+function styles() {
+	//由 src() 生成的 Vinyl 实例是用 glob base 集作为它们的 base 属性构造的。当使用 dest() 写入文件系统时，将从输出路径中删除 base ，以保留目录结构。
+	return src('src/assets/styles/*.scss', { base: 'src' })
+		.pipe(plugins.sass({ outputStyle: 'expanded' }))
+		.pipe(dest('temp'))
+		.pipe(bs.reload({ stream: true }))
+}
+// 处理js脚本
+function scripts() {
+	return src('src/assets/scripts/*.js', { base: 'src' })
+		.pipe(plugins.babel({ presets: ['@babel/env'] }))
+		.pipe(dest('temp'))
+		.pipe(bs.reload({ stream: true }))
+}
+
+//处理html文件
+
+function pages() {
+	// data是模版数据的填充
+	return src('src/*.html', { base: 'src' })
+		.pipe(plugins.swig({ data, cache: false }))
+		.pipe(dest('temp'))
+		.pipe(bs.reload({ stream: true }))
+}
+
+// 压缩图片文件
+
+function images() {
+	return src('src/assets/images/**', { base: 'src' }).pipe(plugins.imagemin()).pipe(dest('dist'))
+}
+//  处理字体文件
+function fonts() {
+	return src('src/assets/fonts/**', { base: 'src' }).pipe(plugins.imagemin()).pipe(dest('dist'))
+}
+
+// 复制public 的文件
+function extra() {
+	return src('public/**', { base: 'public' }).pipe(dest('dist'))
+}
+
+// 删除dist目录下面的文件
+
+function clean() {
+	// 返回的是一个promise
+	return del(['dist', 'temp'])
+}
+
+// 使用gulp-useref处理文件的路径
+function useref() {
+	// 对构建后的html文件做处理，
+	return (
+		src('temp/*.html', { base: 'temp' })
+			// 搜索引用文件的路径
+			.pipe(plugins.useref({ searchPath: ['temp', '.'] }))
+			// 压缩文件
+			.pipe(plugins.if('*.js', plugins.uglify()))
+			.pipe(plugins.if('*.css', plugins.cleanCss()))
+			.pipe(plugins.if('*.html', plugins.htmlmin({ collapseWhitespace: true, minifyCss: true, minifyJs: true })))
+			// 处理后的文件有html、js、css三部分，开始路径和目标路径一样可能会导致文件写入不进去的问题，所以又该目标路径为release
+			.pipe(dest('dist'))
+	)
+}
+
+// 创建一个开发服务器
+function serve() {
+	watch('src/assets/styles/*.scss', styles)
+	watch('src/assets/scripts/*.js', scripts)
+	watch('src/*.html', pages)
+	watch(['src/assets/images/**', 'src/assets/fonts/**', 'public/**'], bs.reload)
+	bs.init({
+		server: {
+			//制定对那些文件启动静态服务
+			baseDir: ['temp', 'src', 'public'],
+			routes: {
+				'/node_modules': 'node_modules'
+			}
+		},
+		//	制定端口
+		port: 3000,
+		// 是否在浏览器直接打开
+		open: true,
+		// 是否显示服务器启动时候的提示信息
+		notify: false
+		// 添加那些文件的变化
+		// files: 'dist/**'
+	})
+}
+const compile = parallel(styles, scripts, pages)
+
+const build = series(clean, parallel(series(compile, useref), images, fonts, extra))
+
+const develop = series(clean, compile, serve)
+
+module.exports = {
+	build,
+	serve,
+	develop,
+	useref,
+	clean
+}
+```
+
 
 
 
