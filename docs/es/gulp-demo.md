@@ -645,8 +645,9 @@ function useref() {
 
 修改目录结构，之前我们把构建完成的代码放在了dist目录下面，useref后代码移动到了release目录下，这不是我们期望的，我们可以把原本放在dist目录下的文件先放到temp目录下面，最后的所有的文件在用useref任务构建到dist目录下面，然后在clean任务中加入对temp的删除，同时我们需要将useref任务加入到build中，这个任务是要对compile后的内容做处理，所以要和compile串行。最终的文件如下：
 
+
 ```js
-const { src, dest, parallel, series, watch } = require('gulp')
+cxx  onst { src, dest, parallel, series, watch } = require('gulp')
 const bs = require('browser-sync').create()
 const plugins = require('gulp-load-plugins')()
 const del = require('del')
@@ -793,6 +794,26 @@ module.exports = {
 	clean
 }
 ```
+
+#### 删除gulpfile中不需要到处的任务
+
+```js
+module.exports = {
+	build,
+	develop
+}
+```
+
+为了便于使用，使用可以把这几个命令加入到package.json的`scripts`中。
+
+```js
+	"scripts": {
+		"build": "gulp build",
+		"develop": "gulp develop"
+	},
+```
+
+这样子我们只需要看package.json文件就可以知道如何使用这个自动化的构建工具了。
 
 
 
