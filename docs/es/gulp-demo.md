@@ -815,6 +815,59 @@ module.exports = {
 
 这样子我们只需要看package.json文件就可以知道如何使用这个自动化的构建工具了。
 
+#### 自动化工作流的复用
+
+上面我们通过gulp创建了一个web项目中常见的自动化构建任务的工作流，我们希望这个工作流可以在其他的项目中服用，如果通过代码粘贴的方式去复用，后续的构建流程修改、依赖修改等升级操作也需要手动去每个项目中修改。我们知道我们这个自动化的构建任务是由gulp提供的构建平台，gulpfile.js中是对构建的任务配置。
+
+![gulp工作流](/frontEnd/workflow.png)
+
+我们可以将gulp的配置文件和依赖封装成一个npm包去使用
+
+![npm包](/frontEnd/gulp-npm.png)
+
+当我们升级工作流中的内容，对应的项目只需要重新安装依赖即刻。
+
+####  工作流的封装
+
+安装一个脚手架去创建一个npm包的通用模版
+
+```shell
+npm install -g bruce-cli
+```
+
+使用脚手架去生成npm包的通用文件
+
+```shell
+zce init nm bruce-page
+```
+
+项目的基础结构
+
+```shell
+bruce-gulp-workflow
+├── CHANGELOG.md
+├── LICENSE
+├── README.md
+├── lib
+│   └── index.js
+├── package.json
+├── test
+│   └── bruce-gulp-workflow.test.js
+└── yarn.lock
+```
+
+将脚手架项目上传到github的仓库中
+
+```shell
+cd bruce-page & yarn
+git add .
+git commit -m "init npm"
+git remote add origin https://github.com/yiluhukai/bruce-page.git
+git push -u origin master
+```
+
+
+
 
 
 
