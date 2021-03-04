@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>数组的中位数 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.775e5fee.css" as="style"><link rel="preload" href="/assets/js/app.6fafa31a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/52.aaa82667.js" as="script"><link rel="prefetch" href="/assets/js/10.a0802569.js"><link rel="prefetch" href="/assets/js/11.dc41f47f.js"><link rel="prefetch" href="/assets/js/12.a8b269d8.js"><link rel="prefetch" href="/assets/js/13.8405c276.js"><link rel="prefetch" href="/assets/js/14.9438ae2e.js"><link rel="prefetch" href="/assets/js/15.81319eb2.js"><link rel="prefetch" href="/assets/js/16.9b90da42.js"><link rel="prefetch" href="/assets/js/17.ab6ac135.js"><link rel="prefetch" href="/assets/js/18.1e1b8c58.js"><link rel="prefetch" href="/assets/js/19.c0b7f32d.js"><link rel="prefetch" href="/assets/js/20.ca26d6f0.js"><link rel="prefetch" href="/assets/js/21.fbfc3959.js"><link rel="prefetch" href="/assets/js/22.f306570b.js"><link rel="prefetch" href="/assets/js/23.485add4d.js"><link rel="prefetch" href="/assets/js/24.c0b17f58.js"><link rel="prefetch" href="/assets/js/25.7aabffc2.js"><link rel="prefetch" href="/assets/js/26.7d9a7c93.js"><link rel="prefetch" href="/assets/js/27.8ba1691d.js"><link rel="prefetch" href="/assets/js/28.2db09cf2.js"><link rel="prefetch" href="/assets/js/29.f01151d1.js"><link rel="prefetch" href="/assets/js/3.12e8d0cf.js"><link rel="prefetch" href="/assets/js/30.070a6fa9.js"><link rel="prefetch" href="/assets/js/31.ddea6a25.js"><link rel="prefetch" href="/assets/js/32.493a62a7.js"><link rel="prefetch" href="/assets/js/33.897e21fe.js"><link rel="prefetch" href="/assets/js/34.f0653252.js"><link rel="prefetch" href="/assets/js/35.a041ec16.js"><link rel="prefetch" href="/assets/js/36.2748441d.js"><link rel="prefetch" href="/assets/js/37.b2b3b02b.js"><link rel="prefetch" href="/assets/js/38.a96d2cd4.js"><link rel="prefetch" href="/assets/js/39.97065fc0.js"><link rel="prefetch" href="/assets/js/4.e26bf81a.js"><link rel="prefetch" href="/assets/js/40.1fd1da27.js"><link rel="prefetch" href="/assets/js/41.90a5757d.js"><link rel="prefetch" href="/assets/js/42.9eae5c70.js"><link rel="prefetch" href="/assets/js/43.e1f5dda7.js"><link rel="prefetch" href="/assets/js/44.5a0244a0.js"><link rel="prefetch" href="/assets/js/45.7865f5d5.js"><link rel="prefetch" href="/assets/js/46.2de654a9.js"><link rel="prefetch" href="/assets/js/47.b0c69a77.js"><link rel="prefetch" href="/assets/js/48.083cf5b2.js"><link rel="prefetch" href="/assets/js/49.87139246.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.85464ad2.js"><link rel="prefetch" href="/assets/js/51.8139899b.js"><link rel="prefetch" href="/assets/js/53.09aba5a9.js"><link rel="prefetch" href="/assets/js/54.3edfe92c.js"><link rel="prefetch" href="/assets/js/55.651ede77.js"><link rel="prefetch" href="/assets/js/56.47f9f12c.js"><link rel="prefetch" href="/assets/js/57.fede8876.js"><link rel="prefetch" href="/assets/js/58.9e32eabe.js"><link rel="prefetch" href="/assets/js/59.1b53e702.js"><link rel="prefetch" href="/assets/js/6.20da1ac7.js"><link rel="prefetch" href="/assets/js/7.eba3b1e7.js"><link rel="prefetch" href="/assets/js/8.d17a018f.js"><link rel="prefetch" href="/assets/js/9.92a21e92.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.775e5fee.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/leetcode/hanota.html" class="sidebar-link">汉诺塔问题</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#循环解法" class="sidebar-link">循环解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归解法" class="sidebar-link">递归解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归总结" class="sidebar-link">递归总结</a></li></ul></li><li><a href="/leetcode/link.html" class="sidebar-link">链表反序</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#题目描述" class="sidebar-link">题目描述</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#解答" class="sidebar-link">解答</a></li></ul></li></ul></li><li><a href="/leetcode/longestSubStr.html" class="sidebar-link">无重复字符的最长子串</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#哈希表" class="sidebar-link">哈希表</a></li></ul></li><li><a href="/leetcode/ReverseWordsInAString.html" class="sidebar-link">单词反转</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法" class="sidebar-link">解法—：</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法一优化" class="sidebar-link">解法一优化</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法二" class="sidebar-link">解法二</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#双端队列" class="sidebar-link">双端队列</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法三" class="sidebar-link">解法三</a></li></ul></li><li><a href="/leetcode/specialBinaryString.html" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#特殊的二进制序列" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#理解题意" class="sidebar-link">理解题意</a></li></ul></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#解题思路" class="sidebar-link">解题思路</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#代码实现" class="sidebar-link">代码实现</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#排序" class="sidebar-link">排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#冒泡排序" class="sidebar-link">冒泡排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#插入排序" class="sidebar-link">插入排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#快速排序" class="sidebar-link">快速排序</a></li></ul></li><li><a href="/leetcode/findMedianSortedArrays.html" aria-current="page" class="active sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#数组的中位数" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#归并排序" class="sidebar-link">归并排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#基本解法" class="sidebar-link">基本解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#优化解法" class="sidebar-link">优化解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#折半查找" class="sidebar-link">折半查找</a></li></ul></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="数组的中位数"><a href="#数组的中位数" class="header-anchor">#</a> 数组的中位数</h2> <h3 id="题目描述"><a href="#题目描述" class="header-anchor">#</a> 题目描述</h3> <div class="language- line-numbers-mode"><pre class="language-text"><code>//给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的中位数。 
+//
+// 进阶：你能设计一个时间复杂度为 O(log (m+n)) 的算法解决此问题吗？ 
+//
+// 
+//
+// 示例 1： 
+//
+// 输入：nums1 = [1,3], nums2 = [2]
+//输出：2.00000
+//解释：合并数组 = [1,2,3] ，中位数 2
+// 
+//
+// 示例 2： 
+//
+// 输入：nums1 = [1,2], nums2 = [3,4]
+//输出：2.50000
+//解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+// 
+//
+// 示例 3： 
+//
+// 输入：nums1 = [0,0], nums2 = [0,0]
+//输出：0.00000
+// 
+//
+// 示例 4： 
+//
+// 输入：nums1 = [], nums2 = [1]
+//输出：1.00000
+// 
+//
+// 示例 5： 
+//
+// 输入：nums1 = [2], nums2 = []
+//输出：2.00000
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// nums1.length == m 
+// nums2.length == n 
+// 0 &lt;= m &lt;= 1000 
+// 0 &lt;= n &lt;= 1000 
+// 1 &lt;= m + n &lt;= 2000 
+// -106 &lt;= nums1[i], nums2[i] &lt;= 106 
+// 
+// Related Topics 数组 二分查找 分治算法 
+// 👍 3604 👎 0
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br></div></div><h3 id="归并排序"><a href="#归并排序" class="header-anchor">#</a> 归并排序</h3> <ul><li>排序的思想</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>/*
+归并排序:归并排序是将带排序的数组不断分割,直到带排序的数组长度为1时停止分割,对这些子数组合并排序,每次合并的两个子数组都是有序的,
+最终得到一个新的有序的数组,归并排序是一种稳定的排序方式。
+*/
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><ul><li>代码实现</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">MergeSort</span><span class="token punctuation">(</span>sli <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span>
+	<span class="token comment">// 递归的终止条件</span>
+	length<span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>sli<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> length<span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> sli
+	<span class="token punctuation">}</span>
+	orderSli1<span class="token operator">:=</span> <span class="token function">MergeSort</span><span class="token punctuation">(</span>sli<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span>length<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+	orderSli2<span class="token operator">:=</span> <span class="token function">MergeSort</span><span class="token punctuation">(</span>sli<span class="token punctuation">[</span>length<span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">:</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+	<span class="token comment">//将数组分成两半</span>
+	<span class="token keyword">return</span> <span class="token function">merge</span><span class="token punctuation">(</span>orderSli1<span class="token punctuation">,</span>orderSli2<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 合并两个有序的数组</span>
+<span class="token keyword">func</span> <span class="token function">merge</span><span class="token punctuation">(</span>orderSli1<span class="token punctuation">,</span>orderSli2 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span>
+
+	length1<span class="token punctuation">,</span>length2<span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>orderSli1<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">len</span><span class="token punctuation">(</span>orderSli2<span class="token punctuation">)</span>
+
+	res<span class="token operator">:=</span><span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span>length1<span class="token operator">+</span>length2<span class="token punctuation">)</span>
+	i<span class="token punctuation">,</span>j<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span>
+	<span class="token keyword">for</span>  i<span class="token operator">&lt;</span> length1 <span class="token operator">&amp;&amp;</span> j<span class="token operator">&lt;</span>length2 <span class="token punctuation">{</span>
+		<span class="token keyword">if</span>  orderSli1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">&lt;=</span>orderSli2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">{</span>
+			res <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> orderSli1<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+			i<span class="token operator">++</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			res <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> orderSli2<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+			j<span class="token operator">++</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 有一个数组中的元素已经全部放入了res中</span>
+
+	<span class="token keyword">if</span> i <span class="token operator">==</span> length1 <span class="token punctuation">{</span>
+		res <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> orderSli2<span class="token punctuation">[</span>j<span class="token punctuation">:</span>length2<span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		res <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span>orderSli1<span class="token punctuation">[</span>i<span class="token punctuation">:</span>length1<span class="token punctuation">]</span><span class="token operator">...</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> res
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br></div></div><h3 id="基本解法"><a href="#基本解法" class="header-anchor">#</a> 基本解法</h3> <p>我们可以仿照归并排序的中合并两个数组的方法。将整两个数组合并，然后去获取数组中间位置的数字，求得中位数。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>优化:当数组长度为奇数时，我们找到[n/2]的数字时，便没有必要去对数组排序了
+偶数则去找[n/2-1]、[n/2]
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><ul><li>代码的实现</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">findMedianSortedArrays</span><span class="token punctuation">(</span>nums1 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> nums2 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">float64</span> <span class="token punctuation">{</span>
+	length1<span class="token punctuation">,</span>length2 <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>nums1<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">len</span><span class="token punctuation">(</span>nums2<span class="token punctuation">)</span>
+	<span class="token comment">// 两个数来存储中位数，</span>
+	m1<span class="token punctuation">,</span>m2 <span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span>
+	p1<span class="token punctuation">,</span>p2 <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span>
+	length <span class="token operator">:=</span> <span class="token punctuation">(</span>length1<span class="token operator">+</span>length2<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span>i <span class="token operator">&lt;=</span> length<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">{</span>
+		m1 <span class="token operator">=</span> m2
+		<span class="token comment">// 当p1小于length， p2移动到了最后位置或者p1的元素更小时，移动p1</span>
+		<span class="token keyword">if</span> p1 <span class="token operator">&lt;</span> length1 <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span> p2 <span class="token operator">&gt;=</span> length2 <span class="token operator">||</span> nums1<span class="token punctuation">[</span>p1<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums2<span class="token punctuation">[</span>p2<span class="token punctuation">]</span>  <span class="token punctuation">)</span><span class="token punctuation">{</span>
+			m2 <span class="token operator">=</span>nums1<span class="token punctuation">[</span>p1<span class="token punctuation">]</span>
+			p1<span class="token operator">++</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			<span class="token comment">// i&lt; length 且不能移动p1,那么只能移动p2,此时p2肯定是小于length2</span>
+			m2 <span class="token operator">=</span> nums2<span class="token punctuation">[</span>p2<span class="token punctuation">]</span>
+			p2<span class="token operator">++</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 判断奇偶</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>length1<span class="token operator">+</span>length2<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token function">float64</span><span class="token punctuation">(</span>m1<span class="token operator">+</span>m2<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2.0</span>
+	<span class="token punctuation">}</span> <span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token function">float64</span><span class="token punctuation">(</span>m2<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br></div></div><ul><li>代码的执行效率和复杂度</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>
+  解答成功:
+			执行耗时:12 ms,击败了92.59% 的Go用户
+			内存消耗:5.3 MB,击败了100.00% 的Go用户
+	时间复杂度， 移动了（（m+n）/2+1）次，时间复杂度为O(m+n)
+	空间复杂度； O(1)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="优化解法"><a href="#优化解法" class="header-anchor">#</a> 优化解法</h3> <ul><li>解题思路</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>  中位数的性质:
+				1. 中位数可以将数组分成两部分,中位数左边的元素都小于等于右边的数字
+
+				2. 0&lt;=中位数的右边的数字个数 - 中位数左边的数字个数&lt;=1
+
+				eg:[1,2,3] 的中位数为2,分成了左边[1,2]和右边[3],满足上面的两条性质
+				eg:[1,3,4,6]的中位数是3.5,分成做了左边[1,3]和右边[2,4]
+	从上面还可以看出来寻找中位数就是找一条线,将数组分成符合条件的两部分:[1,2,3] -&gt; 1 2|3,[1,3,4,6] -&gt; 1 3｜4 6
+	两个数组的中位数也可以可以满足上面的条件:
+				eg: [1,2,3]和[1,4,5,6],他的中位数的左边应该是[1,1,2,3] 右边[4,5,6],而他的中位数为3
+	而我们也可以找到一条线,将两个数组分成上述条件的两部分
+			1 2 3 |
+			    1 | 4  5 6
+	这条线可以出现在 1 2 3的任何位置,但是要同时满足条件只能在这个位置
+	加入是在2和3之间:
+			1 2 | 3
+			1 4 | 5 6
+	那么可以看到 4大于3,不满足中位数中左边小于等于右边的性质
+	根据这条性质,我们可以知道 当这条线在一个数组中确定了,那么这条线在另一个位置就是确定了。所以我可以用两个数组中较小的来找这条线。
+	同时由于两个数组都是有序的，我们还可以使用折半查找来找寻这个位置:上面的例子中 4 &gt; 3,我们就只能可以排除这条线左边的位置。
+			1 ｜ 2 3
+        1 4 5  ｜ 6
+	因为当去右边找是,3和四永远在不同边.
+
+	所以折半查找的规律是：当num1边界的最大值(右边)  &lt; nums2边界的最小值时(左边)-&gt;去右半边继续查找
+                      当num1边界的最小值(左边) 	&gt;  nums2边界的最大值时(右边)-&gt;去左半边查找
+                     所以这个num1的值相当于折半查找的中间位置的值，而nums2的值相当于目标值
+	最终的中位数的值,当为奇数时,是这条边界线左边最近位置的最大值,如上面的例子是max(3,1)
+	当我偶数是,是边界左边最近位置的最大值和边界右边最近位置的最小值和的一半。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br></div></div><ul><li>代码的实现</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">findMedianSortedArrays</span><span class="token punctuation">(</span>nums1 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> nums2 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">float64</span> <span class="token punctuation">{</span>
+		length1<span class="token punctuation">,</span>length2 <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>nums1<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">len</span><span class="token punctuation">(</span>nums2<span class="token punctuation">)</span>
+		<span class="token comment">// 在长度小的数组里面确定分界线的位置</span>
+		<span class="token keyword">if</span> length1 <span class="token operator">&gt;</span> length2 <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token function">findMedianSortedArrays</span><span class="token punctuation">(</span>nums2<span class="token punctuation">,</span>nums1<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">//nums1 	数组中分界线位置的开始和结束</span>
+		start<span class="token punctuation">,</span>end <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">,</span>length1
+		<span class="token comment">// 二分查找分界线的位置</span>
+		<span class="token comment">// nums1和nums2中分界线的位置</span>
+		<span class="token comment">//fmt.Printf(&quot;nums1=%v,nums2=%v&quot;,nums1,nums2)</span>
+		seq1<span class="token punctuation">,</span>seq2 <span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span>
+		<span class="token keyword">for</span> start <span class="token operator">&lt;=</span> end <span class="token punctuation">{</span>
+			seq1 <span class="token operator">=</span> <span class="token punctuation">(</span>end <span class="token operator">+</span> start<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span>
+			<span class="token comment">// 对应的seq2的位置也是可以确定的</span>
+			seq2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>length1<span class="token operator">+</span>length2<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">-</span> seq1
+			<span class="token comment">//验证这个位置是否符合中位数的要求</span>
+			<span class="token keyword">if</span> seq1<span class="token operator">&lt;</span>length1 <span class="token operator">&amp;&amp;</span>  seq2 <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> nums1<span class="token punctuation">[</span>seq1<span class="token punctuation">]</span> <span class="token operator">&lt;</span> nums2<span class="token punctuation">[</span>seq2<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token punctuation">{</span>
+				start <span class="token operator">=</span> seq1<span class="token operator">+</span><span class="token number">1</span>
+			<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> seq1 <span class="token operator">&gt;</span><span class="token number">0</span> <span class="token operator">&amp;&amp;</span> seq2 <span class="token operator">&lt;</span> length2 <span class="token operator">&amp;&amp;</span> nums1<span class="token punctuation">[</span>seq1<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span> nums2<span class="token punctuation">[</span>seq2<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+				end <span class="token operator">=</span> seq1<span class="token operator">-</span><span class="token number">1</span>
+			<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+				<span class="token comment">//满足条件</span>
+				<span class="token keyword">break</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">// 计算满足条件的中位数</span>
+		<span class="token keyword">var</span> leftVal<span class="token punctuation">,</span>rightVal <span class="token builtin">float64</span>
+		<span class="token comment">//nums1的左侧是为空的</span>
+		<span class="token keyword">if</span> seq1 <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+			leftVal <span class="token operator">=</span> <span class="token function">float64</span><span class="token punctuation">(</span>nums2<span class="token punctuation">[</span>seq2<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> seq2 <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+			leftVal <span class="token operator">=</span> <span class="token function">float64</span><span class="token punctuation">(</span>nums1<span class="token punctuation">[</span>seq1<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			leftVal <span class="token operator">=</span>  math<span class="token punctuation">.</span><span class="token function">Max</span><span class="token punctuation">(</span> <span class="token function">float64</span><span class="token punctuation">(</span> nums1<span class="token punctuation">[</span>seq1<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">float64</span><span class="token punctuation">(</span> nums2<span class="token punctuation">[</span>seq2<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>length1 <span class="token operator">+</span> length2<span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">{</span>
+			<span class="token keyword">return</span>  leftVal
+		<span class="token punctuation">}</span>
+		<span class="token comment">// 为偶数</span>
+		<span class="token keyword">if</span> seq1 <span class="token operator">==</span> length1<span class="token punctuation">{</span>
+			rightVal <span class="token operator">=</span>  <span class="token function">float64</span><span class="token punctuation">(</span>nums2<span class="token punctuation">[</span>seq2<span class="token punctuation">]</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> seq2 <span class="token operator">==</span> length2 <span class="token punctuation">{</span>
+			rightVal <span class="token operator">=</span>  <span class="token function">float64</span><span class="token punctuation">(</span>nums1<span class="token punctuation">[</span>seq1<span class="token punctuation">]</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			rightVal <span class="token operator">=</span> math<span class="token punctuation">.</span><span class="token function">Min</span><span class="token punctuation">(</span><span class="token function">float64</span><span class="token punctuation">(</span> nums1<span class="token punctuation">[</span>seq1<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">float64</span><span class="token punctuation">(</span>nums2<span class="token punctuation">[</span>seq2<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">return</span> <span class="token punctuation">(</span>rightVal<span class="token operator">+</span>leftVal<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br></div></div><ul><li>代码的执行效率和复杂度</li></ul> <div class="language- line-numbers-mode"><pre class="language-text"><code>解答成功:
+						执行耗时:12 ms,击败了92.59% 的Go用户
+						内存消耗:5.3 MB,击败了100.00% 的Go用户
+时间复杂度为 log(min(m,n)),空间复杂度为O(1)						
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h3 id="折半查找"><a href="#折半查找" class="header-anchor">#</a> 折半查找</h3> <ul><li>折半查找要求查找的数组是有序的</li> <li>递归实现</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">BinaryFind</span><span class="token punctuation">(</span>sli <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span>target <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token builtin">bool</span><span class="token punctuation">{</span>
+	<span class="token comment">// 递归实现</span>
+	<span class="token comment">// 递归的终止条件，切片的长度为0</span>
+	length <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>sli<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span>  <span class="token boolean">false</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 递归的过程和递推条件</span>
+	start<span class="token punctuation">,</span>end <span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">,</span>length
+
+	<span class="token keyword">if</span> half<span class="token operator">:=</span><span class="token punctuation">(</span>end<span class="token operator">-</span>start<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">;</span>sli<span class="token punctuation">[</span>half<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token boolean">true</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> sli<span class="token punctuation">[</span>half<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">{</span>
+		<span class="token comment">//右半边去查找</span>
+		<span class="token keyword">return</span> <span class="token function">BinaryFind</span><span class="token punctuation">(</span>sli<span class="token punctuation">[</span>half<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">:</span>end<span class="token punctuation">]</span><span class="token punctuation">,</span>target<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		<span class="token comment">//左半边去查找</span>
+		<span class="token keyword">return</span> <span class="token function">BinaryFind</span><span class="token punctuation">(</span>sli<span class="token punctuation">[</span>start<span class="token punctuation">:</span>half<span class="token punctuation">]</span><span class="token punctuation">,</span>target<span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><ul><li>循环实现</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">// 循环实现的折半查找</span>
+<span class="token keyword">func</span> <span class="token function">BinaryFindByCircle</span><span class="token punctuation">(</span>sli <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span>target <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token builtin">bool</span><span class="token punctuation">{</span>
+	<span class="token comment">// 递归实现</span>
+	<span class="token comment">// 递归的终止条件，切片的长度为0</span>
+	length <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>sli<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span>  <span class="token boolean">false</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 递归的过程和递推条件</span>
+	start<span class="token punctuation">,</span>end <span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">,</span>length<span class="token operator">-</span><span class="token number">1</span>
+
+	<span class="token keyword">for</span> start<span class="token operator">&lt;=</span>end<span class="token punctuation">{</span>
+		<span class="token comment">//fmt.Printf(&quot;start=%v,end=%v\n&quot;,start,end)</span>
+		<span class="token keyword">if</span> half<span class="token operator">:=</span><span class="token punctuation">(</span>end<span class="token operator">+</span>start<span class="token punctuation">)</span><span class="token operator">/</span><span class="token number">2</span><span class="token punctuation">;</span>sli<span class="token punctuation">[</span>half<span class="token punctuation">]</span> <span class="token operator">==</span> target<span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token boolean">true</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> sli<span class="token punctuation">[</span>half<span class="token punctuation">]</span> <span class="token operator">&lt;</span> target<span class="token punctuation">{</span>
+			<span class="token comment">//右半边去查找</span>
+			start <span class="token operator">=</span> half<span class="token operator">+</span><span class="token number">1</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			<span class="token comment">//左半边去查找</span>
+			end <span class="token operator">=</span> half<span class="token operator">-</span><span class="token number">1</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> <span class="token boolean">false</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><ul><li>两种实现方式的时间复杂度都是log(n),但是循环实现的空间复杂度为O(1),而递归实现的空间复杂度和递归的深度有关，所以空间复杂度log(n).</li></ul></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/4/2021, 3:28:54 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/leetcode/specialBinaryString.html" class="prev">
+        特殊的二进制序列
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.6fafa31a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/52.aaa82667.js" defer></script>
+  </body>
+</html>

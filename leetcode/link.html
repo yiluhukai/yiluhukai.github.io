@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>链表反序 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.775e5fee.css" as="style"><link rel="preload" href="/assets/js/app.6fafa31a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/54.3edfe92c.js" as="script"><link rel="prefetch" href="/assets/js/10.a0802569.js"><link rel="prefetch" href="/assets/js/11.dc41f47f.js"><link rel="prefetch" href="/assets/js/12.a8b269d8.js"><link rel="prefetch" href="/assets/js/13.8405c276.js"><link rel="prefetch" href="/assets/js/14.9438ae2e.js"><link rel="prefetch" href="/assets/js/15.81319eb2.js"><link rel="prefetch" href="/assets/js/16.9b90da42.js"><link rel="prefetch" href="/assets/js/17.ab6ac135.js"><link rel="prefetch" href="/assets/js/18.1e1b8c58.js"><link rel="prefetch" href="/assets/js/19.c0b7f32d.js"><link rel="prefetch" href="/assets/js/20.ca26d6f0.js"><link rel="prefetch" href="/assets/js/21.fbfc3959.js"><link rel="prefetch" href="/assets/js/22.f306570b.js"><link rel="prefetch" href="/assets/js/23.485add4d.js"><link rel="prefetch" href="/assets/js/24.c0b17f58.js"><link rel="prefetch" href="/assets/js/25.7aabffc2.js"><link rel="prefetch" href="/assets/js/26.7d9a7c93.js"><link rel="prefetch" href="/assets/js/27.8ba1691d.js"><link rel="prefetch" href="/assets/js/28.2db09cf2.js"><link rel="prefetch" href="/assets/js/29.f01151d1.js"><link rel="prefetch" href="/assets/js/3.12e8d0cf.js"><link rel="prefetch" href="/assets/js/30.070a6fa9.js"><link rel="prefetch" href="/assets/js/31.ddea6a25.js"><link rel="prefetch" href="/assets/js/32.493a62a7.js"><link rel="prefetch" href="/assets/js/33.897e21fe.js"><link rel="prefetch" href="/assets/js/34.f0653252.js"><link rel="prefetch" href="/assets/js/35.a041ec16.js"><link rel="prefetch" href="/assets/js/36.2748441d.js"><link rel="prefetch" href="/assets/js/37.b2b3b02b.js"><link rel="prefetch" href="/assets/js/38.a96d2cd4.js"><link rel="prefetch" href="/assets/js/39.97065fc0.js"><link rel="prefetch" href="/assets/js/4.e26bf81a.js"><link rel="prefetch" href="/assets/js/40.1fd1da27.js"><link rel="prefetch" href="/assets/js/41.90a5757d.js"><link rel="prefetch" href="/assets/js/42.9eae5c70.js"><link rel="prefetch" href="/assets/js/43.e1f5dda7.js"><link rel="prefetch" href="/assets/js/44.5a0244a0.js"><link rel="prefetch" href="/assets/js/45.7865f5d5.js"><link rel="prefetch" href="/assets/js/46.2de654a9.js"><link rel="prefetch" href="/assets/js/47.b0c69a77.js"><link rel="prefetch" href="/assets/js/48.083cf5b2.js"><link rel="prefetch" href="/assets/js/49.87139246.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.85464ad2.js"><link rel="prefetch" href="/assets/js/51.8139899b.js"><link rel="prefetch" href="/assets/js/52.aaa82667.js"><link rel="prefetch" href="/assets/js/53.09aba5a9.js"><link rel="prefetch" href="/assets/js/55.651ede77.js"><link rel="prefetch" href="/assets/js/56.47f9f12c.js"><link rel="prefetch" href="/assets/js/57.fede8876.js"><link rel="prefetch" href="/assets/js/58.9e32eabe.js"><link rel="prefetch" href="/assets/js/59.1b53e702.js"><link rel="prefetch" href="/assets/js/6.20da1ac7.js"><link rel="prefetch" href="/assets/js/7.eba3b1e7.js"><link rel="prefetch" href="/assets/js/8.d17a018f.js"><link rel="prefetch" href="/assets/js/9.92a21e92.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.775e5fee.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/leetcode/hanota.html" class="sidebar-link">汉诺塔问题</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#循环解法" class="sidebar-link">循环解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归解法" class="sidebar-link">递归解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归总结" class="sidebar-link">递归总结</a></li></ul></li><li><a href="/leetcode/link.html" aria-current="page" class="active sidebar-link">链表反序</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#题目描述" class="sidebar-link">题目描述</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#解答" class="sidebar-link">解答</a></li></ul></li></ul></li><li><a href="/leetcode/longestSubStr.html" class="sidebar-link">无重复字符的最长子串</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#哈希表" class="sidebar-link">哈希表</a></li></ul></li><li><a href="/leetcode/ReverseWordsInAString.html" class="sidebar-link">单词反转</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法" class="sidebar-link">解法—：</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法一优化" class="sidebar-link">解法一优化</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法二" class="sidebar-link">解法二</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#双端队列" class="sidebar-link">双端队列</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法三" class="sidebar-link">解法三</a></li></ul></li><li><a href="/leetcode/specialBinaryString.html" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#特殊的二进制序列" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#理解题意" class="sidebar-link">理解题意</a></li></ul></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#解题思路" class="sidebar-link">解题思路</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#代码实现" class="sidebar-link">代码实现</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#排序" class="sidebar-link">排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#冒泡排序" class="sidebar-link">冒泡排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#插入排序" class="sidebar-link">插入排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#快速排序" class="sidebar-link">快速排序</a></li></ul></li><li><a href="/leetcode/findMedianSortedArrays.html" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#数组的中位数" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#归并排序" class="sidebar-link">归并排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#基本解法" class="sidebar-link">基本解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#优化解法" class="sidebar-link">优化解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#折半查找" class="sidebar-link">折半查找</a></li></ul></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h3 id="链表反序"><a href="#链表反序" class="header-anchor">#</a> 链表反序</h3> <h2 id="题目描述"><a href="#题目描述" class="header-anchor">#</a> 题目描述</h2> <div class="language- line-numbers-mode"><pre class="language-text"><code>//定义一个函数，输入一个链表的头节点，反转该链表并输出反转后链表的头节点。
+//
+//
+//
+// 示例:
+//
+// 输入: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;NULL
+//输出: 5-&gt;4-&gt;3-&gt;2-&gt;1-&gt;NULL
+//
+//
+//
+// 限制：
+//
+// 0 &lt;= 节点个数 &lt;= 5000
+//
+//
+//
+// 注意：本题与主站 206 题相同：https://leetcode-cn.com/problems/reverse-linked-list/
+// Related Topics 链表
+// 👍 144 👎 0
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><h3 id="解答"><a href="#解答" class="header-anchor">#</a> 解答</h3> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">//leetcode submit region begin(Prohibit modification and deletion)</span>
+<span class="token comment">/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */</span>
+
+<span class="token comment">/*
+	先构建一个节点的链表，然后遍历剩余链表的节点，使用头插法更新链表
+ */</span>
+
+<span class="token comment">//解答成功:</span>
+<span class="token comment">//执行耗时:0 ms,击败了100.00% 的Go用户</span>
+<span class="token comment">//内存消耗:2.5 MB,击败了97.43% 的Go用户</span>
+<span class="token keyword">func</span> <span class="token function">reverseList</span><span class="token punctuation">(</span>head <span class="token operator">*</span>ListNode<span class="token punctuation">)</span> <span class="token operator">*</span>ListNode <span class="token punctuation">{</span>
+	<span class="token comment">//  空链表</span>
+	<span class="token keyword">if</span> head <span class="token operator">==</span> <span class="token boolean">nil</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> head
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 至少一个节点</span>
+	temp <span class="token operator">:=</span>  head<span class="token punctuation">.</span>Next
+	head<span class="token punctuation">.</span>Next <span class="token operator">=</span> <span class="token boolean">nil</span>
+
+	<span class="token keyword">for</span> temp<span class="token operator">!=</span><span class="token boolean">nil</span><span class="token punctuation">{</span>
+		cur <span class="token operator">:=</span> temp<span class="token punctuation">.</span>Next
+		temp<span class="token punctuation">.</span>Next <span class="token operator">=</span> head
+		head <span class="token operator">=</span>temp
+		temp <span class="token operator">=</span> cur
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> head
+<span class="token punctuation">}</span>
+<span class="token comment">//leetcode submit region end(Prohibit modification and deletion)</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br></div></div></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/4/2021, 3:28:54 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/leetcode/hanota.html" class="prev">
+        汉诺塔问题
+      </a></span> <span class="next"><a href="/leetcode/longestSubStr.html">
+        无重复字符的最长子串
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.6fafa31a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/54.3edfe92c.js" defer></script>
+  </body>
+</html>

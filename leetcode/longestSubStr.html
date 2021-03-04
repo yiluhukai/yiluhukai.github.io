@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>无重复字符的最长子串 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.775e5fee.css" as="style"><link rel="preload" href="/assets/js/app.6fafa31a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/55.651ede77.js" as="script"><link rel="prefetch" href="/assets/js/10.a0802569.js"><link rel="prefetch" href="/assets/js/11.dc41f47f.js"><link rel="prefetch" href="/assets/js/12.a8b269d8.js"><link rel="prefetch" href="/assets/js/13.8405c276.js"><link rel="prefetch" href="/assets/js/14.9438ae2e.js"><link rel="prefetch" href="/assets/js/15.81319eb2.js"><link rel="prefetch" href="/assets/js/16.9b90da42.js"><link rel="prefetch" href="/assets/js/17.ab6ac135.js"><link rel="prefetch" href="/assets/js/18.1e1b8c58.js"><link rel="prefetch" href="/assets/js/19.c0b7f32d.js"><link rel="prefetch" href="/assets/js/20.ca26d6f0.js"><link rel="prefetch" href="/assets/js/21.fbfc3959.js"><link rel="prefetch" href="/assets/js/22.f306570b.js"><link rel="prefetch" href="/assets/js/23.485add4d.js"><link rel="prefetch" href="/assets/js/24.c0b17f58.js"><link rel="prefetch" href="/assets/js/25.7aabffc2.js"><link rel="prefetch" href="/assets/js/26.7d9a7c93.js"><link rel="prefetch" href="/assets/js/27.8ba1691d.js"><link rel="prefetch" href="/assets/js/28.2db09cf2.js"><link rel="prefetch" href="/assets/js/29.f01151d1.js"><link rel="prefetch" href="/assets/js/3.12e8d0cf.js"><link rel="prefetch" href="/assets/js/30.070a6fa9.js"><link rel="prefetch" href="/assets/js/31.ddea6a25.js"><link rel="prefetch" href="/assets/js/32.493a62a7.js"><link rel="prefetch" href="/assets/js/33.897e21fe.js"><link rel="prefetch" href="/assets/js/34.f0653252.js"><link rel="prefetch" href="/assets/js/35.a041ec16.js"><link rel="prefetch" href="/assets/js/36.2748441d.js"><link rel="prefetch" href="/assets/js/37.b2b3b02b.js"><link rel="prefetch" href="/assets/js/38.a96d2cd4.js"><link rel="prefetch" href="/assets/js/39.97065fc0.js"><link rel="prefetch" href="/assets/js/4.e26bf81a.js"><link rel="prefetch" href="/assets/js/40.1fd1da27.js"><link rel="prefetch" href="/assets/js/41.90a5757d.js"><link rel="prefetch" href="/assets/js/42.9eae5c70.js"><link rel="prefetch" href="/assets/js/43.e1f5dda7.js"><link rel="prefetch" href="/assets/js/44.5a0244a0.js"><link rel="prefetch" href="/assets/js/45.7865f5d5.js"><link rel="prefetch" href="/assets/js/46.2de654a9.js"><link rel="prefetch" href="/assets/js/47.b0c69a77.js"><link rel="prefetch" href="/assets/js/48.083cf5b2.js"><link rel="prefetch" href="/assets/js/49.87139246.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.85464ad2.js"><link rel="prefetch" href="/assets/js/51.8139899b.js"><link rel="prefetch" href="/assets/js/52.aaa82667.js"><link rel="prefetch" href="/assets/js/53.09aba5a9.js"><link rel="prefetch" href="/assets/js/54.3edfe92c.js"><link rel="prefetch" href="/assets/js/56.47f9f12c.js"><link rel="prefetch" href="/assets/js/57.fede8876.js"><link rel="prefetch" href="/assets/js/58.9e32eabe.js"><link rel="prefetch" href="/assets/js/59.1b53e702.js"><link rel="prefetch" href="/assets/js/6.20da1ac7.js"><link rel="prefetch" href="/assets/js/7.eba3b1e7.js"><link rel="prefetch" href="/assets/js/8.d17a018f.js"><link rel="prefetch" href="/assets/js/9.92a21e92.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.775e5fee.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/leetcode/hanota.html" class="sidebar-link">汉诺塔问题</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#循环解法" class="sidebar-link">循环解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归解法" class="sidebar-link">递归解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归总结" class="sidebar-link">递归总结</a></li></ul></li><li><a href="/leetcode/link.html" class="sidebar-link">链表反序</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#题目描述" class="sidebar-link">题目描述</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#解答" class="sidebar-link">解答</a></li></ul></li></ul></li><li><a href="/leetcode/longestSubStr.html" aria-current="page" class="active sidebar-link">无重复字符的最长子串</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#哈希表" class="sidebar-link">哈希表</a></li></ul></li><li><a href="/leetcode/ReverseWordsInAString.html" class="sidebar-link">单词反转</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法" class="sidebar-link">解法—：</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法一优化" class="sidebar-link">解法一优化</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法二" class="sidebar-link">解法二</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#双端队列" class="sidebar-link">双端队列</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法三" class="sidebar-link">解法三</a></li></ul></li><li><a href="/leetcode/specialBinaryString.html" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#特殊的二进制序列" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#理解题意" class="sidebar-link">理解题意</a></li></ul></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#解题思路" class="sidebar-link">解题思路</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#代码实现" class="sidebar-link">代码实现</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#排序" class="sidebar-link">排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#冒泡排序" class="sidebar-link">冒泡排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#插入排序" class="sidebar-link">插入排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#快速排序" class="sidebar-link">快速排序</a></li></ul></li><li><a href="/leetcode/findMedianSortedArrays.html" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#数组的中位数" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#归并排序" class="sidebar-link">归并排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#基本解法" class="sidebar-link">基本解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#优化解法" class="sidebar-link">优化解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#折半查找" class="sidebar-link">折半查找</a></li></ul></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h3 id="无重复字符的最长子串"><a href="#无重复字符的最长子串" class="header-anchor">#</a> 无重复字符的最长子串</h3> <h2 id="题目描述"><a href="#题目描述" class="header-anchor">#</a> 题目描述</h2> <div class="language-tiki wiki line-numbers-mode"><pre class="language-text"><code>//给定一个字符串，请你找出其中不含有重复字符的 最长子串 的长度。 
+//
+// 
+//
+// 示例 1: 
+//
+// 
+//输入: s = &quot;abcabcbb&quot;
+//输出: 3 
+//解释: 因为无重复字符的最长子串是 &quot;abc&quot;，所以其长度为 3。
+// 
+//
+// 示例 2: 
+//
+// 
+//输入: s = &quot;bbbbb&quot;
+//输出: 1
+//解释: 因为无重复字符的最长子串是 &quot;b&quot;，所以其长度为 1。
+// 
+//
+// 示例 3: 
+//
+// 
+//输入: s = &quot;pwwkew&quot;
+//输出: 3
+//解释: 因为无重复字符的最长子串是 &quot;wke&quot;，所以其长度为 3。
+//     请注意，你的答案必须是 子串 的长度，&quot;pwke&quot; 是一个子序列，不是子串。
+// 
+//
+// 示例 4: 
+//
+// 
+//输入: s = &quot;&quot;
+//输出: 0
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 0 &lt;= s.length &lt;= 5 * 104 
+// s 由英文字母、数字、符号和空格组成 
+// 
+// Related Topics 哈希表 双指针 字符串 Sliding Window 
+// 👍 4728 👎 0
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br></div></div><ul><li>暴力解法</li></ul> <blockquote><p>解题思路：使用双指针去截取字符串串中所有字串并保存到一个切片中，然后遍历切片去计算字串的最大长度</p></blockquote> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">lengthOfLongestSubstring</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 空字符串</span>
+	length <span class="token operator">:=</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">0</span>
+	<span class="token punctuation">}</span>
+	subStrs <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span>
+	<span class="token comment">// 字符串对应的切片</span>
+	strSli <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	<span class="token comment">// 字符串的长度大于1</span>
+	<span class="token keyword">for</span> start<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span>start<span class="token operator">&lt;</span>length<span class="token punctuation">;</span>start<span class="token operator">++</span><span class="token punctuation">{</span>
+		<span class="token keyword">for</span> end<span class="token operator">:=</span>start<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>end<span class="token operator">&lt;=</span>length<span class="token punctuation">;</span>end<span class="token operator">++</span><span class="token punctuation">{</span>
+			<span class="token keyword">if</span> subStr <span class="token operator">:=</span> <span class="token function">string</span><span class="token punctuation">(</span>strSli<span class="token punctuation">[</span>start<span class="token punctuation">:</span>end<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>end <span class="token operator">==</span> length <span class="token operator">||</span> strings<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span>subStr<span class="token punctuation">,</span><span class="token function">string</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>end<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				subStrs <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>subStrs<span class="token punctuation">,</span>subStr<span class="token punctuation">)</span>
+				<span class="token keyword">break</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// 获取字串的最大长度</span>
+	maxLen <span class="token operator">:=</span> <span class="token number">1</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span>str <span class="token operator">:=</span> <span class="token keyword">range</span> subStrs<span class="token punctuation">{</span>
+		<span class="token keyword">if</span> length<span class="token operator">:=</span><span class="token function">len</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>length<span class="token operator">&gt;</span>maxLen <span class="token punctuation">{</span>
+			maxLen <span class="token operator">=</span> length
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> maxLen
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><div class="language- extra-class"><pre><code>解答成功:
+				执行耗时:172 ms,击败了11.27% 的Go用户
+				内存消耗:18.4 MB,击败了5.15% 的Go用户
+</code></pre></div><blockquote><p>这种方法就是列出当前字符串的所有字串，最长的可能是自己，最短的是单个字符组成的字符串，计算出最大长度然后返回。</p></blockquote> <div class="language- extra-class"><pre><code>时间复杂度：O(n^3) ,两次for循环，还有截取子串的操作
+空间复杂度：O(n^2) 空间复杂度主要来自对子串的存储，子串最多有n(n+1)/2个， eg:abcd 有10个这种子串 
+综上可知时间复杂度和空间复杂度都比较高。
+</code></pre></div><ul><li>优化解法</li></ul> <p>由于我们需要的是最长子串的长度，所以我们可以去使用一个变量保存最长的子串的长度，当长度大于这个值的时候更新，从而不需要去保存子串，这样子可以降低所需要的空间复杂度。</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">lengthOfLongestSubstring</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	<span class="token comment">// 空字符串</span>
+	length <span class="token operator">:=</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">0</span>
+	<span class="token punctuation">}</span>
+	maxLen <span class="token operator">:=</span> <span class="token number">1</span>
+	<span class="token comment">// 字符串对应的切片</span>
+	strSli <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	<span class="token comment">// 字符串的长度大于1</span>
+	<span class="token keyword">for</span> start<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span>start<span class="token operator">&lt;</span>length<span class="token punctuation">;</span>start<span class="token operator">++</span><span class="token punctuation">{</span>
+		<span class="token keyword">for</span> end<span class="token operator">:=</span>start<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>end<span class="token operator">&lt;=</span>length<span class="token punctuation">;</span>end<span class="token operator">++</span><span class="token punctuation">{</span>
+			<span class="token keyword">if</span> subStr <span class="token operator">:=</span> <span class="token function">string</span><span class="token punctuation">(</span>strSli<span class="token punctuation">[</span>start<span class="token punctuation">:</span>end<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>end <span class="token operator">==</span> length <span class="token operator">||</span> strings<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span>subStr<span class="token punctuation">,</span><span class="token function">string</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>end<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token keyword">if</span> length<span class="token operator">:=</span><span class="token function">len</span><span class="token punctuation">(</span>subStr<span class="token punctuation">)</span><span class="token punctuation">;</span>length <span class="token operator">&gt;</span> maxLen <span class="token punctuation">{</span>
+					maxLen <span class="token operator">=</span> length
+				<span class="token punctuation">}</span>
+				<span class="token keyword">break</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> maxLen
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>解答成功:
+					执行耗时:124 ms,击败了11.86% 的Go用户
+					内存消耗:6.8 MB,击败了11.00% 的Go用户
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>可以看到时间复杂度和空间复杂度都有提高，时间复杂度的提高主要来源于我们不需要去遍历保存子串的切片。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>时间复杂度：O(n^3),代码的中双重for循环和截取子串的操作依然存在。
+空间复杂度：O(n^2),代码中还是需要截取子串，最多可以有你你n(n+1)/2个字串
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><ul><li>优化解法</li></ul> <blockquote><p>使用hashtable和双指针去验证字符是否在子串中重复,right和left分别指向字符串的开始，当时right指向的字符不在hash table中，right++，且将字符加入的hash table里，此时hash table 保存的是当前无重复的字串字符，len = right-left+1;当出现重复的元素时，我们不能确定重复的元素在子串的什么位置，所以我们需要删除子串最左边的元素，然后去检测是否可以和右边的字符去重新构成一个新的无重复子串。</p></blockquote> <div class="language- line-numbers-mode"><pre class="language-text"><code>字符串：“abbcd”
+当我们的字串为ab时,我们检测到下一个字符b不能去和ab构成一个新的无重复子串，我们先需要删除a,发现bb组成的还是重复子串，所有我们需要从b开始去构建新的字串。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">// 自己实现一个简单的hash表</span>
+<span class="token keyword">type</span> HashTable <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Array <span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token builtin">byte</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">hash</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token builtin">int</span><span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token function">int</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">GetData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>isExist <span class="token builtin">bool</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> d <span class="token operator">:=</span> ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>d <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">{</span>
+		isExist <span class="token operator">=</span><span class="token boolean">true</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		isExist <span class="token operator">=</span><span class="token boolean">false</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">AddData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span>  data
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">DeleteData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">lengthOfLongestSubstring</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	maxLen<span class="token punctuation">,</span>left<span class="token punctuation">,</span>right<span class="token punctuation">,</span>length <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	ht <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>HashTable<span class="token punctuation">)</span>
+	<span class="token keyword">for</span> right <span class="token operator">&lt;</span>  length <span class="token punctuation">{</span>
+		<span class="token comment">// 检测元素在hashTable中是否存在</span>
+		<span class="token keyword">if</span> isExist <span class="token operator">:=</span> ht<span class="token punctuation">.</span><span class="token function">GetData</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>isExist <span class="token punctuation">{</span>
+			<span class="token comment">// 说明字符在字串中已经存在</span>
+			ht<span class="token punctuation">.</span><span class="token function">DeleteData</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>left<span class="token punctuation">]</span><span class="token punctuation">)</span>
+			left<span class="token operator">++</span>
+		<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+			<span class="token comment">//  存入hash表中</span>
+			ht<span class="token punctuation">.</span><span class="token function">AddData</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span>
+			right<span class="token operator">++</span>
+			<span class="token keyword">if</span>  size <span class="token operator">:=</span>  right <span class="token operator">-</span> left<span class="token punctuation">;</span>size <span class="token operator">&gt;</span> maxLen<span class="token punctuation">{</span>
+				maxLen <span class="token operator">=</span>size
+			<span class="token punctuation">}</span>
+
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> maxLen
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>	解答成功:
+						执行耗时:4 ms,击败了90.21% 的Go用户
+						内存消耗:2.5 MB,击败了90.78% 的Go用户
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>时间复杂度：我们只需要遍历一次字符串，所以时间复杂度为O(n)
+空间复杂度：哈希表的长度时128，常数级别的，所以时O(1)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><ul><li>最优解</li></ul> <blockquote><p>使用双指针和hash table的效率已经很高了，但是当每次出现重复的子符是，我们需要不断的移动left指针去删除与right指针指向的元素。当重复的字符和right相邻时，这个时候我们需要不断移动left，指针left=right.这样子当right和left相差很大的时候，频繁的移动比较耗费时间。我们可以让hash table中保存当前字符的索引。</p> <p>当重复时我们直接移动left到当前索引+1的位置，由于我们的left指针时跳跃移动的，没有去删除hash table中的保存的索引，当下次元素出现重复的时候，重复位置的索引是小于left.只有大于left的索引才是合法的。</p> <p>不管字符是否已经存在，我们都需要去更新hash table中right指向字符的索引。</p></blockquote> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">/*
+	在上面代码的基础上进行优化，hash table中保存字符的位置信息，这样子当元素重复的时候可以快速的定位left的位置
+ */</span>
+
+
+<span class="token comment">// 自己实现一个简单的hash表</span>
+<span class="token keyword">type</span> HashTable <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Array <span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">hash</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token builtin">int</span><span class="token punctuation">{</span>
+	<span class="token keyword">return</span> <span class="token function">int</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//  初始化hash table中的值</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">Init</span><span class="token punctuation">(</span>val <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">for</span> index <span class="token operator">:=</span> <span class="token keyword">range</span> ht<span class="token punctuation">.</span>Array<span class="token punctuation">{</span>
+		ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> val
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">GetData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>val <span class="token builtin">int</span><span class="token punctuation">,</span>isExist <span class="token builtin">bool</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> val <span class="token operator">=</span> ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">;</span>val <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">{</span>
+		isExist <span class="token operator">=</span><span class="token boolean">true</span>
+	<span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+		isExist <span class="token operator">=</span><span class="token boolean">false</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">AddData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">,</span>position <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span>  position
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>ht <span class="token operator">*</span> HashTable<span class="token punctuation">)</span><span class="token function">DeleteData</span><span class="token punctuation">(</span>data <span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	index<span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token function">len</span><span class="token punctuation">(</span>ht<span class="token punctuation">.</span>Array<span class="token punctuation">)</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token function">hash</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	ht<span class="token punctuation">.</span>Array<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
+
+
+
+
+<span class="token keyword">func</span> <span class="token function">lengthOfLongestSubstring</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	maxLen<span class="token punctuation">,</span>left<span class="token punctuation">,</span>right<span class="token punctuation">,</span>length <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+	ht <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span>HashTable<span class="token punctuation">)</span>
+	<span class="token comment">//  将hash table 中的位置信息全部初始化为-1</span>
+	ht<span class="token punctuation">.</span><span class="token function">Init</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+	<span class="token keyword">for</span> right <span class="token operator">&lt;</span>  length <span class="token punctuation">{</span>
+		<span class="token comment">// 检测元素在hashTable中是否存在</span>
+		<span class="token keyword">if</span> pos<span class="token punctuation">,</span>isExist <span class="token operator">:=</span> ht<span class="token punctuation">.</span><span class="token function">GetData</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>isExist <span class="token punctuation">{</span>
+			<span class="token comment">// 说明字符在字串中已经存在，移动left指针到指定位置</span>
+			leftIndex <span class="token operator">:=</span> pos <span class="token operator">+</span> <span class="token number">1</span>
+			<span class="token keyword">if</span> leftIndex <span class="token operator">&gt;</span> left<span class="token punctuation">{</span>
+				left <span class="token operator">=</span>  leftIndex
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">//  无论字符是否相等，我们都需要去保存right指向字符的位置</span>
+		ht<span class="token punctuation">.</span><span class="token function">AddData</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">,</span>right<span class="token punctuation">)</span>
+		<span class="token comment">//  计算当前子串的长度</span>
+		<span class="token keyword">if</span> length<span class="token operator">:=</span>right<span class="token operator">-</span>left<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>length <span class="token operator">&gt;</span> maxLen<span class="token punctuation">{</span>
+			maxLen <span class="token operator">=</span> length
+		<span class="token punctuation">}</span>
+		right<span class="token operator">++</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> maxLen
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>	解答成功:
+						执行耗时:0 ms,击败了100.00% 的Go用户
+						内存消耗:2.5 MB,击败了99.28% 的Go用户
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><div class="language- line-numbers-mode"><pre class="language-text"><code>时间复杂度：O(n) 遍历字符串一次
+空间复杂度：O(1) hash table的底层数组
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h2 id="哈希表"><a href="#哈希表" class="header-anchor">#</a> 哈希表</h2> <p>哈希表又叫散列表。这种数据结构提供了健和值的映射关系，给出一个key就可以在O(1)的时间内找出对应的value.哈希表的底层使用数组去实现的，而将key转成数组的下标的方法便是哈希函数。java中每个对象都有有个HashCode，我们可以使用取模运算来得到数组的下标。</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>index = HashCode / Array.length
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>但是通常使用效率更高的位运算</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>index = HashCode &amp; (Array.length-1)
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>当两个对象通过哈希函数得到数组的下标相等时，这时候就会产生哈希冲突。解决哈希冲突的方法有：</p> <ul><li>开放地址法</li></ul> <p>所谓的开放地址法就是当出现当对应下标已经有值时，我们就去找一个新的位置，如找当前下表的后一个，如果后一个还有值，那就再后一个，直到没有被占用被值。</p> <ul><li>链表法</li></ul> <p>链表法就是数组的每一个元素是链表的头指针，当出现哈希冲突时，将后面的值添加到链表上。</p> <p>我们查找某个key对应的值。由于有哈希冲突，一个key可能在哈希表中对应多个值，以链表法为例，key -&gt; index上的链表有多个节点，我们需要遍历链表节点，取出每个对象，去判断他的key是否等于当前key.</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">3/4/2021, 3:28:54 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/leetcode/link.html" class="prev">
+        链表反序
+      </a></span> <span class="next"><a href="/leetcode/ReverseWordsInAString.html">
+        单词反转
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.6fafa31a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/55.651ede77.js" defer></script>
+  </body>
+</html>
