@@ -866,6 +866,406 @@ git remote add origin https://github.com/yiluhukai/bruce-page.git
 git push -u origin master
 ```
 
+提取前面项目中的gulpfile到我们包根目录下的`lib/index.js`文件中,并将之前项目的`开发依赖`复制到我们这个包的`依赖`中,如果放到开发依赖中这个包在被引用的时候会找不到依赖。
+
+```json
+"dependencies": {
+    "@babel/core": "^7.13.8",
+    "@babel/preset-env": "^7.13.8",
+    "browser-sync": "^2.26.14",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-if": "^3.0.0",
+    "gulp-imagemin": "^6.2.0",
+    "gulp-load-plugins": "^2.0.6",
+    "gulp-sass": "^4.1.0",
+    "gulp-swig": "^0.9.1",
+    "gulp-uglify": "^3.0.2",
+    "gulp-useref": "^3.1.6"
+  },
+```
+
+当我们项目还没有发布的时候，我们需要去测试这个包，我们可以将这个包link成全局的包，然后在需要使用的项目再link进去，这样就会创建一个只想这个包的软连接，在项目中测试使用。
+
+```shell
+cd bruce-gulp-workflow
+# 会自动安装依赖
+npm link
+```
+
+在我们之前的项目中删除原来的开发依赖和node_modules文件
+
+```shell
+cd gulp-build-demo
+
+rm -rf node_modules
+
+npm link bruce-gulp-workflow
+# 出新安装依赖
+npm install
+```
+
+修改 gulp-build-demo的gulp file.js文件
+
+```js
+module.exports = require('bruce-gulp-workflow')
+```
+
+然后执行`npm run build`.我们会发现缺少gulp模块，这时因为gulp模块的依赖被我们提到bruce-gulp-workflow中，由于这个包还没有发布，所以我们当前项目中不会安装这个包的依赖，当我们这个包发布了，这个依赖就会成为bruce-gulp-workflow的依赖而被安装。解决的办法是手动安装这个包。
+
+```shell
+gulp install -D gulp
+```
+
+继续执行发现这个找不到`package.json`文件
+
+```shell
+Error: Cannot find module './package.json'
+Require stack:
+- /Users/lijunjie/js-code/auto-build/bruce-gulp-workflow/lib/index.js
+```
+
+原因很简单，我们的发布的包的`lib/index.js`中引入的package.json的路径不对
+
+```js
+const data = {
+  menus: [
+    {
+      name: "Home",
+      icon: "aperture",
+      link: "index.html",
+    },
+    {
+      name: "Features",
+      link: "features.html",
+    },
+    {
+      name: "About",
+      link: "about.html",
+    },
+    {
+      name: "Contact",
+      link: "#",
+      children: [
+        {
+          name: "Twitter",
+          link: "https://twitter.com/w_zce",
+        },
+        {
+          name: "About",
+          link: "https://weibo.com/zceme",
+        },
+        {
+          name: "divider",
+        },
+        {
+          name: "About",
+          link: "https://github.com/zce",
+        },
+      ],
+    },
+  ],
+  pkg: require("./package.json"),
+  date: new Date(),
+};
+```
+
+这里的data是作为项目中swig的模版而被导入的，不同的项目中这个会不同，更好的办法是将这个提取出去作为每个项目的配置项，我们在`gulp-build-demo `下创建一个配置文件`workflow.config.js`,导出上面的data.我们在`bruce-gulp-workflow`下的`lib/index.js`中读取对应的数据：
+
+```js
+//The process.cwd() method returns the current working directory of the Node.js process.
+const cwd = process.cwd();
+let data = {
+  //default value
+};
+try {
+  data = { ...data, ...require(path.join(cwd, "./workflow.config.js")) };
+} catch (error) {}
+```
+
+> 当项目中的当前工作目录中不存在workflow.config.js文件，data使用的是默认值。
+
+执行构建命令会发现报错，原因是`Cannot find module '@babel/preset-env'`
+
+```shell
+$ npx gulp build
+[22:02:32] Using gulpfile ~/js-code/auto-build/gulp-build-demo/gulpfile.js
+[22:02:32] Starting 'build'...
+[22:02:32] The following tasks did not complete: build
+[22:02:32] Did you forget to signal async completion?
+/Users/lijunjie/js-code/auto-build/bruce-gulp-workflow/node_modules/async-done/index.js:18
+    throw err;
+    ^
+
+Error [ERR_UNHANDLED_ERROR]: Unhandled error. ({
+  uid: 8,
+  name: 'scripts',
+  branch: false,
+  error: PluginError: Cannot find module '@babel/preset-env'
+```
+
+导致这个问题的原因很简单，因为我们构建任务是在执行的时候，会到项目的根目录下`gulp-build-demo `去查找这个模块，模块不存在就报错了。我们可以修改导入模块的方式,以`require`方式引入这个模块，让它去lib/index.js所在的目录下逐层向上去查找node_modules中是否存在这个模块。
+
+```js
+// 处理js脚本
+function scripts() {
+  return src("src/assets/scripts/*.js", { base: "src" })
+    .pipe(plugins.babel({ presets: [require("@babel/preset-env")] }))
+    .pipe(dest("temp"))
+    .pipe(bs.reload({ stream: true }));
+}
+```
+
+现在我们可以执行`npx gulp build`命令了。
+
+> 因为我们只导出了两个任务，所以gulp无法获取lib/index..js中定义的其他的任务的名称，只能打印出当前执行的任务的名字。
+
+将项目中的路径改为可以配置的：
+
+```js
+const cwd = process.cwd();
+
+let data = {
+  //default value
+  //项目中文件的默认值
+  build: {
+    src: "src",
+    dist: "dist",
+    temp: "temp",
+    public: "public",
+    paths: {
+      styles: "assets/styles/*.scss",
+      scripts: "assets/scripts/*.js",
+      pages: "*.html",
+      fonts: "assets/fonts/**",
+      images: "assets/images/**",
+    },
+  },
+};
+try {
+  data = { ...data, ...require(path.join(cwd, "./workflow.config.js")) };
+} catch (error) {}
+
+// 处理scss
+function styles() {
+  //由 src() 生成的 Vinyl 实例是用 glob base 集作为它们的 base 属性构造的。当使用 dest() 写入文件系统时，将从输出路径中删除 base ，以保留目录结构。
+  return src(data.build.paths.styles, { base: "src", cwd: data.build.src })
+    .pipe(plugins.sass({ outputStyle: "expanded" }))
+    .pipe(dest(data.build.temp))
+    .pipe(bs.reload({ stream: true }));
+}
+....
+
+watch(data.build.paths.styles, { cwd: data.build.src }, styles);
+  watch(data.build.paths.scripts, { cwd: data.build.src }, scripts);
+  watch(data.build.paths.pages, { cwd: data.build.src }, pages);
+  // watch('src/assets/images/**', images)
+  // watch('src/assets/fonts/**', fonts)
+  // watch('public/**', extra)
+  watch(
+    [
+      path.join(data.build.src, data.build.paths.images),
+      path.join(data.build.src, data.build.paths.fonts),
+      path.join(data.build.public, "**"),
+    ],
+    bs.reload
+ );
+```
+
+项目中的路径可以使用path.join()的方式拼接，还可以使用src()和watch()方法这只读取文件的目录，默认是的cwd是项目的根目录。如果我们想要修改路径，可以使用项目的`workflow.config.js`中配置。
+
+我们的npm包封装基本完成了，但是我们每次使用这个包的时候，都需要在项目的根目录下去创建一个gulpfile.js文件，然后写入如下内容：	
+
+```js
+module.exports = require('bruce-gulp-workflow')
+```
+
+这样子会显得很多余，我们希望直接引入这个包不需要做任何的配置就可以使用。
+
+```shell
+cd gulp-build-demo
+rm gulpfile.js
+npm run build
+```
+
+执行上面的命令先删除了gulpfile.js.然后再去执行构建命令，这个时候会报错，找不到`No gulpfile found`.我们可以使用gulp的时候指定我们gulpfile.js的路径。
+
+```shell
+$ npx gulp --help    
+
+Usage: gulp [options] tasks
+
+选项：
+  --help, -h              Show this help.                                 [布尔]
+  --version, -v           Print the global and local gulp versions.       [布尔]
+  --require               Will require a module before running the gulpfile.
+                          This is useful for transpilers but also has other
+                          applications.                                 [字符串]
+  --gulpfile, -f          Manually set path of gulpfile. Useful if you have
+                          multiple gulpfiles. This will set the CWD to the
+                          gulpfile directory as well.                   [字符串]
+  --cwd                   Manually set the CWD. The search for the gulpfile, as
+                          well as the relativity of all requires will be from
+                          here.                                         [字符串]
+  --verify                Will verify plugins referenced in project's
+                          package.json against the plugins blacklist.
+  --tasks, -T             Print the task dependency tree for the loaded
+                          gulpfile.                                       [布尔]
+  --tasks-simple          Print a plaintext list of tasks for the loaded
+                          gulpfile.                                       [布尔]
+  --tasks-json            Print the task dependency tree, in JSON format, for
+                          the loaded gulpfile.
+  --tasks-depth, --depth  Specify the depth of the task dependency tree.  [数字]
+  --compact-tasks         Reduce the output of task dependency tree by printing
+                          only top tasks and their child tasks.           [布尔]
+  --sort-tasks            Will sort top tasks of task dependency tree.    [布尔]
+  --color                 Will force gulp and gulp plugins to display colors,
+                          even when no color support is detected.         [布尔]
+  --no-color              Will force gulp and gulp plugins to not display
+                          colors, even when color support is detected.    [布尔]
+  --silent, -S            Suppress all gulp logging.                      [布尔]
+  --continue              Continue execution of tasks upon failure.       [布尔]
+  --series                Run tasks given on the CLI in series (the default is
+                          parallel).                                      [布尔]
+  --log-level, -L         Set the loglevel. -L for least verbose and -LLLL for
+                          most verbose. -LLL is default.                  [计数]
+```
+
+我们输入如下指令执行
+
+```shell
+$ npx gulp -f node_modules/bruce-gulp-workflow/lib/index.js  build  
+[21:27:10] Working directory changed to ~/js-code/auto-build/gulp-build-demo/node_modules/bruce-gulp-workflow/lib
+[21:27:11] Using gulpfile ~/js-code/auto-build/gulp-build-demo/node_modules/bruce-gulp-workflow/lib/index.js
+[21:27:11] Starting 'build'...
+[21:27:11] Starting 'clean'...
+[21:27:11] Finished 'clean' after 6.48 ms
+[21:27:11] Starting 'images'...
+[21:27:11] Starting 'fonts'...
+[21:27:11] Starting 'extra'...
+[21:27:11] Starting 'styles'...
+[21:27:11] Starting 'scripts'...
+[21:27:11] Starting 'pages'...
+[21:27:11] gulp-imagemin: Minified 0 images
+[21:27:11] Finished 'images' after 625 ms
+[21:27:11] gulp-imagemin: Minified 0 images
+[21:27:11] Finished 'fonts' after 627 ms
+[21:27:11] Finished 'extra' after 628 ms
+[21:27:11] Finished 'styles' after 559 ms
+[21:27:11] Finished 'scripts' after 559 ms
+[21:27:11] Finished 'pages' after 560 ms
+[21:27:11] Starting 'useref'...
+[21:27:11] Finished 'useref' after 158 ms
+[21:27:11] Finished 'build' after 798 ms
+```
+
+我们发现命令可以执行，但是工作目录改变成了`~/js-code/auto-build/gulp-build-demo/node_modules/bruce-gulp-workflow/lib`,并不是我们想要的当前命令行执行的目录，我们可以使用cwd选项去指定我们的工作目录。
+
+```shell
+ npx gulp -f node_modules/bruce-gulp-workflow/lib/index.js --cwd .  build 
+```
+
+我们可以直接修改项目目录下package.json中的`scripts`为上面的命令，但是这样子每次导出包都要加入这个命令，这样子并不是我们想要的。我们使用`npx gulp`命令的时候，其实会去当前node_modules下面的gulp包中查找bin下面的文件。
+
+```js
+#!/usr/bin/env node
+
+require('gulp-cli')();
+```
+
+可以看到执行gulp命令回去调用gulp-cli模块。我们想在我们的npm包中创建一个cli程序，去调用gulp命令并传入参数。首先我们需要在我们的包中创建bin/cli.js文件。
+
+```js
+#!/usr/bin/env node
+
+//
+process.argv.push("-f");
+// 使用main指向的路径
+//process.argv.push(require.resolve(".."));
+process.argv.push(require.resolve("../lib/index"));
+
+process.argv.push("--cwd");
+process.argv.push(process.cwd());
+// 调用gulp
+require("gulp/bin/gulp");
+```
+
+然后在package.json加入如下的内容：
+
+```js
+"bin": "bin/cli.js",
+```
+
+然后执行命令：
+
+```shell
+cd bruce-gulp-workflow 
+npm link
+bruce-gulp-workflow build
+```
+
+如果可以成功，那么证明我们的cli没有问题，在去项目的根目录下面执行
+
+```shell
+cd gulp-build-demo 
+bruce-gulp-workflow build
+```
+
+现在我们我的npm包可以直接全局安装后使用，也可以安装成依赖后使用`npm script`调用。
+
+#### 发布我们的包到npm 
+
+```shell
+git add .
+git commit -m "finish"
+git push 
+#切换镜像
+nrm use npm 
+# 发布
+npm publish
+# 切换镜像
+nrm use taobao
+```
+
+包发布后使用淘宝镜像可能找不到包，原因是npm包未同步到淘宝镜像上，可以手动去淘宝镜像同步。
+
+#### 在项目中使用我们发布的包
+
+```shell
+cd  gulp-build-demo 
+rm -rf node_modules
+npm install -D bruce-gulp-workflow
+npm i
+```
+
+修改package.json文件
+
+```json
+"scripts": {
+		"build": "bruce-gulp-workflow build",
+		"develop": "bruce-gulp-workflow develop"
+	},
+```
+
+然后执行build命令开始构建
+
+```shell
+npm run build
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 
