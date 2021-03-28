@@ -1211,7 +1211,338 @@ d.run()
       #npx babel index.ts -o  index.js 报错，暂未找到原因
       ```
 
-    * 
+### [在vue项目中加入ts]（https://cn.vuejs.org/v2/guide/typescript.html）
+
+我们先使用vue-cli创建一个vue项目：
+
+```shell
+vue create vue-ts-demo
+```
+
+* 选择手动添加特性
+* 先不选择加入typescript
+
+创建完成后在项目中加入typescript相关的插件：
+
+```shell
+vue add typescrip
+```
+
+:::tip
+
+如果项目不是新建的项目，不要选择用Vue.extend替换的选项，这样子可能覆盖项目源文件中内容。
+
+:::
+
+执行上面的命令后项目中修改的源文件：
+
+```shell
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   package.json
+        modified:   src/components/HelloWorld.vue
+        deleted:    src/main.js
+        deleted:    src/router/index.js
+        deleted:    src/store/index.js
+        modified:   src/views/Home.vue
+        modified:   yarn.lock
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        src/main.ts
+        src/router/index.ts
+        src/shims-tsx.d.ts
+        src/shims-vue.d.ts
+        src/store/index.ts
+        tsconfig.json
+
+```
+
+基本上是将js文件替换成ts文件，此外，项目中加入了两个d.ts文件:
+
+```
+shims-tsx.d.ts
+```
+
+```js
+import Vue, { VNode } from 'vue'
+
+declare global {
+  namespace JSX {
+    // tslint:disable no-empty-interface
+    interface Element extends VNode {}
+    // tslint:disable no-empty-interface
+    interface ElementClass extends Vue {}
+    interface IntrinsicElements {
+      [elem: string]: any
+    }
+  }
+}
+```
+
+```js
+shims-vue.d.ts
+```
+
+```
+declare module '*.vue' {
+  import Vue from 'vue'
+  export default Vue
+}
+
+```
+
+以d.ts文件结尾的是ts的模块声明文件，这两个文件在这里我们只用到shims-vue.d.ts,因为我们的项目中没有jsx类型的文件。上面vue.d.ts的文件是告诉ts把.vue后缀的文件解析成Vue类型的。如果没有这个文件，TS无法确定App文件的类型。
+
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+
+Vue.config.productionTip = false
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')
+```
+
+当我们使用ts的时候引入第三方的js模块，为了让ts可以获取js模块中方法属性的类型，也需要编写对应的模块声明文件，常用的js库可能已经存在模块声明文件，我们只需要安装即可。关系模块声明，更多可参考[声明文件](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html).
+
+如果提示找不到`vue-property-decorator`模块，手动安装即可。
+
+接下来我们手动创建一个vue组件`Button.vue`
+
+```vue
+<!--  -->
+<template>
+	<div>
+		<button>{{ message }}</button>
+	</div>
+</template>
+
+<script lang="ts">
+export default {
+	name: "Button",
+	data() {
+		return {
+			message: "foo"
+		};
+	},
+	created() {
+		this.message = "123";
+	}
+};
+</script>
+<style lang="scss" scoped></style>
+```
+
+* `script`标签的`lang="ts"`
+* 我们在使用编辑给出提示:this.message,是因为我们使用了Vetur插件，他的下面又个选项：Validation:Script，关闭后则不会有提示。
+* 重新运行会发现发现项目中报错
+
+```shell
+ERROR in /Users/lijunjie/js-code/vue-ts-demo/src/components/Button.vue(17,8):
+17:8 Property 'message' does not exist on type '{ name: string; data(): { message: string; }; created(): void; }'.
+    15 |        },
+    16 |        created() {
+  > 17 |                this.message = "123";
+       |                     ^
+    18 |        }
+    19 | };
+    20 | </script>
+```
+
+这块找不到message属性的原因是因我们我们导出的是一个普通的对象，ts无法去推断这个对象的属性有哪些。为了更好的ts使用另一种方式去创建组件。
+
+```vue
+<!--  -->
+<template>
+	<div>
+		<button>{{ message }}</button>
+	</div>
+</template>
+
+<script lang="ts">
+import Vue from "vue"
+export default  Vue.extend( {
+	name: "Button",
+	data() {
+		return {
+			message: "foo"
+		};
+	},
+	created() {
+        this.message = "123";
+        this.
+	}
+});
+</script>
+<style lang="scss" scoped></style>
+
+```
+
+上面使用Vue.extend的方式创建的对象可以根据函数签名去推断导出的对象的类型，所以Vue项目使用TS必须使用Vue.extend的方式：
+
+```js
+extend<Data, Methods, Computed, PropNames extends string = never>(options?: ThisTypedComponentOptionsWithArrayProps<V, Data, Methods, Computed, PropNames>): ExtendedVue<V, Data, Methods, Computed, Record<PropNames, any>>;
+  extend<Data, Methods, Computed, Props>(options?: ThisTypedComponentOptionsWithRecordProps<V, Data, Methods, Computed, Props>): ExtendedVue<V, Data, Methods, Computed, Props>;
+  extend<PropNames extends string = never>(definition: FunctionalComponentOptions<Record<PropNames, any>, PropNames[]>): ExtendedVue<V, {}, {}, {}, Record<PropNames, any>>;
+  extend<Props>(definition: FunctionalComponentOptions<Props, RecordPropsDefinition<Props>>): ExtendedVue<V, {}, {}, {}, Props>;
+  extend(options?: ComponentOptions<V>): ExtendedVue<V, {}, {}, {}, {}>;
+```
+
+#### [标注 Prop](https://cn.vuejs.org/v2/guide/typescript.html#标注-Prop)
+
+```js
+<!--  -->
+<template>
+	<div>
+		<button>{{ message }}</button>
+	</div>
+</template>
+
+<script lang="ts">
+import Vue, { PropType } from "vue";
+export default Vue.extend({
+	name: "Button",
+	props: {
+		// 类型断言
+		size: String as PropType<"small" | "middle" | "big">
+	},
+	data() {
+		return {
+			message: "foo"
+		};
+	},
+	created() {
+		this.message = "123";
+		this.size === "small";
+	}
+});
+</script>
+<style lang="scss" scoped></style>
+```
+
+* 想要获得类型提示，只能在vscode中打开这个一个项目(根目录是vue-ts-demo)
+
+### 再已有的JS项目中加入类型验https://cloud.tencent.com/developer/article/1006180
+
+直接将js项目改成TS项目需要的成本还是很高，又没有更简单的方式呢？
+
+* JsDoc为TS添加类型校验
+
+```js
+// @ts-check
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
+/**
+ *
+ *
+ * @type { import ("vue-router").RouteConfig[] }
+ *
+ *
+ *
+ */
+const routes = [
+	{
+		path: '/',
+		redirect: '/dashboard'
+	},
+	{
+		path: '/login',
+		component: () => import('@/views/login/Login.vue')
+	},
+	{
+		path: '/dashboard',
+		component: () => import('@/views/layout/Layout.vue'),
+		children: [
+			{
+				path: '',
+				component: () => import('@/views/Employee/Index.vue')
+			},
+			{
+				path: '/departments',
+				component: () => import('@/views/Department/Index.vue')
+			},
+			{
+				path: '/sprite',
+				component: () => import('@/views/sprite/Index.vue')
+			},
+			{
+				path: '/echart',
+				component: () => import('@/views/echart/Echart.vue')
+			},
+			{
+				path: '/jobs',
+				component: () => import('@/views/Jobs/Index.vue')
+			}
+		]
+	}
+]
+```
+
+```js
+//@ts-check
+/**
+ * @type { import("@vue/cli-service").ProjectOptions}
+ *
+ */
+// vue.config.js
+module.exports = {
+	devServer: {
+		proxy: {
+			'/api': {
+				target: 'http://localhost:8080/',
+				changeOrigin: true,
+				pathRewrite: {
+					'^/api': '/api'
+				}
+			}
+		}
+	}
+	//	publicPath 会有提示
+}
+
+```
+
+
+
+* @type为变量设置类型,注意不要直接导出，有可能不会生效。
+* @ts-check是开启TS类型校验的注解
+* 上面的`import('@/views/sprite/Index.vue')`不能被Ts识别，可以添加一个模块声明文件：`shims-vue.d.ts`
+
+在Vue文件中挂载在Vue原型上的方法可能会没有提示，我们可以添加一个类型声明文件`types.d.ts`,把我们挂载在原型上的方法和属性加入进去，就可以获取提示效果(可能需要重启下编辑器)。
+
+```js
+import { AxiosInstance } from 'axios'
+import VueI18n from 'vue-i18n'
+
+declare module 'vue/types/vue' {
+	interface Vue {
+		$title: string
+		$axios: AxiosInstance
+		$t: VueI18n.PostTranslationHandler
+	}
+}
+
+```
+
+
+
+·
+
+
+
+
+
+
 
 
 

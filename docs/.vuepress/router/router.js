@@ -22,7 +22,9 @@ module.exports = {
 		'/es/flow',
 		'/es/js-better',
 		'/es/project',
-		'/es/gulp-demo'
+		'/es/gulp-demo',
+		'/es/this',
+		'/es/module'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
