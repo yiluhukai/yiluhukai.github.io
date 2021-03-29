@@ -525,7 +525,7 @@ alert('hello world')
   console.log(Name)
   ```
 
-* ES Module导出的注意事项
+* *export* var foo = 'baz'ES Module导入、导出的注意事项
 
   * 导出的`{}`不是对象的缩写形式，导出的时候也不是对象的解构
 
@@ -568,9 +568,106 @@ alert('hello world')
   name = '100' //app.js:9 Uncaught TypeError: Assignment to constant variable.
     ```
 
+  * 不能省略模块的后缀名，当文娱index.js中，也不能省略index,Common.js可以，在webpack中也可以。
+
+    ```js
+    //import { foo } from './util'
+    import { foo } from './util/index.js'
+    ```
+
+  * 导出的路径可以是相对路径，也可以是绝对路径
+
+    ```js
+    import { foo } from './util/index.js'
+    import { foo } from '/util/index.js'
+    ```
+
+  * 如何不想导出任何变量，只想加载模块，可以像下面这样
+
+    ```js
+    import {} from './util/index.js'
+    import './util/index.js'
+    ```
+
+  * 如果想动态导入模块(模块名字是一个变量或者根据条件导入)，可以使用import()，它返回的是一个Promise.
+
+    ```js
+    import('./util/index.js').then(module => {
+    	console.log(module.foo) //
+    })
+    ```
+
+  * 导出多个对象时可以使用将要导出的变量放到一个对象中去
+
+    ```js
+    import * as moduleA from './moduleA.js'
+    console.log(moduleA.name, moduleA.default) //hello 12
+    
+    ```
+
+  * 对与默认的导出，我们可以使用下面的方式
+
+    ```js
+    import { name, sayHello, default as Person } from './moduleA.js'
+    import Person ,{ name, sayHello} from './moduleA.js'
+    ```
+
+  * 对导入的模块做导出处理(默认导出要做重命名处理)
+
+    ```js
+    import { name, SayHello, default as Person } from './moduleA.js'
+    export { name, SayHello, Person }
+    
+    // 或者
+    
+    export { name, SayHello, default as Person } from './moduleA.js'
+    
+    ```
+
+  ### ES Module 浏览器环境的polyfill
+
+  ES Module如果要工作在不支持ES Module的浏览器中，需要我们使用polufill去对处理这种兼容性的问题。
+
+  ```html
+  
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>ES Module 浏览器环境 Polyfill</title>
+  </head>
+  
+  <body>
+      <script nomodule src="https://unpkg.com/promise-polyfill@8.1.3/dist/polyfill.min.js"></script>
+      <script nomodule src="https://unpkg.com/browser-es-module-loader@0.4.1/dist/babel-browser-build.js"></script>
+      <script nomodule src="https://unpkg.com/browser-es-module-loader@0.4.1/dist/browser-es-module-loader.js"></script>
+      <script type="module">
+          import { foo } from './module.js'
+     			 console.log(foo)
+    </script>
+  </body>
+  
+  </html>
+  ```
+
+  ```js
+  // module.js
+  export var foo = 'baz'
+  ```
+
+  * 引入`browser-es-module-loader.js`是为了提供在不支持ES Module的浏览器下也可以正常工作。
+  * `babel-browser-build.js`是为了处理模块加载完成后对ES6语法的转换
+  * `promise-polyfill`是为了解决Promise这个api在浏览器中不存在的问题
+  * 当代码运行在支持ES Module的浏览器，模块的代码会被执行两次，为了解决这个问题，需要在这些polyfill上加入`nomodule`属性，这样当浏览器不支持ES Module属性时上面的polufill才会工作。
+  * 上面的情况只适用于开发阶段，在生成环境中使用这种方式，需要先去提取模块代码，然后对代码转换，最后再去执行，效率会比较低，应该使用可以直接在浏览器执行的代码。
+
   
 
   
+
 
 ​    
 
