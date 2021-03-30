@@ -664,6 +664,273 @@ alert('hello world')
   * 当代码运行在支持ES Module的浏览器，模块的代码会被执行两次，为了解决这个问题，需要在这些polyfill上加入`nomodule`属性，这样当浏览器不支持ES Module属性时上面的polufill才会工作。
   * 上面的情况只适用于开发阶段，在生成环境中使用这种方式，需要先去提取模块代码，然后对代码转换，最后再去执行，效率会比较低，应该使用可以直接在浏览器执行的代码。
 
+  ### Node环境中使用ES_Module
+
+  * 导出的模块
+
+    ```js
+    export const name = 'hello'
+    
+    export const age = 12
+    ```
+
+  * 导入的模块
+
+    ```js
+    import { name, age } from './moduleA.mjs'
+    
+    console.log(name, age)
+    ```
+
+  * 在node环境中使用，需要注意两件事
+
+    * 文件的后缀名必须是`*.mjs`
+    * node的执行命令中需要加入选项`--experimental-modules`:`node --experimental-modules index.mjs `
+
+  *  默认导出内置模块和`lodash`模块
+
+    ```js
+    import _ from 'lodash'
+    import fs from 'fs'
+    
+    
+    console.log(_.map([1, 2, 3], item => item + 1)) //[ 2, 3, 4 ]
+    fs.writeFileSync('./foo.txt', 'esm is working')
+    ```
+
+    可以使用是因为第三方库和内置模块做了默认导出处理
+
+  * 导出模块中非默认导出
+
+    ```js
+    import { map } from 'lodash'
+    console.log(map([1, 2, 3], item => item + 1)) // Error
+    
+    ```
+
+    ```js
+    import { writeFileSync } from 'fs'
+    
+    
+    writeFileSync('./foo.txt', 'esm is working') // ok
+    ```
+
+    内置模块对非默认导出也做了处理。
+
+  ### ES Module和CommonJS模块的交互
+
+  * ES Module模块加载CommonJS模块
+
+    * ES Module可以加载CommonJS模块
+    * CommonJS的导出成员会作为ES Module的默认导出
+    * 不能直接导出模块中的成员
+
+    ```js
+    //  common.js
+    
+    
+    
+    // module.exports = {
+    // 	foo: 'hello'
+    // }
+    
+    exports.foo = 'hello'
+    
+    ```
+
+    ```js
+    // esm.mjs
+    
+    import common from './common.js'
+    
+    console.log(common) //{ foo: 'hello' }
+    ```
+
+    执行运行命令：
+
+    ```shell
+    node --experimental-modules esm.mjs 
+    (node:3312) ExperimentalWarning: The ESM module loader is experimental.
+    { foo: 'hello' }
+    ```
+
+  * CommonJS导入ES Module模块
+
+    * 不能在CommonJS模块中使用require加载ES Module模块，但是可以使用import函数。
+    * import函数导入成功返回一个Promise,可以获取到ES Module模块导出的所有命名成员。
+
+    ```js
+    // common.js
+    
+    import('./esm.mjs').then(module => {
+    	console.log(module) //[Module] { default: 20, name: 'foo' }
+    })
+    
+    ```
+
+    ```js
+    // esm.mjs 
+    export const name = 'foo'
+    
+    const age = 20
+    export default age
+    ```
+
+  ### Node中使用ES Module和CommonJS的差异
+
+  * Node中CommonJS模块拥有一些全局变量(模块中可以直接访问的)
+
+  ```js
+  // common.js
+  console.log(require)
+  
+  console.log(module)
+  
+  console.log(exports)
+  
+  console.log(__dirname)///Users/lijunjie/js-code/module-scheme/es_module_difference
+  
+  console.log(__filename)// Users/lijunjie/js-code/module-scheme/es_module_difference/common.js
+  
+  ```
+
+  * Node使用ES Module模块如何获取这些模块内的全局变量呢 
+
+    * `require`可以使用`import`代替，`module`和`exports`可以替换为`export`.
+    * `__dirname`和__`__filename`可以使用下面的方式获取
+
+    ```js
+    //esm.mjs
+    import { fileURLToPath } from 'url'
+    import { dirname } from 'path'
+    //__filepath
+    
+    const filepath = fileURLToPath(import.meta.url)
+    console.log(filepath) ///Users/lijunjie/js-code/module-scheme/es_module_difference/esm.mjs
+    
+    //__dirname
+    
+    console.log(dirname(filepath)) ///Users/lijunjie/js-code/module-scheme/es_module_difference
+    ```
+
+  ### Node新版本中对ES Module的支持
+
+  * 在package.json中`"type":"module"`可以让Node将文件夹下的所有*.js当作es module模块来解析
+  * 这个时候如果需要使用CommonJS模块，需要将模块的后缀改成`*.cjs`
+
+  ```js
+  // module.js
+  
+  const name = 'foo'
+  export default name
+  
+  ```
+
+  ```js
+  // esm.js
+  import name from './module.js'
+  import foo from './common.cjs'
+  console.log(name) //foo
+  
+  console.log(foo) //{ foo: 'baz' }
+  ```
+
+  ```js
+  // common.cjs
+  module.exports = {
+  	foo: 'baz'
+  }
+  ```
+
+  还是需要添加选项去执行：`$ node --experimental-modules esm.js`
+
+  ### 早期Node(使用的8.0.0)中使用ES Module
+
+  早期的Node并不支持ES Module,但是我们可以使用babel来对处理这种不兼容的问题。
+
+  ```js
+  // common.js
+  const name = 'foo'
+  
+  export default name
+  
+  ```
+
+  ```js
+  // esm.js
+  import name from './common.js'
+  
+  console.log(name)
+  ```
+
+  安装babel的依赖
+
+  ```shell
+  npm install @babel/node @babel/core @babel/preset-env -D
+  ```
+
+  使用babel-node来执行模块文件
+
+  ```shell
+  npx babel-node esm.js 
+  
+  /Users/lijunjie/js-code/module-scheme/es_module_babel/esm.js:1
+  (function (exports, require, module, __filename, __dirname) { import name from './common.js';
+                                                                ^^^^^^
+  
+  SyntaxError: Unexpected token import
+  ```
+
+  需要制定我们需要的插件：
+
+  ```shell
+  $ npx babel-node esm.js --presets @babel/preset-env
+  foo
+  ```
+
+  每次执行都要设置`--presets`,我们可以将设置放入项目的根目录下
+
+  ```js
+  //.babelrc
+  
+  {
+      "presets": ["@babel/preset-env"]
+  }
+  ```
+
+  然后将在scripts中加入如下的命令,我们就可以使用`npm run build`	去执行代码了
+
+  ```js
+  
+  "scripts":{
+     "build":"babel-node esm.js"
+  }
+  ```
+
+  ### Babel的基本工作原理
+
+  ![babel-work](/frontEnd/babel-work.png)
+
+  presets是插件的集合，想我们常用的@babel-preset-env就是常用的插件的集合
+
+  ![babel-presets](/frontEnd/babel-preset.png)
+
+  上面我们可以安装一个只包含模块转换的插件：
+
+  ```shell
+  npm install @babel/plugin-transform-modules-commonjs -D
+  ```
+
+  ```js
+  // .babelrc
+  {
+  	// "presets": ["@babel/plugin-transform-modules-commonjs"]
+  	"plugins": ["@babel/plugin-transform-modules-commonjs"]
+  }
+  ```
+
+  
+
   
 
   
