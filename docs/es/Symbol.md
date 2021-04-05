@@ -1,6 +1,6 @@
-## Symbol
+### Symbol
 
-### 1.Symbol
+#### 1.Symbol
 
 es5中引入了中包含了5中原始类型：字符串、数字、布尔、null、underfined.es6中引入了第6中原始类型:Symbol.Symbol用来给对象添加非字符串属性。
 
@@ -50,7 +50,7 @@ for (const key in o) {
 console.log(Object.keys(o)) //[ 'name' ]
 ```
 
-### 2.创建Symbol和辨识
+#### 2.创建Symbol和辨识
 
 Symbol不像其他的原始类型拥有原始值，需要通过全局的函数Symbol()来创建它。Symbol可以接受一个可选的描述字符串作为参数。通过Symbol()创建的每一个
 
@@ -104,7 +104,7 @@ const o = { }
 o[firstName] = "hello ketty"
 console.log(o[firstName]) // "hello ketty"
 ```
-### 3.Symbol的使用
+#### 3.Symbol的使用
 
 所有可以使用计算属性的地方都可以使用Symbol.如对象字面量和Object.defineProperty().
 
@@ -121,7 +121,7 @@ writable: true
 
 ```
 
-### 4.Symbol的类型转换
+#### 4.Symbol的类型转换
 
 Symbol不能强制转换成Nubmer类型，String()方法会调用toString()方法,。Symbol的描述字符串保存在内部的[[description]]属性中，只有调用toString()的方法才能获取到该属性。console.log()也会默认调用该方法。
 ```js
@@ -150,7 +150,7 @@ if(firstName){
 
 ```
 
-### 5.属性检索
+#### 5.属性检索
 
 Object.keys()和Object.getOwnPropertyNames()方法不能获取到对象的Symbol属性。需要通过Object.getOwnPropertySymbols()方法来获取，其结果时值为Symbol的数字。
 
@@ -165,7 +165,7 @@ console.log(symArr[0] === firstName ) //true
 
 ```
 
-### 6.well-known Symbol
+#### 6.well-known Symbol
 
 es6中通过Symbol暴漏了一些语言的内部逻辑。我们把这些Symbol称之为well-known Symbol。下面来看Symbol.hasInstance这个well-known Symbol.
 

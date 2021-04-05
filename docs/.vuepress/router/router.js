@@ -24,7 +24,8 @@ module.exports = {
 		'/es/project',
 		'/es/gulp-demo',
 		'/es/this',
-		'/es/module'
+		'/es/module',
+		'/es/webpack'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
