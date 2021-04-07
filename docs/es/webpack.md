@@ -323,7 +323,206 @@ __webpack_require__.r(__webpack_exports__);
 * `_webpack_require__`函数执行的时候会对模块函数执行，同时返回导出的对象。
 * 模块函数在执行的时候会在导出对象上添加``__esModule`和`default`属性
 
+#### 使用webpack加载其他的资源
 
+```css
+// main.css
+
+body {
+	background: blueviolet;
+	padding: 40px;
+	min-width: 800px;
+}
+
+```
+
+`webpack.config.js`中将入口文件改成`main.css`
+
+```js
+//@ts-check
+const path = require('path')
+/**
+ * @type {import("webpack").Configuration}
+ */
+module.exports = {
+	mode: 'none',
+	//entry: './src/index.js',
+	entry: './src/main.css',
+	output: {
+		filename: 'bundle.js',
+		// 绝对路径
+		path: path.join(__dirname, 'dist')
+	}
+}
+```
+
+```shell
+npm run build
+...
+Module parse failed: Unexpected token (1:5)
+You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders
+```
+
+启动`webpack`去打包，发现报错了，原因在于webpack默认只能处理js模块文件，如果要处理其他类型的模块文件，需要使用loader,loader是webpack的核心，使用loader可以让webpack去处理其他的资源模块。
+
+![loader工作原理](/frontEnd/webpack-loader.png)
+
+css-loader只会去处理css文件，不会将转会后的模块添加上页面上，为了使css可以使用style-loader将css以style的形式添加到页面中：
+
+```shell
+npm install -D css-loader style-loader
+```
+
+修改webpack文件：
+
+```js
+module.exports = {
+	mode: 'none',
+	//entry: './src/index.js',
+	entry: './src/main.css',
+	output: {
+		filename: 'bundle.js',
+		// 绝对路径
+		path: path.join(__dirname, 'dist')
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			}
+		]
+	}
+}
+```
+
+打包后在浏览器上查看index.html,可以看到刚才的样式被以style的方式添加上了页面上。
+
+上面我们使用css文件作为打包的入口，对于前端应用来说，更常见的是使用js文件作为入口，在我们需要资源的地方导入资源文件，此时依赖资源文件的地方不再是整个应用，而是当前的模块。
+
+![webpack-bundle](/frontEnd/webpack-bundle.png)
+
+`webpack.config.js`文件
+
+```js
+module.exports = {
+	mode: 'none',
+	entry: './src/index.js',
+	//entry: './src/main.css',
+	output: {
+		filename: 'bundle.js',
+		// 绝对路径
+		path: path.join(__dirname, 'dist')
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			}
+		]
+	}
+}
+```
+
+`index.js`文件导入css文件：
+
+```js
+import createHeading from './heading.js'
+import './main.css'
+const heading = createHeading()
+
+document.body.append(heading)
+
+```
+
+打包后样式依然存在。
+
+webpack处理图片资源，在index.js中导入图片资源
+
+```js
+
+import createHeading from './heading.js'
+import './main.css'
+import logo from './logo.png'
+const heading = createHeading()
+
+document.body.append(heading)
+
+const img = new Image()
+
+img.src = logo
+
+document.body.append(img)
+```
+
+安装处理文件资源的`loader`.
+
+```shell
+npm install -D file-loader
+```
+
+在webpack中加入如下的内容：
+
+```js
+{
+				test: /\.png$/,
+				use: ['file-loader']
+}
+```
+
+```shell
+npm run build
+serve .
+```
+
+在页面中打开发现图片不显示，原因是我们打包的过程中没有处理`index.html`文件，而我们以项目的根目录作为网站的根目录，而webpack打包后会将所有的文件放在网站的根目录下面(`dist/`),所以当我们去获取图片资源的时候就会缺少`dist/`目录。处理办法就是在`webpack.config.js`中加入publicPath选项：
+
+```js
+output: {
+		filename: 'bundle.js',
+		// 绝对路径
+		path: path.join(__dirname, 'dist'),
+		publicPath: 'dist/'
+	},
+```
+
+重新打包后就可以显示图片了。我们知道webpack会讲资源文件转化为js模块在项目中使用，那么file-loader是如何处理的呢 ？我们导出的图片文件会被转化成js模块导入,`81cc72c63caf7ed30b381766d3df0456.png`是复制我们导入的图片文件到`dist/`并且重新命名。
+
+```js
+(function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (__webpack_require__.p + "81cc72c63caf7ed30b381766d3df0456.png");
+
+/***/ })
+
+```
+
+```js
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "dist/";
+```
+
+`__webpack_require__.p `是我们配置的publicPath.
+
+```js
+/* harmony import */ var _logo_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
+
+
+
+const heading = Object(_heading_js__WEBPACK_IMPORTED_MODULE_0__["default"])()
+
+document.body.append(heading)
+
+const img = new Image()
+
+img.src = _logo_png__WEBPACK_IMPORTED_MODULE_2__["default"]
+
+```
+
+使用的时候我们导入这个模块实质上是导入的图片的路径。
 
 
 
