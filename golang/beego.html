@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>创建一个beego应用 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.775e5fee.css" as="style"><link rel="preload" href="/assets/js/app.6fb23a83.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/45.6778b0eb.js" as="script"><link rel="prefetch" href="/assets/js/10.40461a30.js"><link rel="prefetch" href="/assets/js/11.d103858e.js"><link rel="prefetch" href="/assets/js/12.4232f768.js"><link rel="prefetch" href="/assets/js/13.b3734304.js"><link rel="prefetch" href="/assets/js/14.f2386497.js"><link rel="prefetch" href="/assets/js/15.308a89ff.js"><link rel="prefetch" href="/assets/js/16.db389cec.js"><link rel="prefetch" href="/assets/js/17.cf828fcb.js"><link rel="prefetch" href="/assets/js/18.899e9438.js"><link rel="prefetch" href="/assets/js/19.580699e9.js"><link rel="prefetch" href="/assets/js/20.332c8709.js"><link rel="prefetch" href="/assets/js/21.375795c8.js"><link rel="prefetch" href="/assets/js/22.50502a93.js"><link rel="prefetch" href="/assets/js/23.687897f9.js"><link rel="prefetch" href="/assets/js/24.ebc77e7a.js"><link rel="prefetch" href="/assets/js/25.337c6ea9.js"><link rel="prefetch" href="/assets/js/26.e762b5ea.js"><link rel="prefetch" href="/assets/js/27.13464cd3.js"><link rel="prefetch" href="/assets/js/28.523d766a.js"><link rel="prefetch" href="/assets/js/29.3987be3f.js"><link rel="prefetch" href="/assets/js/3.de1a5954.js"><link rel="prefetch" href="/assets/js/30.ff074f82.js"><link rel="prefetch" href="/assets/js/31.44d32a6e.js"><link rel="prefetch" href="/assets/js/32.b9b36b40.js"><link rel="prefetch" href="/assets/js/33.abe84780.js"><link rel="prefetch" href="/assets/js/34.2fb44918.js"><link rel="prefetch" href="/assets/js/35.a3098855.js"><link rel="prefetch" href="/assets/js/36.05c89a1c.js"><link rel="prefetch" href="/assets/js/37.27eda115.js"><link rel="prefetch" href="/assets/js/38.1dff405e.js"><link rel="prefetch" href="/assets/js/39.35c28552.js"><link rel="prefetch" href="/assets/js/4.e26bf81a.js"><link rel="prefetch" href="/assets/js/40.6405a5c2.js"><link rel="prefetch" href="/assets/js/41.34a3cdb8.js"><link rel="prefetch" href="/assets/js/42.18986dd4.js"><link rel="prefetch" href="/assets/js/43.7fdfe078.js"><link rel="prefetch" href="/assets/js/44.283ea1af.js"><link rel="prefetch" href="/assets/js/46.c9d8e532.js"><link rel="prefetch" href="/assets/js/47.74ec33ae.js"><link rel="prefetch" href="/assets/js/48.e6419c54.js"><link rel="prefetch" href="/assets/js/49.a850af05.js"><link rel="prefetch" href="/assets/js/5.ce8ed43a.js"><link rel="prefetch" href="/assets/js/50.7a85f1c4.js"><link rel="prefetch" href="/assets/js/51.e050e509.js"><link rel="prefetch" href="/assets/js/52.4e95e579.js"><link rel="prefetch" href="/assets/js/53.2c1823d9.js"><link rel="prefetch" href="/assets/js/54.dd273805.js"><link rel="prefetch" href="/assets/js/55.ef337569.js"><link rel="prefetch" href="/assets/js/56.f0e79429.js"><link rel="prefetch" href="/assets/js/57.eab487a7.js"><link rel="prefetch" href="/assets/js/58.3060e802.js"><link rel="prefetch" href="/assets/js/59.a7db315a.js"><link rel="prefetch" href="/assets/js/6.a3856d53.js"><link rel="prefetch" href="/assets/js/60.99117954.js"><link rel="prefetch" href="/assets/js/61.805588a2.js"><link rel="prefetch" href="/assets/js/62.bb5d85a6.js"><link rel="prefetch" href="/assets/js/7.02b760da.js"><link rel="prefetch" href="/assets/js/8.78eceb25.js"><link rel="prefetch" href="/assets/js/9.196b0b91.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.775e5fee.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link router-link-active">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link router-link-active">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/golang/cookie.html" class="sidebar-link">cookie 和 session</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/redis.html" class="sidebar-link">redis 的使用</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/go链接数据库.html" class="sidebar-link">golang 链接数据库</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#原理" class="sidebar-link">原理</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#查询数据" class="sidebar-link">查询数据</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#预处理" class="sidebar-link">预处理</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#事务" class="sidebar-link">事务</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#sqlx-库" class="sidebar-link">sqlx 库</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#sql-注入" class="sidebar-link">sql 注入</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#防止-sql-注入的方法" class="sidebar-link">防止 sql 注入的方法：</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#数据库查询错误" class="sidebar-link">数据库查询错误</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#查询的字段值包含关键字" class="sidebar-link">查询的字段值包含关键字</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#分页查询" class="sidebar-link">分页查询</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#in-模糊查询" class="sidebar-link">in 模糊查询</a></li><li class="sidebar-sub-header"><a href="/golang/go链接数据库.html#错误" class="sidebar-link">错误</a></li></ul></li><li><a href="/golang/beego.html" aria-current="page" class="active sidebar-link">创建一个beego应用</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/beego2.html" class="sidebar-link">配置文件</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/beego3.html" class="sidebar-link">session</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="创建一个beego应用"><a href="#创建一个beego应用" class="header-anchor">#</a> 创建一个beego应用</h4> <h5 id="create-hello-directory-cd-hello-directory"><a href="#create-hello-directory-cd-hello-directory" class="header-anchor">#</a> Create hello directory, cd hello directory</h5> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token function">mkdir</span> hello
+<span class="token builtin class-name">cd</span> hello
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h5 id="init-module"><a href="#init-module" class="header-anchor">#</a> Init module</h5> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>go mod init
+Download and <span class="token function">install</span>
+go get github.com/astaxie/beego
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h5 id="create-file-hello-go"><a href="#create-file-hello-go" class="header-anchor">#</a> Create file hello.go</h5> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">&quot;github.com/astaxie/beego&quot;</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    beego<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h5 id="build-and-run"><a href="#build-and-run" class="header-anchor">#</a> Build and run</h5> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>go build hello.go
+./hello
+Go to http://localhost:8080
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h4 id="使用bee工具创建一个beego应用"><a href="#使用bee工具创建一个beego应用" class="header-anchor">#</a> 使用bee工具创建一个beego应用</h4> <p>bee 工具是一个为了协助快速开发 beego 项目而创建的项目，通过 bee 您可以很容易的进行 beego 项目的创建、热编译、开发、测试、和部署。</p> <h4 id="bee安装"><a href="#bee安装" class="header-anchor">#</a> bee安装</h4> <p><a href="https://beego.me/docs/install/bee.md" target="_blank" rel="noopener noreferrer">bee安装<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>go get github.com/beego/bee
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h4 id="使用"><a href="#使用" class="header-anchor">#</a> 使用</h4> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>Bee is a Fast and Flexible tool <span class="token keyword">for</span> managing your Beego Web Application.
+
+Usage:
+
+    bee <span class="token builtin class-name">command</span> <span class="token punctuation">[</span>arguments<span class="token punctuation">]</span>
+
+The commands are:
+
+    version     show the bee <span class="token operator">&amp;</span> beego version
+    migrate     run database migrations
+    api         create an api application base on beego framework
+    bale        packs non-Go files to Go <span class="token builtin class-name">source</span> files    
+    new         create an application base on beego framework
+    run         run the app <span class="token function">which</span> can hot compile
+    pack        compress an beego project
+    fix         Fixes your application by making it compatible with newer versions of Beego
+    dlv         Start a debugging session using Delve
+    dockerize   Generates a Dockerfile <span class="token keyword">for</span> your Beego application
+    generate    Source code generator
+    hprose      Creates an RPC application based on Hprose and Beego frameworks
+    pack        Compresses a Beego application into a single <span class="token function">file</span>
+    rs          Run customized scripts
+    run         Run the application by starting a <span class="token builtin class-name">local</span> development server
+    server      serving static content over HTTP on port
+    
+Use bee <span class="token builtin class-name">help</span> <span class="token punctuation">[</span>command<span class="token punctuation">]</span> <span class="token keyword">for</span> <span class="token function">more</span> information about a command.
+    
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><ul><li>new命令创建一个web项目</li> <li>api命令用来api应用</li> <li>run命令用来启动一个项目（修改后不需要重新编译项目）</li></ul> <h4 id="使用bee创建一个web应用"><a href="#使用bee创建一个web应用" class="header-anchor">#</a> 使用bee创建一个web应用</h4> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>bee new myproject
+<span class="token punctuation">[</span>INFO<span class="token punctuation">]</span> Creating application<span class="token punctuation">..</span>.
+/gopath/src/myproject/
+/gopath/src/myproject/conf/
+/gopath/src/myproject/controllers/
+/gopath/src/myproject/models/
+/gopath/src/myproject/static/
+/gopath/src/myproject/static/js/
+/gopath/src/myproject/static/css/
+/gopath/src/myproject/static/img/
+/gopath/src/myproject/views/
+/gopath/src/myproject/conf/app.conf
+/gopath/src/myproject/controllers/default.go
+/gopath/src/myproject/views/index.tpl
+/gopath/src/myproject/main.go
+<span class="token number">13</span>-11-25 09:50:39 <span class="token punctuation">[</span>SUCC<span class="token punctuation">]</span> New application successfully created<span class="token operator">!</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><p>目录结构</p> <div class="language-shellmyproject line-numbers-mode"><pre class="language-text"><code>├── conf
+│   └── app.conf
+├── controllers
+│   └── default.go
+├── main.go
+├── models
+├── routers
+│   └── router.go
+├── static
+│   ├── css
+│   ├── img
+│   └── js
+├── tests
+│   └── default_test.go
+└── views
+    └── index.tpl
+
+8 directories, 4 files
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><ul><li>conf下是项目ip和port的配置信息</li> <li>models、views、controllers  对应MVC结构</li> <li>routers用来配置路由信息</li> <li>main.go 项目的入口文件</li> <li>static 项目中用到的静态文件</li></ul> <h4 id="beego项目的执行逻辑"><a href="#beego项目的执行逻辑" class="header-anchor">#</a> beego项目的执行逻辑</h4> <p><img src="/golang/76AAE751-C169-438F-8A04-0275554AB2F0.png" alt="fbe5539a293a12539c64dec82a7a84ad"></p> <h4 id="controller解析"><a href="#controller解析" class="header-anchor">#</a> Controller解析</h4> <ul><li>在main.go中加在路由，会执行router文件中的init()</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token boolean">_</span> <span class="token string">&quot;bee_go_demo/routers&quot;</span>
+	<span class="token string">&quot;github.com/astaxie/beego&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	beego<span class="token punctuation">.</span><span class="token function">Run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><ul><li>router.go</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">package</span> routers
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;bee_go_demo/controllers&quot;</span>
+
+	<span class="token string">&quot;github.com/astaxie/beego&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	beego<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token string">&quot;/&quot;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>controllers<span class="token punctuation">.</span>MainController<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+	beego<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token string">&quot;/user&quot;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>controllers<span class="token punctuation">.</span>UserController<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><ul><li>根据路由对应不同的controller的地址,根据不同的请求方法调用controller的方法 get-&gt;Get post-&gt;Post</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">package</span> controllers
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+	<span class="token string">&quot;github.com/astaxie/beego&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">type</span> MainController <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	beego<span class="token punctuation">.</span>Controller
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	c<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Website&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;beego.me&quot;</span>
+	c<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Email&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;astaxie@gmail.com&quot;</span>
+	c<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;index.tpl&quot;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> UserController <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	beego<span class="token punctuation">.</span>Controller
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>UserController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//this.Ctx.WriteString(&quot;hello wolrd!&quot;)</span>
+	this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Name&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;yiluhuakai&quot;</span>
+	this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Age&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;32&quot;</span>
+	this<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;user.html&quot;</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><ul><li>go中使用组合代替继承，每个controller都包含一个匿名字段beego.Controller</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token operator">...</span>
+<span class="token keyword">type</span> Controller <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	<span class="token comment">// context data</span>
+	Ctx  <span class="token operator">*</span>context<span class="token punctuation">.</span>Context
+	Data <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+	<span class="token comment">// route controller info</span>
+	controllerName <span class="token builtin">string</span>
+	actionName     <span class="token builtin">string</span>
+	methodMapping  <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//method:routertree</span>
+	AppController  <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+	<span class="token comment">// template data</span>
+	TplName        <span class="token builtin">string</span>
+	ViewPath       <span class="token builtin">string</span>
+	Layout         <span class="token builtin">string</span>
+	LayoutSections <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token comment">// the key is the section name and the value is the template name</span>
+	TplPrefix      <span class="token builtin">string</span>
+	TplExt         <span class="token builtin">string</span>
+	EnableRender   <span class="token builtin">bool</span>
+
+	<span class="token comment">// xsrf data</span>
+	_xsrfToken <span class="token builtin">string</span>
+	XSRFExpire <span class="token builtin">int</span>
+	EnableXSRF <span class="token builtin">bool</span>
+
+	<span class="token comment">// session</span>
+	CruSession session<span class="token punctuation">.</span>Store
+<span class="token punctuation">}</span>
+<span class="token comment">// Get adds a request function to handle GET request.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	http<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> <span class="token string">&quot;Method Not Allowed&quot;</span><span class="token punctuation">,</span> http<span class="token punctuation">.</span>StatusMethodNotAllowed<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Post adds a request function to handle POST request.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Post</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	http<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> <span class="token string">&quot;Method Not Allowed&quot;</span><span class="token punctuation">,</span> http<span class="token punctuation">.</span>StatusMethodNotAllowed<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Delete adds a request function to handle DELETE request.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Delete</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	http<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> <span class="token string">&quot;Method Not Allowed&quot;</span><span class="token punctuation">,</span> http<span class="token punctuation">.</span>StatusMethodNotAllowed<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Put adds a request function to handle PUT request.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>Controller<span class="token punctuation">)</span> <span class="token function">Put</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	http<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> <span class="token string">&quot;Method Not Allowed&quot;</span><span class="token punctuation">,</span> http<span class="token punctuation">.</span>StatusMethodNotAllowed<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token operator">...</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br></div></div><ul><li>当我们不去实现Get方法时，回去调用beego.Controlle中的Get方法</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code>
+<span class="token keyword">type</span> MainController <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	beego<span class="token punctuation">.</span>Controller
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	c<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Website&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;beego.me&quot;</span>
+	c<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;Email&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;astaxie@gmail.com&quot;</span>
+	c<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;index.tpl&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><h4 id="修改模版目录"><a href="#修改模版目录" class="header-anchor">#</a> 修改模版目录</h4> <p>beego 中默认的模板目录是 views，用户可以把模板文件放到该目录下，beego 会自动在该目录下的所有模板文件进行解析并缓存，开发模式下每次都会重新解析，不做缓存。当然，用户也可以通过如下的方式改变模板的目录（只能指定一个目录为模板目录）：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code>beego<span class="token punctuation">.</span><span class="token function">SetViewsPath</span><span class="token punctuation">(</span><span class="token string">&quot;views&quot;</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>活着在conf下修改配置</p> <div class="language-conf line-numbers-mode"><pre class="language-text"><code>viewsPath = hello
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h4 id="指定模版引擎"><a href="#指定模版引擎" class="header-anchor">#</a> 指定模版引擎</h4> <ul><li><p>在前面编写 Controller 的时候，我们在 Get 里面写过这样的语句 this.TplName = &quot;index.tpl&quot;，设置显示的模板文件，默认支持 tpl 和 html 的后缀名，如果想设置其他后缀你可以调用 beego.AddTemplateExt 接口设置</p> <ul><li>beego.AddTemplateExt(&quot;后缀名&quot;)</li></ul></li> <li><p>当不指定模版，回默认使用controller/&lt;方法名&gt;.tpl</p></li> <li><p>数据渲染 c.Data[&quot;Website&quot;] = &quot;beego.me&quot;</p> <ul><li>模版中使用 { {.Website} }  其中.代表上下文</li></ul></li></ul> <h4 id="模版语法"><a href="#模版语法" class="header-anchor">#</a> 模版语法</h4> <p><a href="https://beego.me/docs/mvc/view/tutorial.md" target="_blank" rel="noopener noreferrer">模版语法指南<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <h4 id="结构体"><a href="#结构体" class="header-anchor">#</a> 结构体</h4> <div class="language-go line-numbers-mode"><pre class="language-go"><code>
+<span class="token keyword">type</span> User <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Id   <span class="token builtin">int</span>
+	Name <span class="token builtin">string</span>
+	Age  <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+
+user1 <span class="token operator">:=</span> User<span class="token punctuation">{</span>
+		Id<span class="token punctuation">:</span>   <span class="token number">1</span><span class="token punctuation">,</span>
+		Name<span class="token punctuation">:</span> <span class="token string">&quot;yiluhuakai&quot;</span><span class="token punctuation">,</span>
+		Age<span class="token punctuation">:</span>  <span class="token number">3</span><span class="token punctuation">,</span>
+	<span class="token punctuation">}</span>
+this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;user&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> user1
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><div class="language-html line-numbers-mode"><pre class="language-html"><code>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>ID:{{.user.Id}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Name:{{.user.Name}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>Age:{{.user.Age}}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h4 id="range-end-用于遍历"><a href="#range-end-用于遍历" class="header-anchor">#</a> range … end  用于遍历</h4> <ul><li>{ {range pipeline}}{{.} }{ {end} }</li> <li>pipeline 支持的类型为 array, slice, map, channelrange 循环内部的</li> <li>. 改变为以上类型的子元素,对应的值长度为 0 时，range 不会执行，. 不会改变</li></ul> <div class="language-html line-numbers-mode"><pre class="language-html"><code>pages := []struct {
+    Num int
+}{{10}, {20}, {30}}
+
+this.Data[&quot;Total&quot;] = 100
+this.Data[&quot;Pages&quot;] = pages
+使用 .Num 输出子元素的 Num 属性，使用 $. 引用模板中的根级上下文
+
+{{range .Pages}}
+    {{.Num}} of {{$.Total}}
+{{end}}
+使用创建的变量，在这里和 go 中的 range 用法是相同的。
+
+{{range $index, $elem := .Pages}}
+    {{$index}} - {{$elem.Num}} - {{.Num}} of {{$.Total}}
+{{end}}
+range 也支持 else
+
+{{range .Pages}}
+{{else}}
+    {{/* 当 .Pages 为空 或者 长度为 0 时会执行这里 */}}
+{{end}}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><h4 id="静态文件"><a href="#静态文件" class="header-anchor">#</a> 静态文件</h4> <p>beego 默认注册了 static 目录为静态处理的目录，注册样式：URL 前缀和映射的目录（在/main.go文件中beego.Run()之前加入）：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code>StaticDir<span class="token punctuation">[</span><span class="token string">&quot;/static&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">&quot;static&quot;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>Go 语言内部其实已经提供了 http.ServeFile，通过这个函数可以实现静态文件的服务。beego 针对这个功能进行了一层封装，通过下面的方式进行静态文件注册：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code>beego<span class="token punctuation">.</span><span class="token function">SetStaticPath</span><span class="token punctuation">(</span><span class="token string">&quot;/static&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;public&quot;</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>第一个参数是路径，url 路径信息
+第二个参数是静态文件目录（相对应用所在的目录）
+beego 支持多个目录的静态文件注册，用户可以注册如下的静态文件目录：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code>beego<span class="token punctuation">.</span><span class="token function">SetStaticPath</span><span class="token punctuation">(</span><span class="token string">&quot;/images&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;images&quot;</span><span class="token punctuation">)</span>
+beego<span class="token punctuation">.</span><span class="token function">SetStaticPath</span><span class="token punctuation">(</span><span class="token string">&quot;/css&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;css&quot;</span><span class="token punctuation">)</span>
+beego<span class="token punctuation">.</span><span class="token function">SetStaticPath</span><span class="token punctuation">(</span><span class="token string">&quot;/js&quot;</span><span class="token punctuation">,</span><span class="token string">&quot;js&quot;</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h4 id="获取query"><a href="#获取query" class="header-anchor">#</a> 获取query</h4> <p><a href="https://beego.me/docs/mvc/controller/params.md" target="_blank" rel="noopener noreferrer">请求参数获取<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p> <p>我们经常需要获取用户传递的数据，包括 Get、POST 等方式的请求，beego 里面会自动解析这些数据，你可以通过如下方式获取数据：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token function">GetString</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token function">GetStrings</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+<span class="token function">GetInt</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int64</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span class="token function">GetBool</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">bool</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span class="token function">GetFloat</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">float64</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span>
+<span class="token comment">// 获取一个字段的多个参数</span>
+<span class="token function">GetString</span><span class="token punctuation">(</span>key <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>使用例子如下：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Post</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    jsoninfo <span class="token operator">:=</span> this<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">&quot;jsoninfo&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> jsoninfo <span class="token operator">==</span> <span class="token string">&quot;&quot;</span> <span class="token punctuation">{</span>
+        this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span><span class="token function">WriteString</span><span class="token punctuation">(</span><span class="token string">&quot;jsoninfo is empty&quot;</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>如果你需要的数据可能是其他类型的，例如是 int 类型而不是 int64，那么你需要这样处理：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Post</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    id <span class="token operator">:=</span> this<span class="token punctuation">.</span><span class="token function">Input</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token string">&quot;id&quot;</span><span class="token punctuation">)</span>
+    intid<span class="token punctuation">,</span> err <span class="token operator">:=</span> strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h4 id="获取params"><a href="#获取params" class="header-anchor">#</a> 获取params</h4> <ul><li>路由设置</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code>beego<span class="token punctuation">.</span><span class="token function">Router</span><span class="token punctuation">(</span><span class="token string">&quot;/user/?:id&quot;</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>controllers<span class="token punctuation">.</span>UserController<span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><ul><li>获取param</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">//method1</span>
+id <span class="token operator">:=</span> this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>Input<span class="token punctuation">.</span><span class="token function">Param</span><span class="token punctuation">(</span><span class="token string">&quot;:id&quot;</span><span class="token punctuation">)</span>
+
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;id=%v\n&quot;</span><span class="token punctuation">,</span> id<span class="token punctuation">)</span>
+<span class="token comment">//method2</span>
+id1 <span class="token operator">:=</span> this<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">&quot;:id&quot;</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;id=%v\n&quot;</span><span class="token punctuation">,</span> id1<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h5 id="解析结构体"><a href="#解析结构体" class="header-anchor">#</a> 解析结构体</h5> <ul><li>Content-Type：application/x-www-form-urlencoded</li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">type</span> User <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Id   <span class="token builtin">int</span>    <span class="token string">`form:&quot;-&quot;`</span>
+	Name <span class="token builtin">string</span> <span class="token string">`form:&quot;name&quot;`</span>
+	Age  <span class="token builtin">string</span>  <span class="token string">`form:&quot;age&quot;`</span>
+<span class="token punctuation">}</span>
+user <span class="token operator">:=</span> User<span class="token punctuation">{</span><span class="token punctuation">}</span>
+err <span class="token operator">:=</span> this<span class="token punctuation">.</span><span class="token function">ParseForm</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>user<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;err=%v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>Output<span class="token punctuation">.</span><span class="token function">JSON</span><span class="token punctuation">(</span>err<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><p>postman 中指定 Content-Type：application/x-www-form-urlencoded
+body:name=hello&amp;age=23，不能指定为int.</p> <ul><li>application/json
+<ul><li>在配置文件里设置 copyrequestbody = true</li> <li>在 Controller 中</li></ul></li></ul> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">type</span> User <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+	Id   <span class="token builtin">int</span>    <span class="token string">`form:&quot;-&quot;`</span>
+	Name <span class="token builtin">string</span> <span class="token string">`form:&quot;name&quot;`</span>
+	Age  <span class="token builtin">int</span>    <span class="token string">`form:&quot;age&quot;`</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>UserController<span class="token punctuation">)</span> <span class="token function">Post</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//  解析到结构体</span>
+	user <span class="token operator">:=</span> User<span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token keyword">if</span> err <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">Unmarshal</span><span class="token punctuation">(</span>this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>Input<span class="token punctuation">.</span>RequestBody<span class="token punctuation">,</span> <span class="token operator">&amp;</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+		<span class="token comment">//objectid := models.AddOne(ob)</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;user=%#v\n&quot;</span><span class="token punctuation">,</span> user<span class="token punctuation">)</span>
+		this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;json&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> user
+	<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+		this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;json&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> err<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token punctuation">}</span>
+	this<span class="token punctuation">.</span><span class="token function">ServeJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><p>postman 的body</p> <div class="language-json line-numbers-mode"><pre class="language-json"><code><span class="token punctuation">{</span>
+  <span class="token property">&quot;name&quot;</span><span class="token operator">:</span><span class="token string">&quot;li&quot;</span><span class="token punctuation">,</span>
+  <span class="token property">&quot;age&quot;</span><span class="token operator">:</span><span class="token number">23</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h4 id="多种格式输出"><a href="#多种格式输出" class="header-anchor">#</a> 多种格式输出</h4> <p>beego 当初设计的时候就考虑了 API 功能的设计，而我们在设计 API 的时候经常是输出 JSON 或者 XML 数据，那么 beego 提供了这样的方式直接输出：</p> <p>注意 struct 属性应该 为 exported Identifier
+首字母应该大写
+JSON 数据直接输出：</p> <div class="language-GO line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>AddController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    mystruct <span class="token operator">:=</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+    this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;json&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">&amp;</span>mystruct
+    this<span class="token punctuation">.</span><span class="token function">ServeJSON</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>调用 ServeJSON 之后，会设置 content-type 为 application/json，然后同时把数据进行 JSON 序列化输出。</p> <p>XML 数据直接输出：</p> <div class="language-GO line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>AddController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    mystruct <span class="token operator">:=</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+    this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;xml&quot;</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">&amp;</span>mystruct
+    this<span class="token punctuation">.</span><span class="token function">ServeXML</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>调用 ServeXML 之后，会设置 content-type 为 application/xml，同时数据会进行 XML 序列化输出。</p> <p>jsonp 调用</p> <div class="language-Go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token punctuation">(</span>this <span class="token operator">*</span>AddController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    mystruct <span class="token operator">:=</span> <span class="token punctuation">{</span> <span class="token operator">...</span> <span class="token punctuation">}</span>
+    this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;jsonp&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">&amp;</span>mystruct
+    this<span class="token punctuation">.</span><span class="token function">ServeJSONP</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+调用 ServeJSONP 之后，会设置 content<span class="token operator">-</span><span class="token keyword">type</span> 为 application<span class="token operator">/</span>javascript，然后同时把数据进行 JSON 序列化，然后根据请求的 callback 参数设置 jsonp 输出。
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>开发模式下序列化后输出的是格式化易阅读的 JSON 或 XML 字符串；在生产模式下序列化后输出的是压缩的字符串。</p> <p>使用原生的jsonp请求</p> <div class="language-html line-numbers-mode"><pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>jsonp<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script"><span class="token language-javascript">
+    <span class="token keyword">function</span> <span class="token function">callbackFunction</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+        <span class="token keyword">var</span> html <span class="token operator">=</span> <span class="token string">'&lt;ul&gt;'</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            html <span class="token operator">+=</span> <span class="token string">'&lt;li&gt;'</span> <span class="token operator">+</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">'&lt;/li&gt;'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        html <span class="token operator">+=</span> <span class="token string">'&lt;/ul&gt;'</span><span class="token punctuation">;</span>
+
+        <span class="token function">$</span><span class="token punctuation">(</span><span class="token string">'#jsonp'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">html</span><span class="token punctuation">(</span>html<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>/jsonp?callback=callbackFunction<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span> 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><div class="language-go line-numbers-mode"><pre class="language-go"><code>data <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">&quot;customername1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;customername2&quot;</span><span class="token punctuation">}</span>
+this<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;jsonp&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">&amp;</span>data
+this<span class="token punctuation">.</span><span class="token function">ServeJSONP</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>返回的数据</p> <div class="language-text line-numbers-mode"><pre class="language-text"><code>if(window.callbackFunction) callbackFunction([&quot;customername1&quot;, &quot;customername2&quot;])
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>使用jquery的方式</p> <div class="language-js line-numbers-mode"><pre class="language-js"><code><span class="token keyword">function</span> <span class="token function">callbackFunction</span><span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+
+			console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+			<span class="token keyword">var</span> html <span class="token operator">=</span> <span class="token string">'&lt;ul&gt;'</span><span class="token punctuation">;</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> data<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				html <span class="token operator">+=</span> <span class="token string">'&lt;li&gt;'</span> <span class="token operator">+</span> data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">'&lt;/li&gt;'</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+			html <span class="token operator">+=</span> <span class="token string">'&lt;/ul&gt;'</span><span class="token punctuation">;</span>
+
+			<span class="token function">$</span><span class="token punctuation">(</span><span class="token string">'#jsonp'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">html</span><span class="token punctuation">(</span>html<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		$<span class="token punctuation">.</span><span class="token function">ajax</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+			url<span class="token operator">:</span> <span class="token string">&quot;/jsonp&quot;</span><span class="token punctuation">,</span>
+			type<span class="token operator">:</span> <span class="token string">&quot;GET&quot;</span><span class="token punctuation">,</span>
+			dataType<span class="token operator">:</span> <span class="token string">&quot;jsonp&quot;</span><span class="token punctuation">,</span> <span class="token comment">//指定服务器返回的数据类型</span>
+			jsonpCallback<span class="token operator">:</span> <span class="token string">&quot;callbackFunction&quot;</span><span class="token punctuation">,</span> <span class="token comment">//指定回调函数</span>
+			<span class="token function-variable function">success</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">res</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+				console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>res<span class="token punctuation">)</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><p>后端代码</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code>    callback <span class="token operator">:=</span> this<span class="token punctuation">.</span><span class="token function">GetString</span><span class="token punctuation">(</span><span class="token string">&quot;callback&quot;</span><span class="token punctuation">)</span>
+	data <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">&quot;customername1&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;customername2&quot;</span><span class="token punctuation">}</span>
+
+	json<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">:=</span> json<span class="token punctuation">.</span><span class="token function">Marshal</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+	responseStr <span class="token operator">:=</span> fmt<span class="token punctuation">.</span><span class="token function">Sprintf</span><span class="token punctuation">(</span><span class="token string">&quot;%s(%s)&quot;</span><span class="token punctuation">,</span> callback<span class="token punctuation">,</span> <span class="token function">string</span><span class="token punctuation">(</span>json<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>Output<span class="token punctuation">.</span><span class="token function">Header</span><span class="token punctuation">(</span><span class="token string">&quot;Content-Type&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;application/javascript&quot;</span><span class="token punctuation">)</span>
+
+	this<span class="token punctuation">.</span>Ctx<span class="token punctuation">.</span>Output<span class="token punctuation">.</span><span class="token function">Body</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span>responseStr<span class="token punctuation">)</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><h4 id="flash数据"><a href="#flash数据" class="header-anchor">#</a> flash数据</h4> <p>这个 flash 与 Adobe/Macromedia Flash 没有任何关系。它主要用于在两个逻辑间传递临时数据，flash 中存放的所有数据会在紧接着的下一个逻辑中调用后清除。一般用于传递提示和错误消息。它适合 Post/Redirect/Get 模式。下面看使用的例子：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token comment">// 显示设置信息</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    flash<span class="token operator">:=</span>beego<span class="token punctuation">.</span><span class="token function">ReadFromRequest</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c<span class="token punctuation">.</span>Controller<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> n<span class="token punctuation">,</span>ok<span class="token operator">:=</span>flash<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;notice&quot;</span><span class="token punctuation">]</span><span class="token punctuation">;</span>ok<span class="token punctuation">{</span>
+        <span class="token comment">// 显示设置成功</span>
+        c<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;set_success.html&quot;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> n<span class="token punctuation">,</span>ok<span class="token operator">=</span>flash<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;error&quot;</span><span class="token punctuation">]</span><span class="token punctuation">;</span>ok<span class="token punctuation">{</span>
+        <span class="token comment">// 显示错误</span>
+        c<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;set_error.html&quot;</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token comment">// 不然默认显示设置页面</span>
+        c<span class="token punctuation">.</span>Data<span class="token punctuation">[</span><span class="token string">&quot;list&quot;</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token function">GetInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span>TplName <span class="token operator">=</span> <span class="token string">&quot;setting_list.html&quot;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// 处理设置信息</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>MainController<span class="token punctuation">)</span> <span class="token function">Post</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    flash<span class="token operator">:=</span>beego<span class="token punctuation">.</span><span class="token function">NewFlash</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    setting<span class="token operator">:=</span>Settings<span class="token punctuation">{</span><span class="token punctuation">}</span>
+    valid <span class="token operator">:=</span> Validation<span class="token punctuation">{</span><span class="token punctuation">}</span>
+    c<span class="token punctuation">.</span><span class="token function">ParseForm</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>setting<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> b<span class="token punctuation">,</span> err <span class="token operator">:=</span> valid<span class="token punctuation">.</span><span class="token function">Valid</span><span class="token punctuation">(</span>setting<span class="token punctuation">)</span><span class="token punctuation">;</span>err<span class="token operator">!=</span><span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        flash<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token string">&quot;Settings invalid!&quot;</span><span class="token punctuation">)</span>
+        flash<span class="token punctuation">.</span><span class="token function">Store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c<span class="token punctuation">.</span>Controller<span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">Redirect</span><span class="token punctuation">(</span><span class="token string">&quot;/setting&quot;</span><span class="token punctuation">,</span><span class="token number">302</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span><span class="token keyword">else</span> <span class="token keyword">if</span> b<span class="token operator">!=</span><span class="token boolean">nil</span><span class="token punctuation">{</span>
+        flash<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token string">&quot;validation err!&quot;</span><span class="token punctuation">)</span>
+        flash<span class="token punctuation">.</span><span class="token function">Store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c<span class="token punctuation">.</span>Controller<span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span><span class="token function">Redirect</span><span class="token punctuation">(</span><span class="token string">&quot;/setting&quot;</span><span class="token punctuation">,</span><span class="token number">302</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">saveSetting</span><span class="token punctuation">(</span>setting<span class="token punctuation">)</span>
+    flash<span class="token punctuation">.</span><span class="token function">Notice</span><span class="token punctuation">(</span><span class="token string">&quot;Settings saved!&quot;</span><span class="token punctuation">)</span>
+    flash<span class="token punctuation">.</span><span class="token function">Store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>c<span class="token punctuation">.</span>Controller<span class="token punctuation">)</span>
+    c<span class="token punctuation">.</span><span class="token function">Redirect</span><span class="token punctuation">(</span><span class="token string">&quot;/setting&quot;</span><span class="token punctuation">,</span><span class="token number">302</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br></div></div><p>上面的代码执行的大概逻辑是这样的：</p> <ol><li>Get 方法执行，因为没有 flash 数据，所以显示设置页面。</li> <li>用户设置信息之后点击递交，执行 Post，然后初始化一个 flash，通过验证，验证出错或者验证不通过设置 flash 的错误，如果通过了就保存设置，然后设置 flash 成功设置的信息。</li> <li>设置完成后跳转到 Get 请求。</li> <li>Get 请求获取到了 Flash 信息，然后执行相应的逻辑，如果出错显示出错的页面，如果成功显示成功的页面。
+默认情况下 ReadFromRequest 函数已经实现了读取的数据赋值给 flash，所以在你的模板里面你可以这样读取数据</li></ol> <p>​</p></div> <footer class="page-edit"><!----> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">4/8/2021, 2:52:06 PM</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/golang/go链接数据库.html" class="prev">
+        golang 链接数据库
+      </a></span> <span class="next"><a href="/golang/beego2.html">
+        配置文件
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.6fb23a83.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/45.6778b0eb.js" defer></script>
+  </body>
+</html>
