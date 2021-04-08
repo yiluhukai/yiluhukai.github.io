@@ -524,6 +524,84 @@ img.src = _logo_png__WEBPACK_IMPORTED_MODULE_2__["default"]
 
 使用的时候我们导入这个模块实质上是导入的图片的路径。
 
+#### Data Urls和url-loader
+
+**Data URLs**，即前缀为 `data:` 协议的URL，其允许内容创建者向文档中嵌入小文件。
+
+![data ulrs格式](/frontEnd/data-urls.png)
+
+表示文本数据：
+
+![data-urls-text](/frontEnd/data-urls-text.png)
+
+表示图片数据:
+
+![data-urls-png](/frontEnd/data-urls-png.png)
+
+使用url-loader可以任意文件类型转化为`data urls`类型，与file-loader对文件做copy来讲，url-loader会将转化后的文件内容以`data-urls`形式放入模块中。
+
+```js
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAMAAAC3Ycb+AAACLlBMVEVMaXFBuINBuIM8enI/fVXv5pzGNfrZxL7gYbCvSs9hX7EOetgXPAz2V....Wquhn3Bw2BfrT7DviRJkiRJkiRJkiRJkiRJkiQNszucKAuToL+DiQAAAABJRU5ErkJggg==");
+
+/***/ })
+```
+
+这样子带来的好处会减少资源文件的请求次数，但是当文件过大时，会导致打包后的包文件过大。所以：
+
+* 小文件使用url-loader转换，可以减少请求次数
+* 大文件使用file-loader转化，可以提高加载的速度。
+
+使用url-loader加载图片
+
+```shell
+npm install -D url-loader 
+```
+
+```js
+  {
+				test: /\.png$/,
+				use: ['url-loader']
+	}
+```
+
+如果想用url-loader处理小文件，file-loader处理大文件可以这么配置
+
+```js
+{
+				test: /\.png$/,
+				use: {
+					loader: 'url-loader',
+					options: {
+						limit: 10 * 1024 // 10KB
+					}
+				}
+}
+```
+
+当文件大于10kB时url-loader会使用file-loader去处理图片文件，所以需要安装file-loader依赖。
+
+#### 资源加载器的分类
+
+* 编译转换类
+
+  ![css-loader](/frontEnd/loader1.png)
+
+* 文件操作类
+
+  ![file-loader](/frontEnd/loader2.png)
+
+* 代码检查类
+
+  ![file-loader](/frontEnd/loader3.png)
+
+
+
+
+
 
 
 
