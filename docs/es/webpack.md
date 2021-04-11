@@ -598,9 +598,653 @@ npm install -D url-loader
 
   ![file-loader](/frontEnd/loader3.png)
 
+#### webpack和ES 2015
 
+webpack会默认处理模块中的import和export关键字，但是并不会处理其他的ES2015的语法，如果要对ES 2015的语法做转换，需要使用babel-loader配合babel去对代码做转换。
 
+安装`babel-loader`和`babel`的依赖：
 
+```shell
+npm install babel-loader @babel/core @babel-preset-env -D
+```
+
+ 然后配置`webpack`
+
+```js
+{
+				test: /\.js$/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env']
+					}
+				}
+}
+```
+
+#### webpack触发模块加载的方式
+
+* js文件
+
+  * 支持 ES Modules 的 import 声明
+
+  ```js
+  // // 1. 支持 ES Modules 的 import 声明
+  // ////////////////////////////////////////////////////////////////////////////////
+  
+  import createHeading from './heading.js'
+  import better from './better.png'
+  import './main.css'
+  
+  const heading = createHeading()
+  const img = new Image()
+  img.src = better
+  document.body.append(heading)
+  document.body.append(img)
+  ```
+
+  * 支持 CommonJS 的 require 函数
+
+    ```js
+    // // 2. 支持 CommonJS 的 require 函数
+    // ////////////////////////////////////////////////////////////////////////////////
+    
+    const createHeading = require('./heading.js').default
+    const better = require('./better.png')
+    require('./main.css')
+    
+    const heading = createHeading()
+    const img = new Image()
+    img.src = better
+    document.body.append(heading)
+    document.body.append(img)
+    ```
+
+  * AMD规范中的require和define函数
+
+    ```js
+    // // 3. 支持 AMD 的 require / define 函数
+    // ////////////////////////////////////////////////////////////////////////////////
+    
+    // define(['./heading.js', './better.png', './main.css'], (createHeading, better) => {
+    //   const heading = createHeading.default()
+    //   const img = new Image()
+    //   img.src = better
+    //   document.body.append(heading)
+    //   document.body.append(img)
+    // })
+    
+    // require(['./heading.js', './better.png', './main.css'], (createHeading, better) => {
+    //   const heading = createHeading.default()
+    //   const img = new Image()
+    //   img.src = better
+    //   document.body.append(heading)
+    //   document.body.append(img)
+    //})
+    ```
+
+* css文件中
+
+  * @import指令
+  * url("")
+
+  ```js
+  @import url(reset.css);
+  /*css-loader 同样支持 sass/less 风格的 @import 指令*/
+  /*@import 'reset.css';*/
+  
+  body {
+    min-height: 100vh;
+    background: #f4f8fb;
+    background-image: url(background.png);
+    background-size: cover;
+  }
+  ```
+
+  * 需要css-loader和file-loader去处理css和图片
+
+* html文件中
+
+  * src
+  * href
+
+  ```js
+  <footer>
+    <!-- <img src="better.png" alt="better" width="256"> -->
+    <a href="better.png">download png</a>
+  </footer>
+  ```
+
+  * 需要html-loader
+
+    ```js
+     {
+            test: /.html$/,
+            use: {
+              loader: 'html-loader',
+              options: {
+                attrs: ['img:src', 'a:href']
+              }
+            }
+      }
+    ```
+
+#### webpack的工作原理
+
+* webpack是一个模块打包工具。
+
+![webpack](/frontEnd/webpack-work.png)
+
+* 打包的过程是从一个入口文件开始去查找它的依赖项，将所有的依赖转成一个树，将树中的不同模块使用不同的loader启用处理，将所有的结果放到bundle.js中。
+
+![webpack](/frontEnd/webpack-work-process.png)
+
+#### 开发一个自己的loader
+
+我们要实现一个处理markdown文件的loader.首先我们需要明确loader的一些特性：
+
+* loader应该是一个npm包
+* loader是一种管道思想实现的，多个loader可以配合使用
+* loader负责文件从输入到输出的转换
+
+为了简单期间我们在项目的根目录下创建一个loader文件，而不是发布一个npm的包。
+
+```shell
+mkdir 03-webpack-loader & cd 03-webpack-loader
+npm init -y
+```
+
+目录树如下：
+
+```shell
+├── dist
+│   └── bundle.js
+├── hello.md
+├── index.html
+├── markdown-loader.js
+├── package-lock.json
+├── package.json
+└── webpack.config.js
+```
+
+* dist目录是打包后的内容
+
+* hello.md文件
+
+  ```markdown
+  #### Hello
+  
+  ​```js
+  console.log('hello')
+  ​```
+  ```
+
+* `index.html`中引入了打包后的内容：
+
+  ```html
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+  </head>
+  
+  <body>
+      <script src="./dist/bundle.js"></script>
+  </body>
+  
+  </html>
+  
+  ```
+
+* `markdown-loader`
+
+  ```js
+  /**
+   *
+   * 接受要转换的内容，返回转化后的内容
+   *
+   */
+  module.exports = source => {
+  	return source
+  }
+  ```
+
+* `webpack.config.js`:
+
+  ```js
+  //@ts-check
+  const path = require('path')
+  /**
+   * @type {import("webpack").Configuration}
+   */
+  module.exports = {
+  	mode: 'none',
+  	entry: './hello.md',
+  	//entry: './src/main.css',
+  	output: {
+  		filename: 'bundle.js',
+  		// 绝对路径
+  		path: path.join(__dirname, 'dist'),
+  		publicPath: 'dist/'
+  	},
+  	module: {
+  		rules: [
+  			{
+  				test: /\.md$/,
+  				use: ['./markdown-loader']
+  			}
+  		]
+  	}
+  }
+  ```
+
+* 安装`webpack`和`webpack-cli`作为依赖：
+
+  ```shell
+  npm install -D webpack webpack-cli
+  ```
+
+执行`npm run build`去启动webpack.发现会报错：
+
+```shell
+ERROR in ./hello.md 1:29
+Module parse failed: Unexpected character '#' (1:29)
+File was processed with these loaders:
+ * ./markdown-loader.js
+You may need an additional loader to handle the result of these loaders.
+> module.exports = console.log(#### Hello
+```
+
+原因在于我们经过loader处理的内容最终要放入js的模块中，所以我们可以将结果转成js语句或者经过其他的loader转换成js模块。修改`markdown-loader`:
+
+```js
+/**
+ *
+ * 接受要转换的内容，返回转化后的内容
+ *
+ */
+module.exports = source => {
+	//#### Hello
+
+	//```js
+	//console.log('hello')
+	//```
+	console.log(source)
+	return `console.log("hello")`
+}
+```
+
+打包后的结果：
+
+```js
+/***/ (function(module, exports) {
+
+console.log("hello")
+
+/***/ })
+```
+
+可以看到我们返回的结果会作为函数的内容包含的函数中。
+
+我们安装`marked`包去转换`markdown`的内容。
+
+```shell
+npm install -D marked
+```
+
+修改我们的loader：使用`JSON.stringify`处理html是为了避免语法错误
+
+```js
+/**
+ *
+ * 接受要转换的内容，返回转化后的内容
+ *
+ */
+const marked = require('marked')
+module.exports = source => {
+	//#### Hello
+
+	//```js
+	//console.log('hello')
+	//```
+	const html = marked(source)
+	return `module.exports = ${JSON.stringify(html)}`
+}
+```
+
+转化后的模块：
+
+```js
+/***/ (function(module, exports) {
+
+module.exports = "<h4 id=\"hello\">Hello</h4>\n<pre><code class=\"language-js\">console.log(&#39;hello&#39;)\n</code></pre>\n"
+
+/***/ })
+/******/ ]);
+```
+
+也可以使用ES module的方式导出：
+
+```js
+const marked = require('marked')
+module.exports = source => {
+	const html = marked(source)
+	return `export default ${JSON.stringify(html)}`
+}
+```
+
+导入后的内容：
+
+```js
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<h4 id=\"hello\">Hello</h4>\n<pre><code class=\"language-js\">console.log(&#39;hello&#39;)\n</code></pre>\n");
+
+/***/ })
+```
+
+上面我们使用方式使用loader返回js语句的形式。
+
+![loader](/frontEnd/one-loader.png)
+
+我们还可以将我们的loader的结果交给其他的loader去处理
+
+![loader](/frontEnd/mult-loaders.png)
+
+```shell
+npm install -D html-loader
+```
+
+`webpack.config.js`文件：
+
+```js
+	module: {
+		rules: [
+			{
+				test: /\.md$/,
+				use: ['html-loader', './markdown-loader']
+			}
+		]
+	}
+```
+
+html处理后的结果：
+
+```js
+/***/ (function(module, exports) {
+
+module.exports = "<h4 id=\"hello\">Hello</h4>\n<pre><code class=\"language-js\">console.log(&#39;hello&#39;)\n</code></pre>\n";
+
+/***/ })
+```
+
+#### webpack的plugin
+
+wepack中loader专注于对不同类型的资源文件的加载，而plugin则负责处理其他的自动化任务。
+
+#### 清除输出目录的插件
+
+我们使用webpack打包输出的文件在下一次打包时，只会覆盖输出目录中的同名文件，如果我们想每次打包都只包含该次打包的内容，我们需要使用`clean-webpack-plugin`去清除打包输出文件。
+
+安装`clean-webpack-plugin`插件：
+
+```shell
+npm install -D clean-webpack-plugin
+```
+
+在配置文件中使用该插件：
+
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+/**
+ * @type {import("webpack").Configuration}
+ */
+module.exports = {
+	....
+  ,
+	plugins: [new CleanWebpackPlugin()]
+}
+```
+
+#### 自动生成包含打包后内容的html文件
+
+之前我们项目项目中创建的index.html文件，然后在文件中引入打包后的内容。这中硬编码的方式存在以下的问题：
+
+* `index.html`和打包后的内容部署时都需要复制出去。
+* 当我们修改打包后的输出信息后，我们还需要去修改`index.html`中的引入信息
+
+我们可以借助`html-webpack-plugin`去解决这些问题：
+
+```shell
+npm i --save-dev html-webpack-plugin@4
+```
+
+在`webpack.config.js`文件中引入并使用：
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+/**
+ * @type {import("webpack").Configuration}
+ */
+module.exports = {
+	mode: 'none',
+	entry: './hello.md',
+	//entry: './src/main.css',
+	output: {
+		filename: 'bundle.js',
+		// 绝对路径
+		path: path.join(__dirname, 'dist'),
+		publicPath: 'dist/'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.md$/,
+				use: ['html-loader', './markdown-loader']
+			}
+		]
+	},
+	plugins: [
+		new CleanWebpackPlugin(),
+		//index.html配置
+		new HtmlWebpackPlugin()
+	]
+}
+```
+
+执行打包命令后会在dist目录下生成`index.html`文件：
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Webpack App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"></head>
+  <body>
+  <script src="dist/bundle.js"></script></body>
+</html>
+```
+
+现在html都在dist目录下，但是我们的引入路径中却多了一个dist目录，原因是我们之前的`index.html`和打包后的内容不在同一路径下，我们加了`publicPath: 'dist/'`,只需要主调该选项即可。
+
+同时我们可以对我们最终输出的html文件作一些配置：
+
+```js
+//index.html配置
+	new HtmlWebpackPlugin({
+			title: 'html-webpack-plugin',
+			meta: {
+				viewport: 'width=device-width'
+			}
+	})
+```
+
+生成的html文件:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>html-webpack-plugin</title>
+  <meta name="viewport" content="width=device-width"></head>
+  <body>
+  <script src="bundle.js"></script></body>
+</html>
+```
+
+对于复杂的配置，还可以通过模版文件的形式实现：
+
+```js
+new HtmlWebpackPlugin({
+			title: 'Webpack Plugin Sample',
+			content: 'custom content',
+			meta: {
+				viewport: 'width=device-width'
+			},
+			template: './index.html'
+})
+```
+
+模版html文件(模版文件中动态内容可以通过loadsh模版的语法来动态生成)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%= htmlWebpackPlugin.options.title %> </title>
+</head>
+
+<body>
+</body>
+
+</html>
+```
+
+生成的html文件：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Webpack Plugin Sample </title>
+<meta name="viewport" content="width=device-width"></head>
+
+<body>
+<script src="bundle.js"></script></body>
+
+</html>
+```
+
+输入多个文件可以通过配置多个插件实例来实现：
+
+```js
+    new HtmlWebpackPlugin({
+          title: 'Webpack Plugin Sample',
+          content: 'custom content',
+          meta: {
+            viewport: 'width=device-width'
+          },
+          template: './index.html'
+        }),
+		new HtmlWebpackPlugin({
+			title: 'About',
+			filename: 'about.html'
+		})
+```
+
+默认的filename是`index.html`,所以第一个配置生成的`index.html`，而第二个生成的是`about.html`
+
+#### copy静态资源到输出目录
+
+项目中的有些静态资源需要拷贝的输出目录下，负责会找不到资源文件，对于这类需求，我们可以使用`copy-webpack-plugin`插件：
+
+```shell
+npm install -D copy-webpack-plugin
+```
+
+使用时只需要指定copy文件的目录即可：
+
+```js
+new CopyWebpackPlugin(['public'])
+```
+
+#### 自定义webpack的插件
+
+weback的插件是通过钩子机制实现的，在webpack打包的不同节点上将插件挂载到钩子上去完成特定的任务。接下来我们自定义一个插件：
+
+![webpack-hoos](/frontEnd/webpack-hooks.png)
+
+首先我们需要明白插件是函数或者是一个函数apply方法的对象。函数或者apply方法中将任务挂载到钩子上。webpack的[钩子函数](https://v4.webpack.js.org/api/compiler-hooks/#emit)
+
+```js
+
+/**
+ * @type {import('webpack').Plugin}
+ */
+class MyPlugin {
+	/**
+	 *
+	 * @param { import('webpack').Compiler } compiler
+	 */
+	apply(compiler) {
+		//Executed right before emitting assets to output dir.
+		compiler.hooks.emit.tap('myPlugin', function (compilation) {
+			for (const name in compilation.assets) {
+				// output filename
+				//bundle.js
+				// index.html
+				// about.html
+				// logo.png
+				//console.log(name)
+				// source
+				//console.log(compilation.assets[name].source())
+
+				//对输出到js文件的内容中的注释处理
+				if (name.endsWith('.js')) {
+					// 利用正则表示表达式去替换
+					const contents = compilation.assets[name].source()
+					const widthoutContents = contents.replace(/\/\*\*\*+\//g, '')
+          // 重新定义source()和size()
+					compilation.assets[name] = {
+						source: () => widthoutContents,
+						size: () => widthoutContents.length
+					}
+				}
+			}
+		})
+	}
+}
+```
+
+webpack运行时使用插件的大概过程：
+
+```js
+const webpack = require('webpack'); //to access webpack runtime
+const configuration = require('./webpack.config.js');
+
+let compiler = webpack(configuration);
+
+new webpack.ProgressPlugin().apply(compiler);
+
+compiler.run(function(err, stats) {
+  // ...
+});
+```
 
 
 
