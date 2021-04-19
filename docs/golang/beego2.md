@@ -457,51 +457,57 @@ func (c *FormController) Post() {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Document</title>
-		<script src="/static/js/jquery.js"></script>
-	</head>
 
-	<body>
-		<form enctype="multipart/form-data" method="post">
-			<input type="file" name="uploadname" id="uploadname" />
-			<input type="submit" id="btn" />
-		</form>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/static/js/jquery.js"></script>
+</head>
 
-		<script>
-			$(document).ready(function() {
-				const btn = $('#btn')
-				btn.click = function(e) {
-					const formData = new FormData()
-					const files = $('#uploadname')[0].files
-					for (let i = 0; i < files.length; i++) {
-						const { name, size, type } = items[i] // get file name
+<body>
+<input type="file" name="uploadname" id="uploadname" />
+<input type="submit" id="btn">
 
-						//formData.append('uploadname', fileData, name)
-						formData.append('uploadname', fileData)
-					}
+    <script>
+        $(document).ready(function () {
+            const btn = $('#btn')
+            btn.click(function (){
+                const formData = new FormData()
+                const files = $("#uploadname")[0].files
+                for (let i = 0; i < files.length; i++) {
+                    const {
+                        name,
+                        size,
+                        type
+                    } = files[i]; // get file name
 
-					$.ajax({
-						type: 'POST',
-						processData: false, // 使数据不做处理
-						contentType: false, // 不要设置Content-Type请求头
+                    console.log(name,size,type)
 
-						data: {
-							...FormData
-						},
-						success: data => {
-							console.log(data)
-						},
-						error: err => {
-							console.log(err)
-						}
-					})
-				}
-			})
-		</script>
-	</body>
+                    // 添加文件数据
+                    formData.append('uploadname', files[i])
+                }
+                // 添加 字符数据
+                 formData.append('name',"hello123")
+
+                $.ajax({
+                    type: "POST",
+                    processData: false, // 使数据不做处理
+                    contentType: false, // 不要设置Content-Type请求头
+
+                    data: formData,
+                    success: (data) => {
+                        console.log(data)
+                    },
+                    error: (err) => {
+                        console.log(err)
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+
 </html>
 ```
 
