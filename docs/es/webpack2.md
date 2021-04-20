@@ -436,6 +436,168 @@ Could not load content for webpack:///./src/main.js (HTTP error: status code 404
 
 不建议在生产环境去定位问题，所有的问题都应该在生产环境解决，所以推荐`none`,如果非要定位问题，可以使用``nosources-source-map`去定位大致的位置。
 
+#### 页面刷新带来的问题
+
+我们使用`dev Server`配合`watch`可以实现修改模块重新打包并刷新页面，但是自动刷新也会带来新的问题。如我们的项目中有一个编辑器页面，可以在页面输入内容，我们想要调整输入内容的样式，我们手动修改对应的`css`文件,每当我们修改样式文件并保存，页面都会去刷新，我们需要重新输入内容。
+
+解决上面的问题：
+
+*  将编辑器的内容写成死的
+* 将编辑器的内容保存起来，后新后重新去拿
+
+上面的方式都需要在业务代码的之外引入新的代码。webpack提供了一种方案：`HMR(hot module replacement)`
+
+* Hot 说明了这种方式不会影响代码的正常执行，像u盘等一样可以直接在电脑运行时实现热拔插。
+* `module replacement`说明我们的实现方案是模块的替换
+
+#### webpack中的模块热替换
+
+在webpack中实现模块的热替换，需要在`webpack.config.js`中加入如下配置
+
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  mode: 'development',
+  entry: './src/main.js',
+  output: {
+    filename: 'js/bundle.js'
+  },
+  devtool: 'source-map',
+  devServer: {
+		hot: true
+	},
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        use: 'file-loader'
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Webpack Tutorial',
+      template: './src/index.html'
+    }),
+    new webpack.HotModuleReplacementPlugin()
+  ]
+}
+```
+
+*  devServer开启热更新
+* 引入`webpack`模块热替换的内置插件`HotModuleReplacementPlugin`
+
+入口文件：
+
+```js
+// main.js
+import createEditor from './editor'
+import background from './better.png'
+import './global.css'
+
+const editor = createEditor()
+document.body.appendChild(editor)
+
+const img = new Image()
+img.src = background
+document.body.appendChild(img)
+```
+
+`editor.js`:
+
+```js
+import './editor.css'
+
+export default () => {
+  const editorElement = document.createElement('div')
+
+  editorElement.contentEditable = true
+  editorElement.className = 'editor'
+
+  console.log('editor init completed')
+
+  return editorElement
+}
+```
+
+```js
+// editor.css
+.editor {
+	position: relative;
+	padding: 10px;
+	outline: 0;
+	min-height: inherit;
+	z-index: 1;
+	color: red;
+	line-height: 1.8;
+}
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body>
+</body>
+</html>
+```
+
+启动服务后修改` editor.css`文件，发现页面没有刷新，但是样式生效了，同样修改`editor.js`，发现页面中页面回自己刷新。为什么css文件可以启用`hmr`,而`js`文件不可以，原因是有`js`的处理情况比较复杂：可以导出对象、数组、字符串等，没有很固定的模块替换方案，而`css`比较简单，只需要通过`style-loader`将样式插入到`html`文件中，所以`webpack`会自己对`css`文件做`hmr`.
+
+```css
+....
+if (module.hot) {
+  if (!content.locals || module.hot.invalidate) {
+    var isEqualLocals = function isEqualLocals(a, b, isNamedExport) {
+  if (!a && b || a && !b) {
+    return false;
+  }
+
+  var p;
+
+  for (p in a) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (a[p] !== b[p]) {
+      return false;
+    }
+  }
+
+  for (p in b) {
+    if (isNamedExport && p === 'default') {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    if (!a[p]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+```
+
+ 打包后的`css`,可以在浏览器中查找打包后的`css`文件，因为我们开启了`source map`.
+
+此外，通过脚手架生成的框架项目，一般都会集成`hmr`,原因是框架的文件比较有规律，比如导出的组件是一个函数或者一个对象等，就有了通用的替换方案。
+
 
 
 
