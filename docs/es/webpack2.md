@@ -598,6 +598,97 @@ if (module.hot) {
 
 此外，通过脚手架生成的框架项目，一般都会集成`hmr`,原因是框架的文件比较有规律，比如导出的组件是一个函数或者一个对象等，就有了通用的替换方案。
 
+如果想在`webpack`中对`js`文件开启`hmr`,`HotModuleReplacementPlugin`提供了一些api可供上使用,在`main.js`加入下面的代码：
+
+```js
+module.hot.accept('./editor', () => {
+	console.log('editor模块热替换的处理程序')
+})
+```
+
+修改了`editor.js`文件。发现我们浏览器中没有刷新，原因是我们`module.hot.accept`设置对模块热更新的替换方案。我们知道`editor`中定义的是一个函数，这个函数负责创建一个可编辑的元素。所以我们可以这么修改我们替换方案：
+
+```js
+// 保存上次的结果，在hmr生效时直接移除
+let hotEditor = editor
+module.hot.accept('./editor.js', () => {
+	// console.log('editor模块热替换的处理程序')
+	document.body.removeChild(hotEditor)
+	// 重新生成一个新的editor元素
+	hotEditor = createEditor()
+	document.body.appendChild(hotEditor)
+})
+```
+
+在`editor`区域输入文本，然后修改`editor.js`文件，发现输入的文本不见了，这是我们`hmr`处理函数的问题，原因我们删除原来的`editor`元素，新建了一个新的
+
+`editor`元素。为了保留原来的输入内容，我们需要在删除前缓存原来的文本。
+
+```js
+// 保存上次的结果，在hmr生效时直接移除
+let hotEditor = editor
+module.hot.accept('./editor.js', () => {
+	const value = hotEditor.innerHTML
+	document.body.removeChild(hotEditor)
+	hotEditor = createEditor()
+	hotEditor.innerHTML = value
+	document.body.appendChild(hotEditor)
+})
+```
+
+然后修改`editor.js`文件会发现我们输入的内容依旧存在。通过这个例子我们就知道`webpack`为什么不会主动对我们的`js`模块作`hmr`.接下来我们对图片文件作`hmr`处理。
+
+```js
+module.hot.accept('./better.png', () => {
+	img.src = background
+	console.log('hmr for png')
+})
+```
+
+对于图片文件，我们只需简单的对图片的src作修改即可。
+
+#### `hmr`的注意事项
+
+* 当我们对`devServer`的hot设置为true,我们的`hmr`处理程序报错后，页面会直接刷新，这样子不利于问题的发现，更好的方式是使用`hotOnly:true`代替`hot:true`,此时我们的文件报错时，会在控制台打印出来(修改配置后需要重新启动服务)。
+
+* 如果我们没有开始`hmr`,那么使用`module.hot.accept`会报错，我们可以使用条件判断的方式来处理这个问题：
+
+  ```js
+  if (module.hot) {
+  	let hotEditor = editor
+  	module.hot.accept('./editor.js', () => {
+  		const value = hotEditor.innerHTML
+  		document.body.removeChild(hotEditor)
+  		hotEditor = createEditor()
+  		hotEditor.innerHTML = value
+  		document.body.appendChild(hotEditor)
+  	})
+  	module.hot.accept('./better.png', () => {
+  		img.src = background
+  		console.log('hmr for png')
+  	})
+  }
+  
+  ```
+
+* 我们使用`hmr`编写的多余代码不会对生产环境有影响，当我们关闭`hmr`并移除`hmr`的插件(生产环境不需要)后对代码打包(此时的mode默认是`development`).
+
+  ```js
+  // 打包后的代码
+  // 保存上次的结果，在hmr生效时直接移除
+  if (false) {}
+  ```
+
+  * 我们关于`hmr`的代码被处理成了上面的简单判断，当我们在生产环境打包时，可以利用`tree shaking`去除这种无用的代码。
+
+
+
+
+
+
+
+
+
 
 
 
