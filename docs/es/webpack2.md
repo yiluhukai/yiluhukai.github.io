@@ -681,6 +681,169 @@ module.hot.accept('./better.png', () => {
 
   * 我们关于`hmr`的代码被处理成了上面的简单判断，当我们在生产环境打包时，可以利用`tree shaking`去除这种无用的代码。
 
+#### webpack生产环境的优化
+
+生产环境和开发环境有很大的不同，生产环境注重的是代码的执行效率，而开发环境注重的是开发效率。`webpck`中提供了`mode`来区分不同的打包环境，并建议我们在不同的环境中使用不同的打包配置。此外，`webpack`会在生产环境的打包中加入一些优化。
+
+webpck主要有两种方式根据不同的环境导出不同的配置：
+
+* 在配置文件里根据环境变量去判断，然后导出不同的配置项
+
+  * 使用下面的命令执行：
+
+  ```shell
+  # production
+  yarn webpack --env production
+  # development
+  yarn webpack
+  ```
+
+  ```js
+  const configs = {
+  	mode: 'development',
+  	entry: './src/main.js',
+  	output: {
+  		filename: 'js/bundle.js'
+  	},
+  	devtool: 'source-map',
+  	devServer: {
+  		//hot: true
+  		//hotOnly: true
+  	},
+  	module: {
+  		rules: [
+  			{
+  				test: /\.css$/,
+  				use: ['style-loader', 'css-loader']
+  			},
+  			{
+  				test: /\.(png|jpe?g|gif)$/,
+  				use: 'file-loader'
+  			}
+  		]
+  	},
+  	plugins: [
+  		new HtmlWebpackPlugin({
+  			title: 'Webpack Tutorial',
+  			template: './src/index.html'
+  		})
+  	]
+  }
+  // env是打包时通过命令行传入的--env 参数
+  // argv打包时通过命令行传入的所有参数
+  module.exports = (env, argv) => {
+  	if (env === 'production') {
+  		configs.mode = 'production'
+  		configs.devtool = 'none'
+  		// 引入生产环境需要的插件
+  		configs.plugins = [...configs.plugins, new CleanWebpackPlugin(), new CopyPlugin(['public'])]
+  	}
+  	return configs
+  }
+  ```
+
+* 为不同的运行环境配置单独的打包文件
+
+  ```js
+  // 公共的配置项
+  const HtmlWebpackPlugin = require('html-webpack-plugin')
+  module.exports = {
+  	mode: 'development',
+  	entry: './src/main.js',
+  	output: {
+  		filename: 'js/bundle.js'
+  	},
+  	module: {
+  		rules: [
+  			{
+  				test: /\.css$/,
+  				use: ['style-loader', 'css-loader']
+  			},
+  			{
+  				test: /\.(png|jpe?g|gif)$/,
+  				use: 'file-loader'
+  			}
+  		]
+  	},
+  	plugins: [
+  		new HtmlWebpackPlugin({
+  			title: 'Webpack Tutorial',
+  			template: './src/index.html'
+  		})
+  	]
+  }
+  ```
+
+  ```js
+  // webpack.dev.js
+  const common = require('./webpack.common')
+  const { merge } = require('webpack-merge')
+  // @ts-ignore
+  module.exports = merge(common, {
+  	devtool: 'source-map',
+  	mode: 'development',
+  	devServer: {
+  		//hot: true
+  		// hotOnly: true
+  	}
+  })
+  
+  ```
+
+  ```js
+  // webpack.prod.js
+  const common = require('./webpack.common')
+  const { merge } = require('webpack-merge')
+  const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+  const CopyPlugin = require('copy-webpack-plugin')
+  
+  // @ts-ignore
+  module.exports = merge(common, { mode: 'production', plugins: [new CleanWebpackPlugin(), new CopyPlugin(['public'])] })
+  
+  ```
+
+  * `merge`函数的效果类似于`lodash`中的`merge`函数，可以用来合并两个对象
+  * 执行命令时需要指定打包的配置文件
+
+  ```js
+  	"scripts": {
+  		"build:dev": "webpack --config webpack.dev.js",
+  		"build:prod": "webpack --config webpack.prod.js"
+  	}
+  ```
+
+  `webpack`在生产模式下会开启一些打包优化，我们接下来看一下常见的优化配置：
+
+* `DefinePlugin`插件
+  * 这个插件是`webpack`的内置插件
+  * 这个插件会为我们注入一个常量：`process.env.NODe_ENV`，很多插件会依赖这个常量执行，如判断是否需要打印日志等
+  * 我们可以自己使用这个插件来替换一些全局变量,如替换接口的api的路径等
+  * 配置项的值需要是一个可执行的js代码段,可以使用`JSON.stringify('hello')//""hello""`来构建一个值
+
+```js
+
+plugins: [
+		...
+		new DefinePlugin({
+			base_url: '"http://localhost/api"'
+		})
+	]
+```
+
+```js
+// main.js
+console.log(base_url)
+
+// 打包后
+console.log("http://localhost/api")
+```
+
+
+
+
+
+
+
 
 
 
