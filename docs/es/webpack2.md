@@ -838,6 +838,327 @@ console.log(base_url)
 console.log("http://localhost/api")
 ```
 
+* Tree-shaking(摇树) 
+  * Tree-shaking会在生产模式下自动开启
+  * Tree-shaking会删除代码中的无用代码(从树上摇落枯黄的叶子)
+  * Tree-shaking是一组功能搭配使用后的结果
+
+* Tree-shaking的使用
+
+```js
+//src/components.js
+
+export const Button = () => {
+  return document.createElement('button')
+	// 无用代码
+  console.log('dead-code')
+}
+// 无用代码
+export const Link = () => {
+  return document.createElement('a')
+}
+// 无用代码
+export const Heading = level => {
+  return document.createElement('h' + level)
+}
+```
+
+```js
+// src/index.js
+import { Button } from './components'
+
+document.body.appendChild(Button())
+```
+
+```js
+//webpack.config.js
+
+module.exports = {
+  mode: 'none',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js'
+  },
+  optimization: {
+    // 模块只导出被使用的成员
+    usedExports: true,
+    // 压缩输出结果
+    minimize: true
+  }
+}
+```
+
+上面的`components.js`包含了很多无用的代码，我们使用`tree-shaking`去除无用的代码，首先将`mode`设置为`none`,`production`模式下回自己开启`tree-shaking`.首先只使用` usedExports: true`,运行打包后得到的结果是：
+
+```js
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Button; });
+/* unused harmony export Link */
+/* unused harmony export Heading */
+const Button = () => {
+  return document.createElement('button')
+	// 灰色
+  console.log('dead-code')
+}
+// 灰色
+const Link = () => {
+  return document.createElement('a')
+}
+//灰色
+const Heading = level => {
+  return document.createElement('h' + level)
+}
+
+
+/***/ })
+/******/ ]);
+```
+
+可以看到打包后的模块中只有`Button`模块被导出了，其他的模块不会被导出且会被标记成灰色。为了在打包后删除无用的代码，我们需要加入`minimize: true`的配置到`optimization`,打包后的结果：
+
+```js
+!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){"use strict";n.r(t);var r=n(1);document.body.appendChild(Object(r.a)())},function(e,t,n){"use strict";n.d(t,"a",(function(){return r}));const r=()=>document.createElement("button")}]);
+```
+
+打包后的代码被压缩到一行中，其中被标记未使用的代码被移除掉了。所以：
+
+* `usedExports: true`在`tree-shaking`中扮演的标记"枯树叶"的角色
+* `minimize: true`在`tree-shaking`中扮演的是"摇树"的工作
+
+#### Scope Hoisting(作用域提升)
+
+* 使用这个特性可将代码尽可能的合并到一个模块中，配合``minimize: true`可以将代码的体积压缩到更小
+
+使用：
+
+```js
+	optimization: {
+		// 模块只导出被使用的成员
+		// usedExports: true,
+		// 尽可能合并每一个模块到一个函数中
+		concatenateModules: true,
+		// 压缩输出结果
+		//minimize: true
+	}
+```
+
+查看打包后的结果：
+
+```js
+/******/ (function(modules) { // webpackBootstrap
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./src/components.js
+const Button = () => {
+  return document.createElement('button')
+
+  console.log('dead-code')
+}
+
+const Link = () => {
+  return document.createElement('a')
+}
+
+const Heading = level => {
+  return document.createElement('h' + level)
+}
+
+// CONCATENATED MODULE: ./src/index.js
+
+
+document.body.appendChild(Button())
+
+
+/***/ })
+/******/ ]);
+```
+
+可以看到将模块合并到一个模块中，不器用压缩特性是为了让打包的结果更直观，实际使用中应该启用压缩特性。
+
+#### babel-loader造成tree-shaking失效
+
+在早起的webpack中使用`babel-loader`和`tree-shaking`会造成tree-shaking失效，原因tree-shaking特性只会在`es-module`模块下生效，而`babel-loader`配置了将`es-module`转成`CommonJS`模块的特性插件：
+
+```json
+//package.json
+{
+	"name": "29-tree-shaking",
+	"version": "0.1.0",
+	"main": "index.js",
+	"author": "zce <w@zce.me> (https://zce.me)",
+	"license": "MIT",
+	"scripts": {
+		"build": "webpack"
+	},
+	"devDependencies": {
+		"webpack": "^4.41.2",
+		"webpack-cli": "^3.3.9",
+		"@babel/core": "^7.6.4",
+		"@babel/preset-env": "^7.6.3",
+		"babel-loader": "^8.0.6"
+	}
+}
+```
+
+```js
+module.exports = {
+	mode: 'none',
+	entry: './src/index.js',
+	output: {
+		filename: 'bundle.js'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.js$/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: [
+							// 如果 Babel 加载模块时已经转换了 ESM，则会导致 Tree Shaking 失效
+							// ['@babel/preset-env', { modules: 'commonjs' }]
+							// ['@babel/preset-env', { modules: false }]
+							// 也可以使用默认配置，也就是 auto，这样 babel-loader 会自动关闭 ESM 转换
+							['@babel/preset-env', { modules: 'auto' }]
+						]
+					}
+				}
+			}
+		]
+	},
+	optimization: {
+		// 模块只导出被使用的成员
+		usedExports: true
+		// 尽可能合并每一个模块到一个函数中
+		//concatenateModules: true
+		// 压缩输出结果
+		//minimize: true1`
+	}
+}
+```
+
+查看`babel-loader`源码：
+
+```js
+//injectCaller.js
+module.exports = function injectCaller(opts, target) {
+  if (!supportsCallerOption()) return opts;
+  return Object.assign({}, opts, {
+    caller: Object.assign({
+      name: "babel-loader",
+      // Provide plugins with insight into webpack target.
+      // https://github.com/babel/babel-loader/issues/787
+      target,
+      // Webpack >= 2 supports ESM and dynamic import.
+      supportsStaticESM: true,
+      supportsDynamicImport: true,
+      // Webpack 5 supports TLA behind a flag. We enable it by default
+      // for Babel, and then webpack will throw an error if the experimental
+      // flag isn't enabled.
+      supportsTopLevelAwait: true
+    }, opts.caller)
+  });
+}; // TO
+```
+
+`supportsStaticESM`配置中模式是支持`ES Module`的，然后查看`@babel-preset-env`下的源码：
+
+```js
+ shouldTransformESM: modules !== "auto" || !(api.caller != null && api.caller(supportsStaticESM)),
+```
+
+高版本的`babel-loader`已经处理了这种问题，为了复现这个问题，我们可以修改`babel-loader`中对`babel-preset-env`的配置，对`@babel/preset-env`需要将`@babel/preset-env`放入到一个数组中。
+
+```js
+	{
+				test: /\.js$/,
+				use: {
+					loader: 'babel-loader',
+					options: {
+						presets: [
+							// 如果 Babel 加载模块时已经转换了 ESM，则会导致 Tree Shaking 失效
+						  ['@babel/preset-env', { modules: 'commonjs' }]
+							// ['@babel/preset-env', { modules: false }]
+							// 也可以使用默认配置，也就是 auto，这样 babel-loader 会自动关闭 ESM 转换
+							// ['@babel/preset-env', { modules: 'auto' }]
+						]
+					}
+				}
+			}
+```
+
+这样子就会将`ES Module`转换成`CommonJS`模块，此时在使用webapck打包，会发现`tree-shaking`中配置的`usedExports: true`失效
+
+```js
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Heading = exports.Link = exports.Button = void 0;
+
+var Button = function Button() {
+  return document.createElement('button');
+  console.log('dead-code');
+};
+
+exports.Button = Button;
+
+var Link = function Link() {
+  return document.createElement('a');
+};
+
+exports.Link = Link;
+
+var Heading = function Heading(level) {
+  return document.createElement('h' + level);
+};
+
+exports.Heading = Heading;
+
+/***/ })
+/******/ ]);
+```
+
+如果不确定`babel-loader`是否开启了对`ES-module`的转化，可以对`@babel/preset-env`作如下的配置：
+
+```js
+presets: [					
+							// 也可以使用默认配置，也就是 auto，这样 babel-loader 会自动关闭 ESM 转换
+							// ['@babel/preset-env', { modules: 'auto' }]
+					]
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
