@@ -1147,11 +1147,467 @@ presets: [
 
 ```
 
+#### SideEffects(副作用)
+
+副作用指的是模块除了导出之外成员之外，还做了其他的事情。
+
+```js
+// src/components/button.js
+
+export default () => {
+  return document.createElement('button')
+
+  console.log('dead-code')
+}
+```
+
+```js
+// src/components/heading.js
+export default level => {
+  return document.createElement('h' + level)
+}
+
+```
+
+```js
+// src/components/link.js
+export default () => {
+  return document.createElement('a')
+}
+```
+
+```js
+// src/components/index.js
+export { default as Button } from './button'
+export { default as Link } from './link'
+export { default as Heading } from './heading'
+```
+
+```js
+//src/index.js
+import { Button } from './components'
+document.body.appendChild(Button())
+```
+
+`webpack.config.js`
+
+```js
+module.exports = {
+  mode: 'none',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  optimization: {
+    // 消除代码中的副作用
+    sideEffects: true
+  }
+}
+```
+
+此外，我们需要在`package.json`文件中标识我们的代码没有副作用。此时我们代码中没有被用到的代码的地方就会被删除。
+
+```json
+{
+  "name": "31-side-effects",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "zce <w@zce.me> (https://zce.me)",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  },
+  "sideEffects": false
+}
+```
+
+打包后的结果：
+
+```js
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 
 
+document.body.appendChild(Object(_components__WEBPACK_IMPORTED_MODULE_0__["default"])())
 
 
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (() => {
+  return document.createElement('button')
+
+  console.log('dead-code')
+});
+```
+
+使用`SideEffects`优化代码的前提是保证我们的代码中真的没有副作用。如修改`/src/index.js`
+
+```js
+import { Button } from './components'
+
+// 样式文件属于副作用模块
+import './global.css'
+
+// 副作用模块
+import './extend'
+
+console.log((8).pad(3))
+
+document.body.appendChild(Button())
+
+```
+
+在文件中引入`extent.js`和`global.css`文件：
+
+```js
+// 为 Number 的原型添加一个扩展方法
+Number.prototype.pad = function (size) {
+  // 将数字转为字符串 => '8'
+  let result = this + ''
+  // 在数字前补指定个数的 0 => '008'
+  while (result.length < size) {
+    result = '0' + result
+  }
+  return result
+}
+```
+
+```css
+body {
+  background-color: #fff;
+}
+```
+
+上面的`css`文件和`js`文件都是属于有副作用的，在打包后会被移除：
+
+```js
+/***/ 8:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+
+
+// 样式文件属于副作用模块
+
+
+// 副作用模块
+
+
+console.log((8).pad(3))
+
+document.body.appendChild(Object(_components__WEBPACK_IMPORTED_MODULE_0__["default"])())
+
+
+/***/ }),
+
+/***/ 9:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = (() => {
+  return document.createElement('button')
+
+  console.log('dead-code')
+});
+
+```
+
+我们可以标识那些文件是有副作用的：
+
+```js
+function cssWithMappingToString(item, useSourceMap) {
+  var content = item[1] || ''; // eslint-disable-next-line prefer-destructuring
+
+  var cssMapping = item[3];
+
+  if (!cssMapping) {
+    return content;
+  }
+
+  if (useSourceMap && typeof btoa === 'function') {
+    var sourceMapping = toComment(cssMapping);
+    var sourceURLs = cssMapping.sources.map(function (source) {
+      return "/*# sourceURL=".concat(cssMapping.sourceRoot || '').concat(source, " */");
+    });
+    return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+  }
+
+  return [content].join('\n');
+} // Adapted from convert-source-map (MIT)
+
+
+function toComment(sourceMap) {
+  // eslint-disable-next-line no-undef
+  var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+  var data = "sourceMappingURL=data:application/json;charset=utf-8;base64,".concat(base64);
+  return "/*# ".concat(data, " */");
+}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+// 为 Number 的原型添加一个扩展方法
+Number.prototype.pad = function (size) {
+  // 将数字转为字符串 => '8'
+  let result = this + ''
+  // 在数字前补指定个数的 0 => '008'
+  while (result.length < size) {
+    result = '0' + result
+  }
+  return result
+}
+/***/ }),
+```
+
+####  Code Splitting代码分割
+
+webpack可以将多个文件打包后一个文件输出(减少请求数)，但是当这个文件过大时，会在应用首次加载时耗费更多的时间，同时有些模块我们没有用到也被请求过来，造成网络资源的浪费。所以有的时候我们需要对我们的代码进行分割，分割成多个模块。目前常用的分割代码的方式有：
+
+* 多入口打包
+* 动态导入打包
+
+多入口打包一般用于根据不同页面打包到不同的包中。
+
+```shell
+├── dist
+│   ├── album.bundle.js
+│   ├── album.html
+│   ├── index.bundle.js
+│   └── index.html
+├── package.json
+├── src
+│   ├── album.css
+│   ├── album.html
+│   ├── album.js
+│   ├── fetch.js  // 公共模块
+│   ├── global.css // 公共模块
+│   ├── index.css
+│   ├── index.html
+│   └── index.js
+├── webpack.config.js
+└── yarn.lock
+
+```
+
+上面的两个页面`album.html`和`index.html`,我们可以在`webpack.config.js`配置多个打包入口：
+
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  mode: 'none',
+  entry: {
+    index: './src/index.js',
+    album: './src/album.js'
+  },
+  output: {
+    filename: '[name].bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Multi Entry',
+      template: './src/index.html',
+      filename: 'index.html',
+      chunks: ['index']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Multi Entry',
+      template: './src/album.html',
+      filename: 'album.html',
+      chunks: ['album']
+    })
+  ]
+}
+```
+
+上面配置`chunks`的目的是为了不让打包的结果注入到同一个`html`文件中，启动`webpack`打包后，在生成两个文件：`index.bundle.js`和`album.bundle.js`,为了提取两个模块的公共部分，我们可以这么配置：
+
+```js
+
+optimization: {
+		// 开启代码分割
+		splitChunks: {
+			chunks: 'all'
+		}
+	},
+```
+
+启用打包后会多出一个`album~index.bundle.js`文件，这个文件中就是两个模块的公共模块。
+
+动态导入(按需引入)：
+
+```shell
+
+├── dist
+│   ├── components.bundle.js
+│   ├── index.html
+│   └── main.bundle.js
+├── package.json
+├── src
+│   ├── album
+│   │   ├── album.css
+│   │   └── album.js
+│   ├── common
+│   │   ├── fetch.js
+│   │   └── global.css
+│   ├── index.html
+│   ├── index.js
+│   └── posts
+│       ├── posts.css
+│       └── posts.js
+├── webpack.config.js
+└── yarn.lock
+```
+
+`webpack.config.js`:
+
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  mode: 'none',
+  entry: {
+    main: './src/index.js'
+  },
+  output: {
+    filename: '[name].bundle.js'
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      title: 'Dynamic import',
+      template: './src/index.html',
+      filename: 'index.html'
+    })
+  ]
+}
+```
+
+```js
+//src/index.js
+
+
+// import posts from './posts/posts'
+// import album from './album/album'
+
+const render = () => {
+  const hash = window.location.hash || '#posts'
+
+  const mainElement = document.querySelector('.main')
+
+  mainElement.innerHTML = ''
+
+  if (hash === '#posts') {
+    // mainElement.appendChild(posts())
+    import(/* webpackChunkName: 'components' */'./posts/posts').then(({ default: posts }) => {
+      mainElement.appendChild(posts())
+    })
+  } else if (hash === '#album') {
+    // mainElement.appendChild(album())
+    import(/* webpackChunkName: 'components' */'./album/album').then(({ default: album }) => {
+      mainElement.appendChild(album())
+    })
+  }
+}
+
+render()
+
+window.addEventListener('hashchange', render)
+
+```
+
+上面使用`important`函数动态引入模块，配合`/* webpackChunkName: 'components' */'`魔法注释指定最终打包的文件，默认是`1.bundle.js`，`2.bundle.js`的形式。
+
+使用`MiniCssExtractPlugin`插件提取`css`文件到单独的文件中，然后使用`MiniCssExtractPlugin.loader`去加载以`link`的方式加载：
+
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+module.exports = {
+	mode: 'none',
+	entry: {
+		main: './src/index.js'
+	},
+	output: {
+		filename: '[name].bundle.js'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.css$/,
+				use: [
+					//'style-loader', 以style的方式插入文件
+					MiniCssExtractPlugin.loader,
+					'css-loader'
+				]
+			}
+		]
+	},
+	plugins: [
+		new CleanWebpackPlugin(),
+		new HtmlWebpackPlugin({
+			title: 'Dynamic import',
+			template: './src/index.html',
+			filename: 'index.html'
+		}),
+		new MiniCssExtractPlugin()
+	]
+}
+```
 
 
 
