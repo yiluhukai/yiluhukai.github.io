@@ -1569,7 +1569,7 @@ window.addEventListener('hashchange', render)
 
 ```
 
-上面使用`important`函数动态引入模块，配合`/* webpackChunkName: 'components' */'`魔法注释指定最终打包的文件，默认是`1.bundle.js`，`2.bundle.js`的形式。
+上面使用`important`函数动态引入模块，配合`/* webpackChunkName: 'components' */'`魔法注释指定最终打包的文件，默认是`1.bundle.js`，`2.bundle.js`,`3.bundle.js`的形式。其中有一个文件是提取的公共文件。
 
 使用`MiniCssExtractPlugin`插件提取`css`文件到单独的文件中，然后使用`MiniCssExtractPlugin.loader`去加载以`link`的方式加载：
 
@@ -1608,6 +1608,178 @@ module.exports = {
 	]
 }
 ```
+
+`MiniCssExtractPlugin`k可以将`css`文件单独提取出来，但是当我们在生产环境打包，会发现`css`文件并没有压缩。这个时候我们需要` optimize-css-assets-webpack-plugin `插件来对提取出来的`css`文件进行压缩。
+
+```shell
+npm install --save-dev optimize-css-assets-webpack-plugin
+```
+
+在webpack.config.js中引入并使用：
+
+```js
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+.... 
+plugins: [
+		new CleanWebpackPlugin(),
+		new HtmlWebpackPlugin({
+			title: 'Dynamic import',
+			template: './src/index.html',
+			filename: 'index.html'
+		}),
+		new MiniCssExtractPlugin(),
+		new OptimizeCssAssetsPlugin()
+	]
+```
+
+这种配置方式对所有的打包环境都是适用的，还有一种打包方式，就是在生产环境中使用：
+
+```js
+optimization: {
+		// 指定压缩使用的插件
+		minimizer: [new OptimizeCssAssetsPlugin()]
+},
+```
+
+在生产环境执行时，会自动使用`minimize:true`,然后利用指定的压缩器去压缩代码，但是由于我们指定了压缩器的插件，webpack就不回使用我们默认压缩`js`的压缩器，所以我们需要去加入压缩`js`的压缩器：
+
+```shell
+npm install terser-webpack-plugin --save-dev
+```
+
+将插件加入到`minimizer`中：
+
+```js
+const TerserPlugin = require("terser-webpack-plugin");
+...
+optimization: {
+		// 指定压缩使用的插件
+		minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()]
+	},
+```
+
+此时就可以对`css`文件开启压缩了 。
+
+#### webpack输出文件名hash
+
+我们的项目部署后客户端会对静态文件进行缓存，当我们更新文件的时候 ，由于缓存的存在并不会立即生效，这个时候输出文件名的hash就派上用场了，当我们的文件名改变后，缓存的静态文件就会重新加载。输出文件名的hash适用于`webpack`中插件输出中有`filename`的地方，常用的hash有三种：
+
+* 项目级别的`hash`
+
+```js
+....
+/**
+ *
+ * @type {import("webpack").Configuration}
+ *
+ */
+module.exports = {
+	output: {
+		filename: '[name]-[hash].bundle.js'
+	},
+	plugins: [
+		....
+		new MiniCssExtractPlugin({
+			filename: '[name]-[hash].bundle.css'
+		})
+		//new OptimizeCssAssetsPlugin()
+	]
+}
+```
+
+当文件中有任何文件的修改，打包时都会生成新的`hash`.
+
+* chunkhash
+
+```js
+module.exports = {
+	output: {
+		filename: '[name]-[chunkhash].bundle.js'
+	},
+	plugins: [
+		....
+		new MiniCssExtractPlugin({
+			filename: '[name]-[chunkhash].bundle.css'
+		})
+		//new OptimizeCssAssetsPlugin()
+	]
+}
+```
+
+文件中有三种chunk:入口文件，动态引入的模块，由于`css`文件被单独提取出来，他和`js`文件是一路chunk,所`chunkhash`相同。
+
+```js
+// index.js
+const render = () => {
+	const hash = window.location.hash || '#posts'
+
+	const mainElement = document.querySelector('.main')
+
+	mainElement.innerHTML = ''
+
+	if (hash === '#posts') {
+		// mainElement.appendChild(posts())
+		import(/* webpackChunkName: 'posts' */ './posts/posts').then(({ default: posts }) => {
+			mainElement.appendChild(posts())
+		})
+	} else if (hash === '#album') {
+		// mainElement.appendChild(album())
+		import(/* webpackChunkName: 'album' */ './album/album').then(({ default: album }) => {
+			mainElement.appendChild(album())
+		})
+	}
+}
+
+render()
+
+window.addEventListener('hashchange', render)
+```
+
+当我们修改`index.js`文件，之后修改`index.js`对应文件的`chunkhash`,我们修改`posts`模块的文件，`posts`对应的`js`、`css`文件的`hash`改变。同时`index.js`对应的`hash`也改变，这是因未对`posts`的引入路径的修改导致的。
+
+* `contenthash`
+
+文件级别的`hash`,hash是根据文件的内容来生成的，只有文件的内容修改了才会重新生成`hash`.修改`index.js`文件，只会改动`index.js`的`hash`，修改`posts`下`css`的hash,只会改变`posts`打包后`css`的`hash`,不会改变`js`的`hash`,同时入口文件的`hash`回受`css`引入路径的改变`hash`改变。
+
+```js
+
+module.exports = {
+	output: {
+		filename: '[name]-[chunkhash].bundle.js'
+	},
+	plugins: [
+		....
+		new MiniCssExtractPlugin({
+			filename: '[name]-[chunkhash].bundle.css'
+		})
+		//new OptimizeCssAssetsPlugin()
+	]
+}
+```
+
+基本上使用`chunkhash`就可以精准控制到文件改变。同时上面的三种`hash`还支持设置`hash`长度：
+
+```js
+module.exports = {
+	output: {
+		filename: '[name]-[chunkhash:8].bundle.js'
+	},
+	plugins: [
+		....
+		new MiniCssExtractPlugin({
+			filename: '[name]-[chunkhash:8].bundle.css'
+		})
+		//new OptimizeCssAssetsPlugin()
+	]
+}
+
+```
+
+
+
+
+
+
 
 
 
