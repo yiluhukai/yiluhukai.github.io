@@ -29,7 +29,8 @@ module.exports = {
 		'/es/webpack2',
 		'/es/rollup',
 		'/es/ruler',
-		'/es/webpack-source'
+		'/es/webpack-source',
+		'/es/webpack3'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
