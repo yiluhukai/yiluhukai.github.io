@@ -5,7 +5,7 @@
 #### 那些地方需要规范化
 
 * 代码、开发文档甚至是提交的日志
-* 开发过程中认为的编写的成果物
+* 开发过程中人为编写的成果物
 * 其中代码的规范化最为重要
 
 #### 实施规范化的方法
@@ -117,7 +117,7 @@ These environments are not mutually exclusive, so you can define more than one a
 
 ```
 
-不同的为我们提供了不同全局变量，当我们修改配置为：
+不同的环境为我们提供了不同全局变量，当我们修改配置为：
 
 ```js
  env: {
@@ -132,7 +132,7 @@ These environments are not mutually exclusive, so you can define more than one a
 document.getElementById('ele')
 ```
 
-正常来说当我们设置了这个配置项`browser: false,`，像`window，document`这种配置项应该不能再使用了，但是我们执行`eslint`的监测，发现正常运行：这是因为我们继承了`eslint-plugin-standard`中的配置:
+正常来说当我们设置了这个配置项`browser: false,`，像`window，document`这种全局变量应该不能再使用了，但是我们执行`eslint`的监测，发现正常运行：这是因为我们使用`eslint-plugin-standard`中的配置:
 
 ```js
 // eslint-plugin-standard 
@@ -143,16 +143,37 @@ document.getElementById('ele')
   },
 ```
 
-所以这些全局变量可以通过监测。
+所以这些全局变量可以通过`lint`而不会报错。
 
-`extend`指定我们`eslint`继承 的配置，可以指定多个，这块我们继承的是`eslint-plugin-standard`.
+`extend`指定我们`eslint`使用插件并使用插件提供的公共配置项，可以指定多个，这块我们只使用了`eslint-plugin-standard`.
 
-` parserOptions`指定的是语法监测的版本：
+` parserOptions`指定的是语法检测的版本：
 
 ```js
  parserOptions: {
     ecmaVersion: 2015
  },
+```
+
+我们将配置文件修改成：
+
+```js
+module.exports = {
+	env: {
+		browser: false,
+		es6: false
+	},
+	extends: ['standard'],
+	parserOptions: {
+		ecmaVersion: 5
+	},
+	rules: {
+		'no-alert': 'error'
+	},
+	globals: {
+		jQuery: 'readonly'
+	}
+}
 ```
 
 监测的代码：
@@ -182,7 +203,7 @@ $ npx eslint 02-configuration.js
   },
 ```
 
-我们修改配置文件在执行：
+我们在我们的配置文件中将`sourceType修改成'script'`:
 
 ```js
 module.exports = {
@@ -213,7 +234,7 @@ $ npx eslint 02-configuration.js
 ✖ 1 problem (1 error, 0 warnings)
 ```
 
-但我们将`ecmaVersion:2015`的时候再次执行：
+而我们修改配置项为`ecmaVersion:2015`的时候再次执行：
 
 ```shell
 $ npx eslint 02-configuration.js
@@ -222,7 +243,7 @@ $ npx eslint 02-configuration.js
   1:7  error  'a' is assigned a value but never used  no-unused-vars
 ```
 
-这个是因我们变量为使用的缘故，而语法监测已经通过了。当我们在代码中使用`Promise`时还会报错：
+这个是因我们变量为使用的缘故，而语法检测已经通过了。当我们在代码中使用`Promise`时还会报错：
 
 ```js
 let foo2 = 2
@@ -280,16 +301,13 @@ rules: {
 globals: {
 		jQuery: 'readonly'
 	}
-
-```js
-Query("#abc")
 ```
 
-代码监测就不会报错。
+这样子我们代码中使用`jQuery`就不会报错。
 
 #### ESLint 配置注释
 
-我们代码中有时候可能存在一些违反规则的地方，我们不能为了这几行代码推翻这些规则，更好的做饭是使用`ESlint`的注释对这些代码绕过检测：
+我们代码中有时候可能存在一些违反规则的地方，我们不能为了这几行代码推翻这些规则，更好的做法是使用`ESlint`的注释让这些代码绕过检测：
 
 ```js
 const str1 = "${name} is a coder" 
@@ -308,7 +326,7 @@ $ npx eslint ./eslint-configuration-comments.js
 
 ```
 
-如果我们真的需要这样子，我们可以使用注释对该行绕过检测：
+如果我们真的需要这样使用，我们可以使用注释对该行绕过检测：
 
 ```js
 const str1 = '${name} is a coder' // eslint-disable-line

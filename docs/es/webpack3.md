@@ -520,6 +520,580 @@ time: 6017.058ms
 
 异步串行钩子的执行过程和同步钩子有点类似。
 
+接下来我们对`tapable`中源码进行调试：
+
+```js
+const { SyncHook } = require('tapable')
+
+// 创建一个SyncHook实例
+const sh = new SyncHook(['name', 'age'])
+// 注册监听事件
+sh.tap('fn1', function (name, age) {
+	console.log('fn1', name, age)
+})
+
+sh.tap('fn2', function (name, age) {
+	console.log('fn2', name, age)
+})
+
+sh.tap('fn3', function (name, age) {
+	console.log('fn3', name, age)
+})
+
+sh.call('yiluhuakai', 25)
+
+```
+
+首先执行`new SyncHook(['name', 'age'])`,进入到函数内部：
+
+```js
+// SyncHook.js
+"use strict";
+
+const Hook = require("./Hook");
+const HookCodeFactory = require("./HookCodeFactory");
+
+class SyncHookCodeFactory extends HookCodeFactory {
+	content({ onError, onDone, rethrowIfPossible }) {
+		return this.callTapsSeries({
+			onError: (i, err) => onError(err),
+			onDone,
+			rethrowIfPossible
+		});
+	}
+}
+
+const factory = new SyncHookCodeFactory();
+
+const TAP_ASYNC = () => {
+	throw new Error("tapAsync is not supported on a SyncHook");
+};
+
+const TAP_PROMISE = () => {
+	throw new Error("tapPromise is not supported on a SyncHook");
+};
+
+const COMPILE = function(options) {
+	factory.setup(this, options);
+	return factory.create(options);
+};
+
+function SyncHook(args = [], name = undefined) {
+	const hook = new Hook(args, name);
+	hook.constructor = SyncHook;
+	hook.tapAsync = TAP_ASYNC;
+	hook.tapPromise = TAP_PROMISE;
+	hook.compile = COMPILE;
+	return hook;
+}
+
+SyncHook.prototype = null;
+
+module.exports = SyncHook;
+
+```
+
+在` SyncHook.js`中我们调用了`Hook.js`的Hook函数：
+
+```js
+class Hook {
+	constructor(args = [], name = undefined) {
+		this._args = args;
+		this.name = name;
+		this.taps = [];
+		this.interceptors = [];
+		this._call = CALL_DELEGATE;
+		this.call = CALL_DELEGATE;
+		this._callAsync = CALL_ASYNC_DELEGATE;
+		this.callAsync = CALL_ASYNC_DELEGATE;
+		this._promise = PROMISE_DELEGATE;
+		this.promise = PROMISE_DELEGATE;
+		this._x = undefined;
+
+		this.compile = this.compile;
+		this.tap = this.tap;
+		this.tapAsync = this.tapAsync;
+		this.tapPromise = this.tapPromise;
+	}
+
+	compile(options) {
+		throw new Error("Abstract: should be overridden");
+	}
+
+	_createCall(type) {
+		return this.compile({
+			taps: this.taps,
+			interceptors: this.interceptors,
+			args: this._args,
+			type: type
+		});
+	}
+
+	_tap(type, options, fn) {
+		if (typeof options === "string") {
+			options = {
+				name: options.trim()
+			};
+		} else if (typeof options !== "object" || options === null) {
+			throw new Error("Invalid tap options");
+		}
+		if (typeof options.name !== "string" || options.name === "") {
+			throw new Error("Missing name for tap");
+		}
+		if (typeof options.context !== "undefined") {
+			deprecateContext();
+		}
+		options = Object.assign({ type, fn }, options);
+		options = this._runRegisterInterceptors(options);
+		this._insert(options);
+	}
+
+	tap(options, fn) {
+		this._tap("sync", options, fn);
+	}
+
+	tapAsync(options, fn) {
+		this._tap("async", options, fn);
+	}
+
+	tapPromise(options, fn) {
+		this._tap("promise", options, fn);
+	}
+```
+
+我们创建`SyncHook`实例的过程实际上我们先调用`new Hook`创建一个实例，然后对实例上的一些方法、属性做了重写：
+
+```js
+function SyncHook(args = [], name = undefined) {
+	const hook = new Hook(args, name);
+	hook.constructor = SyncHook;
+	hook.tapAsync = TAP_ASYNC;
+	hook.tapPromise = TAP_PROMISE;
+	hook.compile = COMPILE;
+	return hook;
+}
+```
+
+然后我们执行`tap`方法去注册第一个事件监听：
+
+```js
+sh.tap('fn1', function (name, age) {
+	console.log('fn1', name, age)
+})
+```
+
+```js
+// Hook.js
+/*
+	type:'sync',
+	options:'fn1'
+	fn:function (name, age) {
+	console.log('fn1', name, age)
+}) 
+*/
+_tap(type, options, fn) {
+  if (typeof options === "string") {
+    options = {
+      name: options.trim()
+    };
+  } else if (typeof options !== "object" || options === null) {
+    throw new Error("Invalid tap options");
+  }
+  if (typeof options.name !== "string" || options.name === "") {
+    throw new Error("Missing name for tap");
+  }
+  if (typeof options.context !== "undefined") {
+    deprecateContext();
+  }
+  options = Object.assign({ type, fn }, options);
+  options = this._runRegisterInterceptors(options);
+  this._insert(options);
+}
+tap(options, fn) {
+		this._tap("sync", options, fn);
+}
+```
+
+`_tap`方法会将上面的参数转换成一个`options`对象,然后去执行`this._insert`方法：
+
+```js
+options ={
+  type:'sync',
+  name:'fn1',
+  fn:function (name, age) {
+		console.log('fn1', name, age)
+	}) 
+} 
+this._insert(options);
+```
+
+```js
+// Hook.js
+
+	_insert(item) {
+		this._resetCompilation();
+		let before;
+		if (typeof item.before === "string") {
+			before = new Set([item.before]);
+		} else if (Array.isArray(item.before)) {
+			before = new Set(item.before);
+		}
+		let stage = 0;
+		if (typeof item.stage === "number") {
+			stage = item.stage;
+		}
+		let i = this.taps.length;
+		while (i > 0) {
+			i--;
+			const x = this.taps[i];
+			this.taps[i + 1] = x;
+			const xStage = x.stage || 0;
+			if (before) {
+				if (before.has(x.name)) {
+					before.delete(x.name);
+					continue;
+				}
+				if (before.size > 0) {
+					continue;
+				}
+			}
+			if (xStage > stage) {
+				continue;
+			}
+			i++;
+			break;
+		}
+		this.taps[i] = item;
+	}
+```
+
+执行`_insert`方法，会将上面的`options`放到数组的第一个位置。后面我们继续执行下面的`tap`方法，会将新的`options`添加到`this.taps`中：
+
+```js
+
+sh.tap('fn2', function (name, age) {
+	console.log('fn2', name, age)
+})
+
+sh.tap('fn3', function (name, age) {
+	console.log('fn3', name, age)
+})
+```
+
+然后我们去触发钩子：
+
+```js
+sh.call('yiluhuakai', 25)
+```
+
+会进入到`Hook.js`中执行` CALL_DELEGATE `,原因是`new Hook`时执行了` this.call = CALL_DELEGATE;`
+
+```js
+// this.call = CALL_DELEGATE;
+const CALL_DELEGATE = function(...args) {
+	this.call = this._createCall("sync");
+	return this.call(...args);
+};
+
+_createCall(type) {
+		return this.compile({
+			taps: this.taps,
+			interceptors: this.interceptors,
+			args: this._args,
+			type: type
+		});
+	}
+
+```
+
+执行`this._createCall("sync")`后`this.call`被赋值了`this.compile`的返回值：
+
+```js
+this.compile({
+			taps: this.taps,
+			interceptors: this.interceptors,
+			args: this._args,
+			type: type
+		});
+```
+
+```js
+// SyncHook.js
+
+//hook.compile = COMPILE;
+const COMPILE = function(options) {
+	factory.setup(this, options);
+	return factory.create(options);
+};
+```
+
+上面的`factory`是`SyncHookCodeFactory`的实例：
+
+```js
+// SyncHook.js
+const Hook = require("./Hook");
+const HookCodeFactory = require("./HookCodeFactory");
+
+class SyncHookCodeFactory extends HookCodeFactory {
+	content({ onError, onDone, rethrowIfPossible }) {
+		return this.callTapsSeries({
+			onError: (i, err) => onError(err),
+			onDone,
+			rethrowIfPossible
+		});
+	}
+}
+
+const factory = new SyncHookCodeFactory();
+```
+
+执行`factory.setup(this, options);`:
+
+```js
+// 	HookCodeFactory.js
+
+// instance = Hook对象
+/* options={
+			taps: this.taps,
+			interceptors: this.interceptors,
+			args: this._args,
+			type: type
+		}
+*/		
+setup(instance, options) {
+		instance._x = options.taps.map(t => t.fn);
+}
+```
+
+执行完`setup`方法相当于将`this._x =this.taps.map(t => t.fn);`然后去执行：`return factory.create(options);`
+
+```js
+// 	HookCodeFactory.js
+
+
+	create(options) {
+		this.init(options);
+		let fn;
+		switch (this.options.type) {
+			case "sync":
+				fn = new Function(
+					this.args(),
+					'"use strict";\n' +
+						this.header() +
+						this.contentWithInterceptors({
+							onError: err => `throw ${err};\n`,
+							onResult: result => `return ${result};\n`,
+							resultReturns: true,
+							onDone: () => "",
+							rethrowIfPossible: true
+						})
+				);
+				break;
+			case "async":
+				fn = new Function(
+					this.args({
+						after: "_callback"
+					}),
+					'"use strict";\n' +
+						this.header() +
+						this.contentWithInterceptors({
+							onError: err => `_callback(${err});\n`,
+							onResult: result => `_callback(null, ${result});\n`,
+							onDone: () => "_callback();\n"
+						})
+				);
+				break;
+			case "promise":
+				let errorHelperUsed = false;
+				const content = this.contentWithInterceptors({
+					onError: err => {
+						errorHelperUsed = true;
+						return `_error(${err});\n`;
+					},
+					onResult: result => `_resolve(${result});\n`,
+					onDone: () => "_resolve();\n"
+				});
+				let code = "";
+				code += '"use strict";\n';
+				code += this.header();
+				code += "return new Promise((function(_resolve, _reject) {\n";
+				if (errorHelperUsed) {
+					code += "var _sync = true;\n";
+					code += "function _error(_err) {\n";
+					code += "if(_sync)\n";
+					code +=
+						"_resolve(Promise.resolve().then((function() { throw _err; })));\n";
+					code += "else\n";
+					code += "_reject(_err);\n";
+					code += "};\n";
+				}
+				code += content;
+				if (errorHelperUsed) {
+					code += "_sync = false;\n";
+				}
+				code += "}));\n";
+				fn = new Function(this.args(), code);
+				break;
+		}
+		this.deinit();
+		return fn;
+	}
+
+	init(options) {
+		this.options = options;
+		this._args = options.args.slice();
+	}
+
+```
+
+首先是执行`this.init()`只要是在`factory(SyncHookCodeFactory实例)`上添加了`options`和`_args`属性：
+
+```js
+options={
+  taps: [
+    {
+      type: "sync",
+      fn: function (name, age) {
+        console.log('fn1', name, age)
+      },
+      name: "fn1",
+    },
+    {
+      type: "sync",
+      fn: function (name, age) {
+        console.log('fn2', name, age)
+      },
+      name: "fn2",
+    },
+    {
+      type: "sync",
+      fn: function (name, age) {
+        console.log('fn3', name, age)
+      },
+      name: "fn3",
+    },
+  ],
+  interceptors: [
+  ],
+  args: [
+    "name",
+    "age",
+  ],
+  type: "sync",
+}
+```
+
+接下来我们去执行`create`方法中的
+
+```js
+case "sync":
+				fn = new Function(
+					this.args(),
+					'"use strict";\n' +
+						this.header() +
+						this.contentWithInterceptors({
+							onError: err => `throw ${err};\n`,
+							onResult: result => `return ${result};\n`,
+							resultReturns: true,
+							onDone: () => "",
+							rethrowIfPossible: true
+						})
+				);
+				break;
+```
+
+执行完成后`fn`:
+
+```js
+function anonymous(name, age
+  ) {
+  "use strict";
+  var _context;
+  var _x = this._x;
+  var _fn0 = _x[0];
+  _fn0(name, age);
+  var _fn1 = _x[1];
+  _fn1(name, age);
+  var _fn2 = _x[2];
+  _fn2(name, age); 
+}
+```
+
+接下来返回`fn`:
+
+```js
+this.deinit();
+return fn;
+```
+
+`this.deinit()`是对我们调用`setup`方法是`factory`添加的属性的清除：
+
+```js
+
+deinit() {
+		this.options = undefined;
+		this._args = undefined;
+}
+```
+
+然后函数返回：
+
+```js
+const COMPILE = function(options) {
+	factory.setup(this, options);
+	return factory.create(options);
+};
+```
+
+接着返回到：
+
+```js
+_createCall(type) {
+		return this.compile({
+			taps: this.taps,
+			interceptors: this.interceptors,
+			args: this._args,
+			type: type
+		});
+	}
+```
+
+接着返回到：
+
+```js
+const CALL_DELEGATE = function(...args) {
+	this.call = this._createCall("sync");
+	return this.call(...args);
+};
+```
+
+这个时候`this.call = fn`函数,然后执行该函数：
+
+```js
+args:[
+  "yiluhuakai",
+  25,
+]
+
+this.call =function anonymous(name, age
+  ) {
+  "use strict";
+  var _context;
+  var _x = this._x;
+  var _fn0 = _x[0];
+  _fn0(name, age);
+  var _fn1 = _x[1];
+  _fn1(name, age);
+  var _fn2 = _x[2];
+  _fn2(name, age);
+  
+}
+```
+
+通过上面的调试我们可以发现创建`SyncHook`实例的时候我们会在SyncHook构造方法中调用`Hook`的构造函数去保存形参到实例`_args`（["name","age",]）中。然后去覆盖`Hook`实例上一些用不到的方法,然后调用`tap`方法事件处理函数的信息(`options`)保存进`this._taps`中。然后我们调用`call`方法时，会使用到`SyncHookCodeFactory`的实例去生成执行函数到`call`.并将事件监听函数挂载到`hook`的`_x`属性上。最终执行`call`方法。
+
+
+
 
 
 
