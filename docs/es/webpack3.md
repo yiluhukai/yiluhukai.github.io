@@ -1092,6 +1092,161 @@ this.call =function anonymous(name, age
 
 通过上面的调试我们可以发现创建`SyncHook`实例的时候我们会在SyncHook构造方法中调用`Hook`的构造函数去保存形参到实例`_args`（["name","age",]）中。然后去覆盖`Hook`实例上一些用不到的方法,然后调用`tap`方法事件处理函数的信息(`options`)保存进`this._taps`中。然后我们调用`call`方法时，会使用到`SyncHookCodeFactory`的实例去生成执行函数到`call`.并将事件监听函数挂载到`hook`的`_x`属性上。最终执行`call`方法。
 
+#### 手写SyncHook源码
+
+* 我们需要一个Hook类让SyncHook去继承，实例上主要保存我们传入的形参(`_args`)和事件处理信息taps([])和注册同步事件的方法`tap`:
+
+  ```js
+  class Hook {
+  	constructor(args) {
+  		this._args = args
+  		this.taps = []
+  		this._x = undefined
+  	}
+  
+  	_tap(type, options, fn) {
+  		if (typeof options === 'string') {
+  			options = { name: options }
+  		}
+  		//  将fn函数合并进去
+  
+  		options = Object.assign({ fn, type }, options)
+  
+  		// 掉用this._insert方法去保存options到 this.taps上
+  		this._insert(options)
+  	}
+  
+  	/**
+  	 * 使用tap方法去注册同步钩子的处理事件
+  	 */
+  
+  	tap(options, fn) {
+  		this._tap('sync', options, fn)
+  	}
+  
+  	_insert(item) {
+  		this.taps[this.taps.length] = item
+  	}
+  }
+  
+  module.exports = {
+  	Hook
+  }
+  ```
+
+* `SyncHook`去继承`Hook`然后实现自己的call方法：
+
+  ```js
+  const { Hook } = require('./Hook.js')
+  
+  class SyncCodeFactory {
+  	/**
+  	 * 保存钩子的执行函数到钩子实例的_x中，然后生成的执行到代码是对象_x中函数的调用
+  	 */
+  	setup(instance, options) {
+  		instance._x = options.taps.map(option => option.fn)
+  	}
+  
+  	/**
+  	 * 保存信息到当前的factory实例上
+  	 */
+  	init(options) {
+  		this.options = options
+  		this.args = options.args.slice()
+  	}
+  
+  	/*
+      
+          我们的factory是单例的，所以我们使用完要清除factory上的信息
+      */
+  
+  	deinit() {
+  		this.options = undefined
+  		this.args = undefined
+  	}
+  
+  	/**
+  	 *
+  	 * 生成对钩子的执行代码
+  	 */
+  
+  	create(options) {
+  		this.init(options)
+  		let content = `var _x =  this._x;`
+  		for (let i = 0; i < this.options.taps.length; i++) {
+  			content += `var _fn${i} = _x[${i}];_fn${i}(${this.args.join(',')});`
+  		}
+  		const fn = new Function(this.args.join(','), content)
+  		this.deinit()
+  		return fn
+  	}
+  }
+  
+  const fatcory = new SyncCodeFactory()
+  
+  class SyncHook extends Hook {
+  	constructor(args) {
+  		super(args)
+  	}
+  	/**
+  	 * 实现对SyncHook的调用
+  	 */
+  	call(...args) {
+  		let call = this._createCall('sync')
+  		return call.apply(this, args)
+  	}
+  
+  	_createCall(type) {
+  		// 传递taps和args给factory
+  		return this.compile({
+  			taps: this.taps,
+  			type,
+  			args: this._args
+  		})
+  	}
+  
+  	/**
+  	 *
+  	 * @param {*} options
+  	 *
+  	 * 调用factory的方法生成钩子的执行函数
+  	 */
+  	compile(options) {
+  		fatcory.setup(this, options)
+  		return fatcory.create(options)
+  	}
+  }
+  
+  module.exports = { SyncHook }
+  
+  ```
+
+* 测试代码：
+
+  ```js
+  const { SyncHook } = require('./SyncHook.js')
+  
+  // 创建一个SyncHook实例
+  const sh = new SyncHook(['name', 'age'])
+  // 注册监听事件
+  sh.tap('fn1', function (name, age) {
+  	console.log('fn1', name, age)
+  })
+  
+  sh.tap('fn2', function (name, age) {
+  	console.log('fn2', name, age)
+  })
+  
+  sh.tap('fn3', function (name, age) {
+  	console.log('fn3', name, age)
+  })
+  
+  sh.call('yiluhuakai', 25)
+  
+  ```
+
+  
+
 
 
 

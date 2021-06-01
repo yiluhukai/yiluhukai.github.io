@@ -1135,7 +1135,7 @@ d.run()
 
   * 使用core.js首先需要安装，安装完成后再TS中导入即可
 
-  * core.js会对能polyfill的api都做polypill,Object.defineProperty就不可以通过polyfill实现，我们可以直接引入core.js,也可以只引入部分我们需要的特性
+  * `core.js`会对能polyfill的api都做替换处理,并不是所有的浏览器`api`都可以做`polyfill`处理，Object.defineProperty就不可以通过polyfill实现。我们可以直接引入core.js,也可以只引入部分我们需要的特性
 
   * ```js
     npm i core.js
@@ -1171,45 +1171,101 @@ d.run()
     module.exports = {};
     ```
 
-  * 使用polyfill我们仍可以看到Object.entries()，但是我们再执行前引入了polyfill，他会给Object.entries()做定义，所以我们可以在低版本的运行环境中执行
+  * 使用polyfill我们仍可以看到Object.entries()，但是我们再执行前引入了polyfill，他会给Object.entries函数做定义，所以我们可以在低版本的运行环境中执行
 
-  * 另一种方式就是我先用tsc将TS的语法转成js,然后让babel去给我们做语法转化，这个时需要将target设置成esnext,代表使用最新的ES特性。
+  * 另一种方式就是我先用tsc将TS的语法转成js,然后让babel去给我们做语法转化，这个时需要将target设置成`esnext`,代表使用最新的ES特性。
 
-  * 我们还可以直接使用babel去转化TS,这个时候不会对TS文件做检查。
+  * 我们还可以直接使用`babel`去转化TS,这个时候不会对TS文件做检查。
 
     * 安装babel
 
     * ```shell
-      npm install --save-dev @babel/core @babel/cli @babel/preset-env
-      npm install --save @babel/polyfill
+      npm install --save-dev @babel/core @babel/cli @babel/preset-env @babel/preset-typescript
+      npm install --save core-js.js
       ```
 
-    * 在项目的根目录下创建一个命名为 `babel.config.json` 的配置文件
+    * 在项目的根目录下创建一个命名为 `babel.config.js `的配置文件
 
-    * ```json
-      {
-        "presets": [
-          [
-            "@babel/env",
-            {
-              "targets": {
-                "edge": "17",
-                "firefox": "60",
-                "chrome": "67",
-                "safari": "11.1"
-              },
-              "useBuiltIns": "usage",
-              "corejs": "3.6.5"
-            }
-          ]
-        ]
+    * ```js
+      module.exports = {
+      	presets: [
+      		[
+      			'@babel/env',
+      			{
+              //需要时采取polyfill
+      				useBuiltIns: 'usage',
+              // core-js的版本
+      				corejs: {
+      					version: 3
+      				}
+      			}
+      		],
+      		'@babel/typescript'
+      	]
       }
       ```
-
+      
     * ```shell
-      npx babel --presets @babel/preset-typescript index.ts
-      #npx babel index.ts -o  index.js 报错，暂未找到原因
+      npx babel index.ts -o  index.js 
       ```
+  
+  * 最终的输出结果：
+  
+    ```js
+    "use strict";
+    
+    require("core-js/modules/es.array.is-array.js");
+    
+    require("core-js/modules/es.symbol.js");
+    
+    require("core-js/modules/es.symbol.description.js");
+    
+    require("core-js/modules/es.object.to-string.js");
+    
+    require("core-js/modules/es.symbol.iterator.js");
+    
+    require("core-js/modules/es.array.iterator.js");
+    
+    require("core-js/modules/es.string.iterator.js");
+    
+    require("core-js/modules/web.dom-collections.iterator.js");
+    
+    require("core-js/modules/es.array.slice.js");
+    
+    require("core-js/modules/es.function.name.js");
+    
+    require("core-js/modules/es.array.from.js");
+    
+    require("core-js/modules/es.object.entries.js");
+    
+    function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+    
+    function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+    
+    function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+    
+    function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+    
+    function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+    
+    function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+    
+    var p = {
+      name: 'sss',
+      age: 20,
+      gender: 'female'
+    };
+    
+    for (var _i = 0, _Object$entries = Object.entries(p); _i < _Object$entries.length; _i++) {
+      var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+          key = _Object$entries$_i[0],
+          value = _Object$entries$_i[1];
+    
+      console.log(key, value);
+    }
+    ```
+  
+    
 
 ### [在vue项目中加入ts]（https://cn.vuejs.org/v2/guide/typescript.html）
 
@@ -1549,7 +1605,6 @@ declare module 'vue/types/vue' {
   
 
 ​    
-
 
 
 
