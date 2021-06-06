@@ -31,7 +31,8 @@ module.exports = {
 		'/es/ruler',
 		'/es/webpack-source',
 		'/es/webpack3',
-		'/es/webpack4'
+		'/es/webpack4',
+		'/es/webpack5'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
