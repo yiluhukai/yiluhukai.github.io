@@ -1,6 +1,6 @@
 
 
-webpack源码分析（二）
+#### webpack源码分析（二）
 
 前面我们对`webpack`创建`compiler`和调用`compiler.run()`方法的过程进行了大概的分析，我们知道`run()`中会触发`make`钩子的事件监听。当我们触发`make`钩子的时候，我们会把`compilation`传递过去，在事件监听中会调用`compilation`对象的`addEntry方法`。
 

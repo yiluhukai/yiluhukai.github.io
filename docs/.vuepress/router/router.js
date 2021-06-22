@@ -34,7 +34,8 @@ module.exports = {
 		'/es/webpack4',
 		'/es/webpack5',
 		'/es/webpack6',
-		'/es/webpack7'
+		'/es/webpack7',
+		'/es/debound'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
