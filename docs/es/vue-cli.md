@@ -626,8 +626,8 @@ __webpack_require__.r(__webpack_exports__);
 						loader: 'url-loader',
 						options: {
 							// 大于 8K使用file-loader,需要安装file-loader作为依赖
-							limit: 8
-							//esModule: false
+							limit: 8,
+							esModule: false
 						}
 					}
 				]
@@ -640,7 +640,146 @@ __webpack_require__.r(__webpack_exports__);
 npx webpack-dev-server --config webpack.dev.js
 ```
 
+接下来配置`babel`来实现`ES6`语法的转换,先安装依赖
 
+```shell
+npm install -D @babel/core @babel/preset-env babel-loader
+npm install core-js
+```
 
+`babel.config.js`配置选项:
 
+```js
+module.exports = {
+	presets: [
+		// '@vue/cli-plugin-babel/preset'
+		[
+			'@babel/preset-env',
+			{
+				corejs: 3,
+				useBuiltIns: 'usage',
+				targets: {
+					chrome: '58',
+					ie: '11'
+				},
+				modules: false
+			}
+		]
+	]
+}
+```
+
+`webpack.common.js`中加入下面的配置项：
+
+```js
+{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader'
+				}
+}
+```
+
+配置`EsLint`,`package.json`中的配置项：
+
+```js
+"eslintConfig": {
+		"root": true,
+		"env": {
+			"node": true
+		},
+		"extends": [
+			"plugin:vue/essential",
+			"eslint:recommended"
+		],
+		"parserOptions": {
+			"parser": "babel-eslint"
+		},
+		"rules": {}
+	},
+```
+
+安装依赖：
+
+```js
+npm install -D eslint eslint-loader eslint-plugin-vue babel-eslint
+```
+
+`webpack.dev.js`:
+
+```js
+{
+				test: /\.(js|vue)/,
+				use: 'eslint-loader',
+				// 在babel-loader解析前执行
+				enforce: 'pre'
+}
+```
+
+接下来配置`scripts`:
+
+```shell
+"scripts": {
+		"serve": "webpack-dev-server --config webpack.dev.js",
+		"build": "webpack --config webpack.prod.js",
+		"lint": "eslint --ext .js,.vue src"
+	},
+```
+
+`webpack.prod.js`:
+
+```js
+const commonConfigs = require('./webpack.common')
+const { merge } = require('webpack-merge')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+/**
+ *
+ * @type {import("webpack").Configuration}
+ *
+ *
+ */
+
+const prodConfigs = {
+	mode: 'production',
+	module: {
+		rules: [
+			{
+				test: /\.less$/,
+				loader: ['style-loader', 'css-loader', 'less-loader']
+			},
+			{
+				test: /\.css$/,
+				loader: ['style-loader', 'css-loader']
+			},
+			{
+				test: /\.(png|jpg|gif)$/i,
+				use: [
+					{
+						loader: 'url-loader',
+						options: {
+							// 大于 8K使用file-loader,需要安装file-loader作为依赖
+							limit: 8,
+							esModule: false
+						}
+					}
+				]
+			}
+		]
+	},
+	plugins: [
+		new HtmlWebpackPlugin({
+			template: './public/index.html',
+			title: 'My App',
+			templateParameters: {
+				BASE_URL: './public/'
+			}
+		})
+	]
+}
+module.exports = merge({}, commonConfigs, prodConfigs)
+
+```
+
+待优化的地方：提取`css`文件到单独的文件中并压缩。
 

@@ -35,7 +35,8 @@ module.exports = {
 		'/es/webpack5',
 		'/es/webpack6',
 		'/es/webpack7',
-		'/es/debound'
+		'/es/debound',
+		'/es/vue_router'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
