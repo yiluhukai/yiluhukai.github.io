@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-01-03 18:52:19
+ * @LastEditTime: 2021-07-31 14:43:05
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /yiluhuakai_blog/docs/.vuepress/router/router.js
+ */
 module.exports = {
 	'/leetcode': [
 		'/leetcode/hanota',
@@ -36,7 +44,8 @@ module.exports = {
 		'/es/webpack6',
 		'/es/webpack7',
 		'/es/debound',
-		'/es/vue_router'
+		'/es/vue_router',
+		'/es/vue-observer'
 	],
 	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
