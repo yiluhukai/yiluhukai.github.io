@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-03 18:52:19
- * @LastEditTime: 2021-07-31 14:43:05
+ * @LastEditTime: 2021-08-02 22:24:06
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /yiluhuakai_blog/docs/.vuepress/router/router.js
@@ -13,7 +13,8 @@ module.exports = {
 		'/leetcode/longestSubStr',
 		'/leetcode/ReverseWordsInAString',
 		'/leetcode/specialBinaryString',
-		'/leetcode/findMedianSortedArrays'
+		'/leetcode/findMedianSortedArrays',
+		'/leetcode/lineSegmentTree'
 	],
 	'/mysql': ['/mysql/mysql1', '/mysql/mysql2'],
 	'/es': [
