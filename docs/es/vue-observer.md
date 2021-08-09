@@ -997,3 +997,11 @@ class Vue{
 }
 ```
 
+面试题：
+
+* 给属性重新复制成对象，是否是响应式的呢？
+  * 是的，因为在`Observer`中我们set方法会对重新复制的值定义成响应式的。
+* 给`Vue`对象新增一个成员是否是响应式的呢 ？
+  * 不是，这个相当给`vm`添加了个属性。
+  * [[检测变化的注意事项](https://cn.vuejs.org/v2/guide/reactivity.html#检测变化的注意事项)](https://cn.vuejs.org/v2/guide/reactivity.html#%E6%A3%80%E6%B5%8B%E5%8F%98%E5%8C%96%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9)
+
