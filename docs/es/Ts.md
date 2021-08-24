@@ -1085,6 +1085,156 @@ d.run()
   * 更好的方法是：点击上面lodash的警告，我们可以提示我们安装·npm install @types/lodash`.一般常用的第三方包都有了对应类型声明文件，我们可以直接去使用它，直接安装到开发依赖即可。
   * 甚至一些第三方包中已经存在这样的类型声明文件了。我们不需要手动安装，如query-string.
   * 关于ts的类型声明，我们可以去查看[文档](https://www.tslang.cn/docs/handbook/declaration-files/introduction.html)
+  
+* 函数的重载
+
+  * 多个同名函数同时存在，具有不同的参数个数/类型
+  * `TypeScipt`的函数重载是为同一个函数提供多个函数类型定义来进行函数重载。 编译器会根据这个列表去处理函数的调用
+  * `TypeScipt`的重载有函数重载列表和函数的具体实现两部分组成
+  * 在定义重载的时候，一定要把最精确的重载列表定义放在最前面
+
+  ```js
+  // 函数的重载
+  function add(a:number,b :number) :number
+  
+  function add(a :number ,b :string) :string
+  // 实现
+  function add(a:number ,b:any):any{
+      if(typeof b === 'number'){
+          return a + b 
+      }else if (typeof b === 'string'){
+          return a + b
+      }
+  }
+  console.log(add(1 , 2)) // 3
+  
+  console.log(add( 1 ,"s")) // "1s"
+  ```
+
+* 索引类型
+
+  * 使用索引类型，编译器就能够检查使用了动态属性名的代码
+  *  索引类型一般由**索引类型查询**和 **索引访问**操作符：
+
+  ```js
+  function pluck(o, names) {
+      return names.map(n => o[n]);
+  }
+  ```
+
+  * 使用索引类型来限定上面的函数
+
+  ```tsx
+  
+  function pluck<T,K extends  keyof T>(o:T, names:K[]):T[K][] {
+      return names.map(n => o[n]);
+  }
+  
+  
+  interface People {
+      name:string,
+      age:number
+  }
+  
+  const  p:People = { name : "zzz", age:10 }
+  
+  
+  console.log(pluck(p,['name','age'])) // [ 'zzz', 10 ]
+  ```
+
+  * `keyof`是**索引类型查询操作符**，上面的`keyof T `相当于联合类型`"name"|"age"`
+  * 操作符是 `T[K]`， **索引访问操作符**,这次T[K]是K在T中对应属性的联合类型，这里相当于`string|number`
+
+* 映射类型
+  
+  * `TypeScript`提供了从旧类型中创建新类型的一种方式 — **映射类型**
+  * 最简单的映射类型
+  
+  ```js
+  
+  type keys = "name" | "age"
+  
+  // 定义映射类型
+  // in类似for...in
+  // flag类型实质上是 {name:boolean,string:boolean }
+  type flags = { [ key in keys]:boolean}
+  
+  
+  const s1:flags = { name:true,age:true}
+  ```
+  
+  * `TypeScript`中预定义的有条件类型(只是部分)，我们可以基于他们创建新的类型
+  
+  ```tsx
+  
+  /**
+   * Make all properties in T optional
+   */
+  type Partial<T> = {
+      [P in keyof T]?: T[P];
+  };
+  
+  /**
+   * Make all properties in T required
+   */
+  type Required<T> = {
+      [P in keyof T]-?: T[P];
+  };
+  
+  /**
+   * Make all properties in T readonly
+   */
+  type Readonly<T> = {
+      readonly [P in keyof T]: T[P];
+  };
+  
+  /**
+   * From T, pick a set of properties whose keys are in the union K
+   */
+  type Pick<T, K extends keyof T> = {
+      [P in K]: T[P];
+  };
+  
+  /**
+   * Construct a type with a set of properties K of type T
+   */
+  type Record<K extends keyof any, T> = {
+      [P in K]: T;
+  };
+  
+  ```
+  
+  ```tsx
+  interface Person {
+      name: string;
+      age: number;
+  }
+  
+  const p1:Person = { name:"zz",age: 26 }
+  
+  // 基于商民的Person创建新的类型
+  
+  
+  type PersonPartial = Partial<Person>;
+  type ReadonlyPerson = Readonly<Person>;
+  type RequiredPerson = Required<Person>
+  
+  const p2 : PersonPartial = { name: 'zz' }
+  const p3:ReadonlyPerson = p1
+  
+  
+  
+  // Cannot assign to 'age' because it is a read-only property.ts(2540)
+  p3.age ="zzz"
+  
+  const  p4: RequiredPerson = p1
+  // 'p5' is declared but its value is never read.ts(6133)
+  // Type 'Partial<Person>' is not assignable to type 'Required<Person>'.
+  //   Types of property 'name' are incompatible.
+  const p5:RequiredPerson =p2
+  ```
+  
+  
 
 ### TS的polyfill(垫片)
 
