@@ -715,6 +715,93 @@ export function vnode (sel: string | undefined,
 
 ```
 
+* `init`函数
+  * `init`函数是一个高阶函数。
+  * 接受`moudle`数组和`domApi`作为参数
+  * 返回`patch`函数
+  * `domApi`默认是操作`html`的`api`,我们可以提供其他平台的`api`来将虚拟`dom`转成其他平台的`dom`
+
+```tsx
+
+// init.ts
+export function init (modules: Array<Partial<Module>>, domApi?: DOMAPI) {
+  let i: number
+  let j: number
+  // 保存模块中的勾子函数
+  const cbs: ModuleHooks = {
+    create: [],
+    update: [],
+    remove: [],
+    destroy: [],
+    pre: [],
+    post: []
+  }
+ // 设置api的值，默认是htmlDomApi
+  const api: DOMAPI = domApi !== undefined ? domApi : htmlDomApi
+	// 外层循环没有意义，设置的就是默认值和上面初始化的值一样，都是[]
+  for (i = 0; i < hooks.length; ++i) {
+    cbs[hooks[i]] = []
+    for (j = 0; j < modules.length; ++j) {
+      //将模块中的勾子函数依次放入到对应的数组中
+      // cbs['create'].push(fn1)
+      const hook = modules[j][hooks[i]]
+      if (hook !== undefined) {
+        (cbs[hooks[i]] as any[]).push(hook)
+      }
+    }
+  }
+	//下面是一些patch函数需要用到的内部函数
+  function emptyNodeAt (elm: Element) {
+    ....
+  }
+
+  function createRmCb (childElm: Node, listeners: number) {
+    ...
+  }
+  // 返回一个patch:用来将后面的虚拟dom替换前面的dom
+  return function patch (oldVnode: VNode | Element, vnode: VNode): VNode {
+    ....
+    return vnode
+  }
+    
+ //   上面的Module
+ export type Module = Partial<{
+  pre: PreHook
+  create: CreateHook
+  update: UpdateHook
+  destroy: DestroyHook
+  remove: RemoveHook
+  post: PostHook
+}>   
+
+//  htmlDomApi.ts 
+function insertBefore (parentNode: Node, newNode: Node, referenceNode: Node | null): void {
+  parentNode.insertBefore(newNode, referenceNode)
+}
+
+function removeChild (node: Node, child: Node): void {
+  node.removeChild(child)
+}
+  
+ export const htmlDomApi: DOMAPI = {
+  createElement,
+  createElementNS,
+  createTextNode,
+  createComment,
+  insertBefore,
+  removeChild,
+  appendChild,
+  parentNode,
+  nextSibling,
+  tagName,
+  setTextContent,
+  getTextContent,
+  isElement,
+  isText,
+  isComment,
+}
+```
+
 * `patch`函数
   * `patch(oldVNode,newVode)`
   * 把新节点渲染到真实`dom`中去，返回新的`VNode`作为下次的处理的`oldVNode`
@@ -722,7 +809,91 @@ export function vnode (sel: string | undefined,
   * 如果不同，删除之前的节点重新创建
   * 如果相同，判断新的`VNode`是否有文本节点，如果有并且和旧的`VNode`的文本不同，直切更新文本的内容
   * 如果新的`VNode`有子节点，对比子节点是否有变化
-* 
+
+```tsx
+function patch (oldVnode: VNode | Element, vnode: VNode): VNode {
+    let i: number, elm: Node, parent: Node
+    // 保存要插入的虚拟dom的列表，当插入到真实dom中后执行insert虚拟dom的insert勾子
+    const insertedVnodeQueue: VNodeQueue = []
+    // 执行pre勾子
+    for (i = 0; i < cbs.pre.length; ++i) cbs.pre[i]()
+    // 如果不是vNode,将真实dom转成虚拟dom
+    if (!isVnode(oldVnode)) {
+      oldVnode = emptyNodeAt(oldVnode)
+    }
+    // 判断vNode和原来的老的vNode是否相同
+    if (sameVnode(oldVnode, vnode)) {
+      // 更新他的子节点
+      patchVnode(oldVnode, vnode, insertedVnodeQueue)
+    } else {
+      elm = oldVnode.elm!
+      parent = api.parentNode(elm) as Node
+      // 将vNode转成真实的dom，并将vnode保存到insertedVnodeQueue
+      createElm(vnode, insertedVnodeQueue)
+      // 将新的dom插入到原来dom的后面
+      // 删除原来的dom
+      if (parent !== null) {
+        api.insertBefore(parent, vnode.elm!, api.nextSibling(elm))
+        removeVnodes(parent, [oldVnode], 0, 0)
+      }
+    }
+    // 执行插入的vNode的insert勾子
+    for (i = 0; i < insertedVnodeQueue.length; ++i) {
+      // ！.类似js的?.(可选链) 
+      insertedVnodeQueue[i].data!.hook!.insert!(insertedVnodeQueue[i])
+    }
+     // 执行 post勾子
+    for (i = 0; i < cbs.post.length; ++i) cbs.post[i]()
+    return vnode
+  }
+
+// 内部的一些函数
+
+function sameVnode (vnode1: VNode, vnode2: VNode): boolean {
+  return vnode1.key === vnode2.key && vnode1.sel === vnode2.sel
+}
+
+function isVnode (vnode: any): vnode is VNode {
+  return vnode.sel !== undefined
+}
+
+function emptyNodeAt (elm: Element) {
+  const id = elm.id ? '#' + elm.id : ''
+  const c = elm.className ? '.' + elm.className.split(' ').join('.') : ''
+  return vnode(api.tagName(elm).toLowerCase() + id + c, {}, [], undefined, elm)
+}
+// 其他的函数可以去源码中找
+```
+
+```tip
+```
+
+可以对上面我们搭建的`snabbdom-demo`进行断点调试来观察`patch`函数的执行过程,打包后的源文件位于控制台->`source`->`http://localhost:1234/`->`src/*`,可以对其 设置断点。
+
+![patch-source](/frontend/parcel-source.png)
+
+:::tip
+
+```html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="./src/01-basicusage.js"></script>
+</body>
+</html
+```
+
+`div`后面的兄弟节点是是文本节点而不是`script`节点。
+
+::::
 
 
 
