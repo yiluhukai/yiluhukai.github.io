@@ -11,7 +11,7 @@
 
 ```text
 / 代表根目录
-～ 代表用户的根目录
+～ 代表用户的家目录
 cd 不带参数，回到用户的根目录。
 cd - 返回用户上次所以在目录。
 ```
@@ -19,9 +19,9 @@ cd - 返回用户上次所以在目录。
 #### man指令
 
 ```text
-man man/ls等
+man man/ls/cd 等
 man 还可用来查看库函数
-man 3(章节，1代表的是shell指令) printf
+man n(3是库函数，2是系统调用函数，1代表的是shell指令) printf
 man -M：指定手册文件的搜索路径，有的时候我们自己安装的软件是带有自己的帮助文件的，通常不在我们的MANPATH 里面，那么我们就可以手动指定man搜索的文件路径。
 如 man -M /home/mysql/man mysql
 ```
@@ -30,6 +30,22 @@ man -M：指定手册文件的搜索路径，有的时候我们自己安装的�
 
 ```text
 用法：tar [选项] 压缩/压缩的文件名称 解压或者压缩的文件
+
+-c  Create a new archive containing the specified items.  The long option form is --create.
+-x  Extract(提取) to disk from the archive（存档）.  If a file with the same name
+    appears more than once in the archive, each copy will be extracted, with later copies overwriting         			(replacing) earlier copies.  The long option form is --extract.
+-f file, --file file Read the archive from or write the archive to the specified file.
+    The filename can be - for standard input or standard output.  The default varies by system; 
+    on FreeBSD, the default is /dev/sa0; on Linux, the default is /dev/st0.（指定的压缩包的文件名称）
+-v, --verbose Produce verbose output.  In create and extract modes, tar will list each file name as it is read 			from or written to the archive.  In list mode, tar will produce output similar to that of ls(1).  An 			  		additional -v option will also provide ls-like details in create and extract mode.
+-z, --gunzip, --gzip
+    (c mode only) Compress the resulting archive with gzip(1).  In extract or list modes, this option is ignored.  Note that, unlike other tar implementations, this implementation recognizes gzip compression automatically when reading archives.	
+    
+-j, --bzip, --bzip2, --bunzip2
+    (c mode only) Compress the resulting archive with bzip2(1).  In extract or list modes, this option is ignored.  Note that, unlike other tar implementations, this implementation recognizes bzip2 compression automatically when reading archives.
+    
+使用-x的原因是我们压缩文件的时候可能在不同的文件下存在同名的文件，那么会使用后面的文件覆盖前面的   
+使用-j/z指定解压或者要压缩的文件的格式
 解压文件 tar -zxvf  *.tar.gz
 压缩文件 tar -cvfz/j  *.tar.gz/.bz2  文件/目录
 ```

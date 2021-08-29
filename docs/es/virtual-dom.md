@@ -865,14 +865,9 @@ function emptyNodeAt (elm: Element) {
 // 其他的函数可以去源码中找
 ```
 
-```tip
-```
-
-可以对上面我们搭建的`snabbdom-demo`进行断点调试来观察`patch`函数的执行过程,打包后的源文件位于控制台->`source`->`http://localhost:1234/`->`src/*`,可以对其 设置断点。
+可以对上面我们搭建的`snabbdom-demo`进行断点调试来观察`patch`函数的执行过程,打包后的源文件位于控制台->`source`->`http://localhost:1234/`->`src/*`,可以对其设置断点。
 
 ![patch-source](/frontend/parcel-source.png)
-
-:::tip
 
 ```html
 
@@ -891,9 +886,578 @@ function emptyNodeAt (elm: Element) {
 </html
 ```
 
-`div`后面的兄弟节点是是文本节点而不是`script`节点。
+:::warning
 
-::::
+`div`后面的兄弟节点是文本节点而不是`script`节点
+
+:::
+
+* `createElm`函数
+  * 将`VNode`转换成`dom`对象保存到`VNode.elm`属性中
+  * `createElm`函数在创建真实`dom`对象的时候会执行我们设置的`hook`函数
+  * `createElm`可以创建注释节点、元素节点、文本节点
+  * 当我们传入的`VNode`对象有`insert`勾子时，会被加入到`insertedVnodeQueue`里
+
+```tsx
+
+  function createElm (vnode: VNode, insertedVnodeQueue: VNodeQueue): Node {
+    let i: any
+    let data = vnode.data
+    if (data !== undefined) {
+      // 执行我们在创建VNode的时候传入的data的init勾子函数
+      const init = data.hook?.init
+      if (isDef(init)) {
+        init(vnode)
+        // init函数可能会修改data
+        data = vnode.data
+      }
+    }
+    // 获取VNode对象的children 和sel属性
+    // sel == "!"" 是注释节点
+    // sel !== "!" && sel !== undefined 是元素节点
+    // 否则是文本节点 
+    const children = vnode.children
+    const sel = vnode.sel
+    if (sel === '!') {
+      // 讲注释内容修改成字符串
+      if (isUndef(vnode.text)) {
+        vnode.text = ''
+      }
+      vnode.elm = api.createComment(vnode.text!)
+    } else if (sel !== undefined) {
+      // Parse selector
+      // 将我们传入的选择器解析成tag,id,class 
+      const hashIdx = sel.indexOf('#')
+      const dotIdx = sel.indexOf('.', hashIdx)
+      const hash = hashIdx > 0 ? hashIdx : sel.length
+      const dot = dotIdx > 0 ? dotIdx : sel.length
+      const tag = hashIdx !== -1 || dotIdx !== -1 ? sel.slice(0, Math.min(hash, dot)) : sel
+      // data.ns存在的是svg
+      const elm = vnode.elm = isDef(data) && isDef(i = data.ns)
+        ? api.createElementNS(i, tag)
+        : api.createElement(tag)
+      // 向创建的元素节点上添加id和class  
+      if (hash < dot) elm.setAttribute('id', sel.slice(hash + 1, dot))
+      if (dotIdx > 0) elm.setAttribute('class', sel.slice(dot + 1).replace(/\./g, ' '))
+      // 执行模块的create勾子
+      for (i = 0; i < cbs.create.length; ++i) cbs.create[i](emptyNode, vnode)
+      // 如果children存在，那么该节点含有子元素，负责元素的内容是文本节点
+      // children和text只能存在一个
+      if (is.array(children)) {
+        for (i = 0; i < children.length; ++i) {
+          const ch = children[i]
+          // 递归调用createElm来创建子元素
+          if (ch != null) {
+            api.appendChild(elm, createElm(ch as VNode, insertedVnodeQueue))
+          }
+        }
+      } else if (is.primitive(vnode.text)) {
+        api.appendChild(elm, api.createTextNode(vnode.text))
+      }
+      // 执行VNode的create勾子
+      const hook = vnode.data!.hook
+      if (isDef(hook)) {
+        hook.create?.(emptyNode, vnode)
+        // insert勾子存在，将对应的Vnode放入insertedVnodeQueue里面
+        if (hook.insert) {
+          insertedVnodeQueue.push(vnode)
+        }
+      }
+    } else {
+      // 创建文本节点
+      vnode.elm = api.createTextNode(vnode.text!)
+    }
+    // 返回我们创建的dom对象
+    return vnode.elm
+  }
+```
+
+`我们可以使用下面的代码来调试`：
+
+```js
+// 04-basicusage.js 
+import { h } from "snabbdom/build/package/h";
+import { init } from "snabbdom/build/package/init";  
+
+const patch = init([]);
+
+// 第一个参数是元素的标签和选择器
+// 第二个参数是元素的内容
+const vNode = h("div#container.test",{ 
+    hook:{ 
+        init(){ console.log('init hook') },
+        create(){ console.log('create hook') }   
+    }    
+},"Hello world") 
+
+
+// 第一个参数可以是旧的vNode，也可以是真实dom
+// 第一个参数是新vNode
+// 返回值是的新的vNode
+
+const el =  document.querySelector("#app")
+// 为下一次更新去使用
+patch(el,vNode)
+
+```
+
+* `removeVnodes.ts`函数
+  * 批量删除`VNode`从`dom`上
+
+```tsx
+  /**
+   * 批量删除VNode
+   * @param parentElm 父节点，真实dom 
+   * @param vnodes  VNode的列表
+   * @param startIdx 删除的开始下标 
+   * @param endIdx  删除的结束下标
+   */
+  function removeVnodes (parentElm: Node,
+    vnodes: VNode[],
+    startIdx: number,
+    endIdx: number): void {
+    for (; startIdx <= endIdx; ++startIdx) {
+      let listeners: number
+      let rm: () => void
+      const ch = vnodes[startIdx]
+      if (ch != null) {
+        if (isDef(ch.sel)) {
+          // 调用VNode中的destroy勾子，如果有children,递归调用invokeDestroyHook
+          invokeDestroyHook(ch)
+          // 一个计数器,当计数器的数字变成0时，去掉用下面的rm
+          listeners = cbs.remove.length + 1
+          // createRmCb返回一个高阶函数，返回rm函数，rm函数执行一次，--listeners
+          // 当listeners == 0时,从ch.elm的父元素上移除该节点
+          rm = createRmCb(ch.elm!, listeners)
+          // 执行chs.remove勾子函数(全局模块中提供的)
+          for (let i = 0; i < cbs.remove.length; ++i) cbs.remove[i](ch, rm)
+          const removeHook = ch?.data?.hook?.remove
+          // 如果ch这个VNode有remove勾子函数，触发它的勾子函数
+          // 这里再次执行rm时因为我们`init`函数可能没接受modules,那么我们也要确保rm执行一次
+
+          if (isDef(removeHook)) {
+            removeHook(ch, rm)
+          } else {
+            // 当我们没有提供模块和Vnode中的romove勾子，也要去删除该节点
+            rm()
+          }
+        } else { // Text node
+          api.removeChild(parentElm, ch.elm!)
+        }
+      }
+    }
+  }
+
+  function createRmCb (childElm: Node, listeners: number) {
+    return function rmCb () {
+      if (--listeners === 0) {
+        const parent = api.parentNode(childElm) as Node
+        api.removeChild(parent, childElm)
+      }
+    }
+  }
+  /**
+   * 调用VNode中的destroy勾子，如果有children,递归调用invokeDestroyHook
+   * @param vnode 
+   */
+  function invokeDestroyHook (vnode: VNode) {
+    const data = vnode.data
+    if (data !== undefined) {
+      data?.hook?.destroy?.(vnode)
+      for (let i = 0; i < cbs.destroy.length; ++i) cbs.destroy[i](vnode)
+      if (vnode.children !== undefined) {
+        for (let j = 0; j < vnode.children.length; ++j) {
+          const child = vnode.children[j]
+          if (child != null && typeof child !== 'string') {
+            invokeDestroyHook(child)
+          }
+        }
+      }
+    }
+  }
+```
+
+* `addVnodes`函数
+  * 批量添加`VNode`到`dom`上
+
+```tsx
+
+  /**
+   * 
+   * @param parentElm 父元素
+   * @param before 插入节点的在before节点之前
+   * @param vnodes  要插入的VNode的列表
+   * @param startIdx VNodes中 的开始下标
+   * @param endIdx  VNodes中 的结束下标
+   * @param insertedVnodeQueue 记录要提供了insert勾子的VNode列表
+   */
+  function addVnodes (
+    parentElm: Node,
+    before: Node | null,
+    vnodes: VNode[],
+    startIdx: number,
+    endIdx: number,
+    insertedVnodeQueue: VNodeQueue
+  ) {
+    for (; startIdx <= endIdx; ++startIdx) {
+      const ch = vnodes[startIdx]
+      // 直接将Vnode创建成真实dom然后插入
+      if (ch != null) {
+        api.insertBefore(parentElm, createElm(ch, insertedVnodeQueue), before)
+      }
+    }
+  }
+```
+
+* `patchVnode`函数
+  * 当发现两个新旧dom相同(key和选择器相同)，那么对比两个虚拟dom的子节点和文本节点的内容
+  ![patchVnode](/frontEnd/patchVode.png)
+
+```tsx
+/**
+   * 当发现两个新旧dom相同(key和选择器相同)，那么对比两个虚拟dom的子节点和文本节点的内容
+   * @param oldVnode 旧的虚拟dom
+   * @param vnode 新的虚拟dom
+   * @param insertedVnodeQueue 需要执行insert勾子的VNode的数组
+   * @returns 
+   */
+  function patchVnode (oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQueue) {
+    // 先执行新的VNode的prepatch勾子
+    const hook = vnode.data?.hook
+    hook?.prepatch?.(oldVnode, vnode)
+    // 这里我们使用旧的dom进行更新
+    const elm = vnode.elm = oldVnode.elm!
+    const oldCh = oldVnode.children as VNode[]
+    const ch = vnode.children as VNode[]
+    // 两个VNode相同应用，那么直接返回
+    if (oldVnode === vnode) return
+    // 触发moduels中的update勾子和新的VNode的update勾子
+    if (vnode.data !== undefined) {
+      for (let i = 0; i < cbs.update.length; ++i) cbs.update[i](oldVnode, vnode)
+      vnode.data.hook?.update?.(oldVnode, vnode)
+    }
+    // 新的VNode没有文本节点
+    if (isUndef(vnode.text)) {
+      // 那么新的VNode的children应该存在
+      if (isDef(oldCh) && isDef(ch)) {
+        // 新旧VNode的children都存在且不相等
+        // 调用updateChildren函数去跟旧VNode的children
+        if (oldCh !== ch) updateChildren(elm, oldCh, ch, insertedVnodeQueue)
+      } else if (isDef(ch)) {
+        // 新的VNode的children存在而旧的Vnode的children不存在
+        // 移除文本节点
+        if (isDef(oldVnode.text)) api.setTextContent(elm, '')
+        // 创建新的VNode的children的并添加到elm
+        addVnodes(elm, null, ch, 0, ch.length - 1, insertedVnodeQueue)
+      } else if (isDef(oldCh)) {
+        // 旧的VNode有children而新的VNode没有children,也没有文本节点
+        // 直接删除旧的VNode的children
+        removeVnodes(elm, oldCh, 0, oldCh.length - 1)
+      } else if (isDef(oldVnode.text)) {
+        // 如果新旧VNode的children都不存在，但是旧的VNode有text而新的没有
+        // 直接删除旧的VNode的文本节点即可
+        api.setTextContent(elm, '')
+      }
+    } else if (oldVnode.text !== vnode.text) {
+      // 新的VNode有文本节点且和旧的VNode的文本节点不同
+      // 旧的VNode有子元素
+      if (isDef(oldCh)) {
+        // 删除子元素，这样子可以触发destory和remove勾子
+        removeVnodes(elm, oldCh, 0, oldCh.length - 1)
+      }
+      // 更新文本节点
+      api.setTextContent(elm, vnode.text!)
+    }
+    // 执行新的Vnode的postpatch勾子
+    hook?.postpatch?.(oldVnode, vnode)
+  }
+```
+
+当发现两个`vnode`的`key`和`sel`是相同的时候，但是他们的`children`都存在且不相同时，我们会执行`updateChildren`函数
+
+* `updateChildren(elm, oldCh, ch, insertedVnodeQueue)`
+  * 对比两个`key`和`sel`相同的`vnode`的`children`(都存在)
+  * 其他情况我们都是使用`patchVnode`来对比更新的两个vnode
+  * 是diff算法的核心
+
+```tsx
+  /**
+   * 对比两个vnode的children
+   * @param parentElm 
+   * @param oldCh 
+   * @param newCh 
+   * @param insertedVnodeQueue 
+   */
+  function updateChildren (parentElm: Node,
+    oldCh: VNode[],
+    newCh: VNode[],
+    insertedVnodeQueue: VNodeQueue) {
+    // 对比过程中需要使用到的变量  
+    let oldStartIdx = 0 // 旧的vnode的children的开始索引
+    let newStartIdx = 0 //新的vnode的children的开始索引
+    let oldEndIdx = oldCh.length - 1 //旧的vnode的children的结束索引
+    let oldStartVnode = oldCh[0] // 旧的vnode的children中的第一个vnode
+    let oldEndVnode = oldCh[oldEndIdx] //旧的vnode的children中的最后一个vnode
+    let newEndIdx = newCh.length - 1 //新的vnode的children的结束索引
+    let newStartVnode = newCh[0] //新的vnode的children中的第一个vnode
+    let newEndVnode = newCh[newEndIdx] //新的vnode的children中的最后一个vnode
+    let oldKeyToIdx: KeyToIndexMap | undefined  // 通过索引去查找下标的对象
+    let idxInOld: number //索引
+    let elmToMove: VNode //需要移动的元素
+    let before: any //
+    // 整个diff算法的核心  
+    while (oldStartIdx <= oldEndIdx && newStartIdx <= newEndIdx) {
+      // 忽律children中为null的vnode
+      if (oldStartVnode == null) {
+        oldStartVnode = oldCh[++oldStartIdx] // Vnode might have been moved left
+      } else if (oldEndVnode == null) {
+        oldEndVnode = oldCh[--oldEndIdx]
+      } else if (newStartVnode == null) {
+        newStartVnode = newCh[++newStartIdx]
+      } else if (newEndVnode == null) {
+        newEndVnode = newCh[--newEndIdx]  
+      } else if (sameVnode(oldStartVnode, newStartVnode)) {
+        // 对比两个开始节点，当新旧vnode的children元素的中的开始节点相同时
+        // 使用patchVode对比更新两个vnodo的内部(children 或者 text)
+        patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue)
+        // 两个下标同时后移
+        oldStartVnode = oldCh[++oldStartIdx]
+        newStartVnode = newCh[++newStartIdx]
+      } else if (sameVnode(oldEndVnode, newEndVnode)) {
+        // 当开始节点不同时，对比children中的最后面的节点，当新旧vnode的children元素的中的结束节点相同时
+        // 使用patchVode去对比跟新两个vnodo的内部(children 或者 text)
+        patchVnode(oldEndVnode, newEndVnode, insertedVnodeQueue)
+        //  下标前移
+        oldEndVnode = oldCh[--oldEndIdx]
+        newEndVnode = newCh[--newEndIdx]
+      } else if (sameVnode(oldStartVnode, newEndVnode)) { // Vnode moved right
+        // 当新旧vnode的chilren中开始和开始，结束和结束位置对比失败时
+        // 开始对你旧的开始节点和新的结束节点，当相同时，使用使用patchVode对比跟新两个vnodo的内部(children 或者 text)
+        patchVnode(oldStartVnode, newEndVnode, insertedVnodeQueue)
+        // 将vnode插入oldEndVnode元素的后面
+        api.insertBefore(parentElm, oldStartVnode.elm!, api.nextSibling(oldEndVnode.elm!))
+        // 然后一个前移，一个后移去继续对比
+        oldStartVnode = oldCh[++oldStartIdx]
+        newEndVnode = newCh[--newEndIdx]
+      } else if (sameVnode(oldEndVnode, newStartVnode)) { // Vnode moved left
+        //  当新旧vnode的chilren中开始和开始，结束和结束位置，旧的开始和新的结束对比失败时
+        //  对比新的开始和旧的结束节点
+        patchVnode(oldEndVnode, newStartVnode, insertedVnodeQueue)
+        // 将元素前移
+        api.insertBefore(parentElm, oldEndVnode.elm!, oldStartVnode.elm!)
+        // 继续跟新下标对比
+        oldEndVnode = oldCh[--oldEndIdx]
+        newStartVnode = newCh[++newStartIdx]
+      } else {
+        // 上面的四种情况都对比失败了，那么应该去查找新的节点在旧的旧的节点列表中是否存在
+        // 建立key和下标的映射在旧的未对比的vnode.children中
+        if (oldKeyToIdx === undefined) {
+          oldKeyToIdx = createKeyToOldIdx(oldCh, oldStartIdx, oldEndIdx)
+        }
+        // 使用key去查找
+        idxInOld = oldKeyToIdx[newStartVnode.key as string]
+        if (isUndef(idxInOld)) { // New element
+          // 当没找到，我们创建新的节点
+          api.insertBefore(parentElm, createElm(newStartVnode, insertedVnodeQueue), oldStartVnode.elm!)
+        } else {
+          // 当找到了
+          elmToMove = oldCh[idxInOld]
+          // 我们还需要对比sel属性
+          if (elmToMove.sel !== newStartVnode.sel) {
+            // 当key相同但是sel不同，我们需要去新建节点
+            api.insertBefore(parentElm, createElm(newStartVnode, insertedVnodeQueue), oldStartVnode.elm!)
+          } else {
+            //当key和sel相同的时候，我们认为是相同的节点
+            // 对比跟新子节点
+            patchVnode(elmToMove, newStartVnode, insertedVnodeQueue)
+            // 将这个位置设置为undefined
+            oldCh[idxInOld] = undefined as any
+            // 插入跟新后的节点到旧的开始节点的前面
+            api.insertBefore(parentElm, elmToMove.elm!, oldStartVnode.elm!)
+          }
+        }
+        // 移动新的开始指针
+        newStartVnode = newCh[++newStartIdx]
+      }
+    }
+    // 对比完成后我们的收尾工作
+    if (oldStartIdx <= oldEndIdx || newStartIdx <= newEndIdx) {
+      // 此时说明新的vnode的children中还有没有创建的元素
+      if (oldStartIdx > oldEndIdx) {
+        before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].elm
+        // 插入新的节点到
+        addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
+      } else {
+        // 说明旧的vnode中有剩余的节点需要去删除
+        removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+      }
+    }
+  }
+```
+
+##### `diff算法`
+
+* 使用diff算法的目的
+  * 操作`dom`会引起浏览器的重绘和重排，比较耗性能
+  * 使用`diff`算法可以对比两个`vnode`,最小化去更新`dom`
+
+传统的对比两个树结构的算法：
+
+* 需要遍历每个节点去和另一个`dom`树做对比(事件复杂度O(n*n))
+
+![diff](/frontEnd/old-diff.png)
+
+* `snabbdom`的`diff`算法对传统的`diff`算法做了优化：
+  * `dom`操作时很少跨级别操作节点
+  * 只比较同级别的节点
+
+![snabbdom-diff](/frontEnd/snabbdom-diff.png)
+
+具体对比过程
+
+* `vnode`中的开始节点和`oldVnode`的开始节点对比
+
+  ![diff](/frontEnd/start-start.png)
+
+* `vnode`中的接受节点和`oldVnode`的结束节点对比(和第一种类似)
+
+* `vnode`中的结束节点和`oldVnode`的开始节点对比
+
+  ![diff](/frontEnd/start-end.png)
+
+* `vnode`中的开始节点和`oldVnode`的结束节点对比
+
+  ![diff](/frontEnd/end-start.png)
+
+* 当上面四种情况对比失败后，根据`key`去旧的`vnode`中查找
+
+  * 当找不到key对应的节点或者找到了但是`sel`不同，新建节点
+  * 当找到且sel相同，调用`pacthVnode`去对比子节点
+
+  ![](/frontEnd/other-diff.png)
+
+当比较结束；我们还需要去检查新旧`vnode`中有没有未对比到的元素:
+
+```tsx
+    // 对比完成后我们的收尾工作
+    if (oldStartIdx <= oldEndIdx || newStartIdx <= newEndIdx) {
+      // 此时说明新的vnode的children中还有没有创建的元素
+      if (oldStartIdx > oldEndIdx) {
+        before = newCh[newEndIdx + 1] == null ? null : newCh[newEndIdx + 1].elm
+        // 插入新的节点到
+        addVnodes(parentElm, before, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
+      } else {
+        // 说明旧的vnode中有剩余的节点需要去删除
+        removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx)
+      }
+    }
+```
+
+调用上面的`updateChildren`
+
+```js
+
+import { h } from "snabbdom/build/package/h";
+import { init } from "snabbdom/build/package/init";  
+
+const patch = init([]);
+
+// 第一个参数是元素的标签和选择器
+// 第二个参数是元素的内容
+const vNode = h('ul',[h('li','首页'),h('li','电影'),h('li','微博')])
+ 
+
+
+// 第一个参数可以是旧的vNode，也可以是真实dom
+// 第一个参数是新vNode
+// 返回值是的新的vNode
+
+const el =  document.querySelector("#app")
+// 为下一次更新去使用
+const oldVnode = patch(el,vNode)
+
+// 继续跟新节点
+
+
+
+patch(oldVnode,h('ul',[h('li','首页'),h('li','微博'),h('li','电影')]))
+```
+
+* 我们的再第二次调用`patch`函数会触发到（可以设置断点）
+* `updateChildren`的调试我们可以发现：
+  * 这个三个`li`元素的只会去对比开始位置(`key=li,sel=undefined`)，然后去更新文本节点的内容
+
+更新上面的调试代码：
+
+```js
+import { h } from "snabbdom/build/package/h";
+import { init } from "snabbdom/build/package/init";  
+
+const patch = init([]);
+
+// 第一个参数是元素的标签和选择器
+// 第二个参数是元素的内容
+const vNode = h('ul',[h('li',{key:'a'},'首页'),h('li',{key:'b'},'电影'),h('li',{key:'c'},'微博')])
+ 
+
+
+// 第一个参数可以是旧的vNode，也可以是真实dom
+// 第一个参数是新vNode
+// 返回值是的新的vNode
+
+const el =  document.querySelector("#app")
+// 为下一次更新去使用
+const oldVnode = patch(el,vNode)
+
+// 继续跟新节点
+
+patch(oldVnode,h('ul',[h('li',{key:'a'},'首页'),h('li',{key:'c'},'微博'),h('li',{key:'b'},'电影')]))
+```
+
+* 当我们设置`key`后，这个三个`li`元素是通过调换`dom`元素的位置来实现更新的
+
+我们设置key的意义：
+
+```js
+
+import { init } from 'snabbdom/build/package/init'
+import { h } from 'snabbdom/build/package/h'
+import { attributesModule } from 'snabbdom/build/package/modules/attributes'
+import { eventListenersModule } from 'snabbdom/build/package/modules/eventlisteners'
+
+let patch = init([attributesModule, eventListenersModule])
+
+const data = [1, 2, 3, 4]
+let oldVnode = null
+
+function view (data) {
+  let arr = []
+  data.forEach(item => {
+    // 不设置 key
+    // arr.push(h('li', [h('input', { attrs: { type: 'checkbox' } }), h('span', item)]))
+    // 设置key
+    arr.push(h('li', { key: item }, [h('input', { attrs: { type: 'checkbox' } }), h('span', item)]))
+  })
+  let vnode = h('div', [ h('button', { on: { click: function () {
+    data.unshift(100)
+    vnode = view(data)
+    oldVnode = patch(oldVnode, vnode)
+  } } }, '按钮') , h('ul', arr)])
+  return vnode
+}
+
+
+let app = document.querySelector('#app')
+// 首次渲染
+oldVnode = patch(app, view(data))
+```
+
+* 当我们不设置`key`的时候，选中第一个复选框，然后点击按钮添加新的元素，发现选中的还是第一个的元素
+* 所以给相同的`vnode`的子元素设置唯一的`key`可以解决子元素渲染错误
+
+
+
+
 
 
 
