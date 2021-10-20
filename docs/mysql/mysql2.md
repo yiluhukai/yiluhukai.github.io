@@ -2,7 +2,7 @@
 
 2. 数字函数
 
-* round(number,d)
+* `round(number,d)`
 
 对 number 进行四舍五入，保留 d 位小数。
 
@@ -13,7 +13,7 @@ select round(1.65) #2
 select round(1.65,1)
 ```
 
-* floor(number)、ceil(number)
+* `floor(number)`、`ceil(number)`
 
 分别是向下或者向上取整
 
@@ -25,7 +25,7 @@ select floor(1.65);
 SELECT ceil(1.65);
 ```
 
-* truncate(number,d)
+* `truncate(number,d)`
 
 截断字符串
 
@@ -33,20 +33,19 @@ SELECT ceil(1.65);
 SELECT truncate(1.677,2); # 1.67
 ```
 
-* mod
+* `mod`
 
-mod 函数用来对一个数字进行取余操作，相当%运算符。
+`mod` 函数用来对一个数字进行取余操作，相当%运算符。
 
 ```sql
 SELECT mod(10,3); # 1
-
 
 SELECT 10%3; # 1
 ```
 
 3. 日期函数
 
-* now()
+* `now(`)
 
 查询当前的时间和日期
 
@@ -54,7 +53,7 @@ SELECT 10%3; # 1
 select now(); #'2020-05-07 21:44:08'
 ```
 
-* current_date()
+* `current_date()`
 
 查询当前的日期。
 
@@ -62,7 +61,7 @@ select now(); #'2020-05-07 21:44:08'
 SELECT current_date(); #'2020-05-07'
 ```
 
-* current_date()
+* `current_time()`
 
 查询当前的时间
 
@@ -70,7 +69,7 @@ SELECT current_date(); #'2020-05-07'
 SELECT current_date(); #'21:45:56'
 ```
 
-* year,month,monthname...
+* `year,month,monthname`...
 
 ```sql
 SELECT year(now()); # 2020
@@ -80,11 +79,9 @@ SELECT month(now());  #5
 SELECT monthname(now()); #May
 ```
 
-* str_to_date()
+* `str_to_date()`
 
 STR_TO_DATE(str,format)函数是将时间格式成字符串（str），按照所提供的显示格式（format）转换为 DATETIME 类型的值。
-
-![fe09a477b065f223df0feca2b8b30708.png](evernotecid://48BC2FAB-231C-4AC6-BF8E-D98489F70F11/appyinxiangcom/24780240/ENResource/p28)
 
 ```sql
 SELECT STR_TO_DATE(now(),'%Y-%m-%d %H:%i:%s') AS result;
@@ -92,7 +89,7 @@ SELECT STR_TO_DATE(now(),'%Y-%m-%d %H:%i:%s') AS result;
 SELECT * from employees where hiredate=str_to_date('1992/4/3','%Y/%m/%d')
 ```
 
-* date_format
+* `date_format`
 
 将日期对象格式化成字符串,格式化的字符串和上面的相同。
 
@@ -112,7 +109,7 @@ SELECT user(); # 查询用户
 
 5. 流程控制函数if()
 
-if()函数相当于一个三木运算符
+`if()`函数相当于一个三木运算符
 
 ```sql
 # 当奖金为null的时候显示哈哈，不会null的时候显示嘻嘻
@@ -122,7 +119,7 @@ select commission_pct,if(commission_pct is null,"哈哈","嘻嘻") as 备注 fro
 SELECT if(10>5,"1","0") as `index`;  
 ```
 
-6. 流程控制函数case()
+6. 流程控制函数`case()`
 
 ```sql
 # 第一种用法 switch
@@ -148,7 +145,7 @@ end as 新工资 from  employees;
 
 ### 分组函数
 
-常用的分组函数有sum()、avg()、count()、min()、max().
+常用的分组函数有`sum()`、`avg()`、`count()`、`min()`、`max()`.
 
 * 对指定字段使用
 
@@ -158,15 +155,15 @@ SELECT count(salary) as 'count',avg(salary) as average,
 min(salary) as 'min',max(salary) as 'max',sum(salary) as 'sum' from employees;
 ```
 
-* sum()和avg()只对数字类型的字段有效,min()、max()、count()可以作用于其他类型的字段
-* 这些函数在统计的统计的时候，可以和distinct搭配使用
+* `sum()`和`avg()`只对数字类型的字段有效,`min()`、`max()`、`count()`可以作用于其他类型的字段
+* 这些函数在统计的时候，可以和distinct搭配使用
 
 ```sql
 SELECT count(DISTINCT salary) from employe;
 ```
 
-* 这些函数会忽略为null的行
-* count()函数还可以传入一个*或者一个常数
+* 这些函数会忽略为`null`的行
+* `count(`)函数还可以传入一个*或者一个常数
 
 ```sql
 SELECT count(*) from employees;
@@ -198,10 +195,10 @@ select 分组函数，列(group by 后面的列) from 表 【where 筛选条件�
 
 ```
 
-* 查询的列必须是group by后面的列
+* 查询的列必须是`group by`后面的列
 * where和having都能实现对数据筛选，where用于分组前的筛选，having用于分组后的筛选，能用分组前筛选的优先使用分组前筛选。
-* group后支持多个字段、函数和表达式（用的较少）
-* Having 和order by 对分组后的结果进行排序，可以使用别名
+* `group`后支持多个字段、函数和表达式（用的较少）
+* `Having` 和`order by` 对分组后的结果进行排序，可以使用别名
 
 ```sql
 # 不使用别名
@@ -239,7 +236,7 @@ SELECT avg(salary) as avg_salary,department_id,length(first_name)
 
 ### 连接查询
 
-beauty表
+`beauty`表
 
 ```sql
 CREATE TABLE `beauty` (
@@ -255,7 +252,7 @@ CREATE TABLE `beauty` (
 
 ```
 
-boys表
+`boys`表
 
 ```sql
 CREATE TABLE `boys` (
@@ -275,29 +272,30 @@ SELECT name,boyName FROM beauty,boys;
 
 :::tip
 
-如果beauty中有m列，boys中有n列，那么最终的查询结果就是m*n列，这个现象称为笛卡尔乘积现象。造成这种错误的原因是由于两个表没有连接条件。
+如果`beauty`中有`m`列，`boys`中有`n`列，那么最终的查询结果就是m*n列，这个现象称为笛卡尔乘积现象。造成这种错误的原因是由于两个表没有连接条件。
 
 :::
 
 添加连接条件
 
 ```sql
-SELECT name,boyName FROM beauty,boys where beauty.boyfriend_id = boys.id ;
+# 查询有朋友的人的名字和男朋友的名字
+SELECT name,boyName FROM beauty,boys where beauty.boyfriend_id = boys.id;
 ```
 
 :::tip
 
-此时的查询结果是beauty表中有boyfriend_id存在且等于boys.id的所有列。
+此时的查询结果是`beauty`表中有`boyfriend_id`存在且等于`boys.id`的所有列。
 
 :::
 
 * 连接查询的分类
-  * 按年代分：可以分为sql92和sql99标准
+  * 按年代分：可以分为`sql92`和`sql99`标准
   * 按功能分：内连接、外连接、交叉连接
   * 内连接可以分为：等值连接、非等值连接、自连接
   * 外连接可以分为：左外链接、右外链接、全外连接
-  * sql92只支持内连接
-  * sql99支持内连接+外链接（左外链接、右外链接）+交叉连接，所以推荐使用sql99
+  * `sql92`只支持内连接
+  * `sql99`支持内连接+外链接（左外链接、右外链接）+交叉连接，所以推荐使用`sql99`
 * 等值连接查询
 
 等值连接的查询结果是多个表的交集，查询时与表的顺序没有关系，n个表最少需要n-1个连接条件
@@ -306,7 +304,7 @@ SELECT name,boyName FROM beauty,boys where beauty.boyfriend_id = boys.id ;
 SELECT name,boyName FROM beauty,boys where beauty.boyfriend_id = boys.id ;
 ```
 
-为表明设置别名：
+为表名设置别名：
 
 1. 提高语句的简洁度
 2. 区分多个重名的字段(连接的表中)
@@ -317,13 +315,13 @@ SELECT g.`name`,b.boyName FROM beauty g,boys b where g.boyfriend_id = b.id ;
 
 :::warning
 
-这条sql语句和上面的sql语句是等价效果的，不同的是我们在查询的条件中使用了别名。
+这条`sql`语句和上面的`sql`语句是等价效果的，不同的是我们在查询的条件中使用了别名。
 
 当我们为表设置了别名后，就不能使用表的名称了。
 
 :::
 
-等值连接还可以添加筛选条件、group by、order by 等
+等值连接还可以添加筛选条件、`group by`、`order by` 等
 
 ```sql
 SELECT avg(salary) as avg_salary,e.department_id, d.department_name,commission_pct
@@ -343,7 +341,7 @@ where e.department_id = d.department_id and d.location_id = l.location_id;
 
 * 非等值连接查寻
   * 只要连接条件不是等于的都属于非等值连接
-  * 非等值连接查询添加筛选条件、group by、order by 等
+  * 非等值连接查询添加筛选条件、`group by`、`order by` 等
 
 ```sql
 select e.first_name,e.salary,j.grade_level grade_level from employees e, job_grades j
@@ -365,7 +363,122 @@ where e.manager_id = m.employee_id
 
 :::
 
+* `sql99`连接查询
 
+```
+select 查询列表 from table1 aslias <连接类型> table2 aslias on <连接条件>
+[where 筛选条件] 
+[group by 分组]
+[having 筛选条件] 
+[order by 排序列表] 
+```
+
+`sql99`支持的连接类型
+
+* 内连接(`inner join| inner`)
+
+  *  等值连接
+  * 非等值连接查寻
+  * 自链接查询
+
+* 外连接
+
+  * 左外(`left [outer] join`)
+  * 右外(`right [outer] join`)
+  * 全外(`full [outer] join`)
+
+* 交叉连接（`cross join`）
+
+`sql99`中的内连接:
+
+* 等值连接
+
+```sql
+SELECT 
+    name, boyName
+FROM
+    beauty g
+        JOIN
+    boys b ON g.boyfriend_id = b.id;
+    
+SELECT 
+    AVG(salary), department_name
+FROM
+    employees e
+        JOIN
+    departments d ON e.department_id = d.department_id
+GROUP BY department_name
+ORDER BY department_name DESC;  
+# 多表连接
+SELECT 
+    first_name, department_name, city
+FROM
+    employees e
+        JOIN
+    departments d ON e.department_id = d.department_id
+        JOIN
+    locations l ON d.location_id = l.location_id;
+```
+
+* 非等值连接
+
+```sql
+SELECT 
+    e.first_name, e.salary, j.grade_level grade_level
+FROM
+    employees e
+        JOIN
+    job_grades j ON e.salary BETWEEN j.lowest_sal AND j.highest_sal
+WHERE
+    grade_level = 'A';
+```
+
+* 自连接
+
+```sql
+SELECT 
+    e.first_name `employee_name`, m.first_name `manager_name`
+FROM
+    employees e
+        JOIN
+    employees m ON e.manager_id = m.employee_id
+```
+
+* 外连接
+
+内连接是根据连接条件去取两个表的交集，而外连接查询会有主表和分表，查询会包含主表中的全部行，左外连接的主表是左边的 ，右外连接的主表是右边的。
+
+* 左外连接
+
+```sql
+#表中没有男朋友的行中对应在b.*为null
+SELECT 
+    name,b.*
+FROM
+    beauty g
+        LEFT JOIN
+    boys b ON g.boyfriend_id = b.id;
+```
+
+* 右外连接
+
+```sql
+# 表中包含boy的全部行
+SELECT 
+    name,b.*
+FROM
+    beauty g
+        right JOIN
+    boys b ON g.boyfriend_id = b.id;
+```
+
+  
+
+  
+
+  
+
+  
 
 
 

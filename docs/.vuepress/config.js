@@ -11,7 +11,8 @@ module.exports = {
 			{ text: 'Go', link: '/golang/' },
 			{ text: 'Mysql', link: '/mysql/' },
 			{ text: 'C语言', link: '/clang/' },
-			{ text: '前端', link: '/es/' }
+			{ text: '前端', link: '/es/' },
+			{ text:'nodejs',link:'/nodejs/'}
 			//  下拉列表
 			// {
 			// 	text: 'Languages',

@@ -20,7 +20,7 @@ if (true) {
 console.log(b) //ReferenceError: b is not defined
 ```
 
-* var会变量提升,const不会
+* `var`会变量提升,`let`不会
 
 ```js
 console.log(typeof a) //"undefined"
@@ -33,7 +33,7 @@ let b = 10
 
 ```
 
-* let不能重复声明
+* `let`不能重复声明
 
 ```js
 
@@ -97,36 +97,22 @@ for (let i = 0; i < 3; i++) {
 elems[0].onClick() //0
 ```
 
-> 函数会把var声明的变量报错自己的作用域上，随着 i的不断变化，闭包中的值也在变化，为了解决这个问题，我们可以使用自指向函数穿参数的方法copy当前的i值，此时函数访问到闭包中的值就是不变的。let声明的变量，循环体和变量的声明位置数据不同的作用域。
+> 函数会把var声明的变量包裹到自己的作用域上，随着 i的不断变化，闭包中的值也在变化，为了解决这个问题，我们可以使用自执行函数传参数的方法copy当前的i值，此时函数访问到闭包中的值就是`copy`的当前值。
+>
+> `let`声明的变量，循环体和变量的声明位置数据不同的作用域。
 
-* for循环中let和循环体中的let属于不同的作用域,而var不会做作用域隔离
+* `for`循环中条件声明中的`let`和循环体中的`let`属于不同的作用域,而`var`不会做作用域隔离
 
 ```js
 for (let i = 0; i < 3; i++) {
 	let i = 'hello'
 	console.log(i) // "hello"
 }
-let i = 0
-// 相当于
-if (i < 3) {
-
- 
-// 相当于
-let i = 0
-// 相当于
-while (i < 3) {
-	;(function (k) {
-		let i = 'hello'
-		console.log(i)
-	})(i)
-	i++
-}
-
 ```
 
 ###  const
 
-* const必须初始化
+* `const`必须初始化
 
 ```js
 const a = 10s
@@ -144,5 +130,13 @@ a.a =11
 a ={} // TypeError: Assignment to constant variable.
 ```
 
-* 其他方面和let一样
+:::tip
+
+其他方面和`let`一样
+
+:::
+
+### let和const的选用原则
+
+能使用`const`的地方，优先选择`const`,不能用`const`的地方，才考虑`let`.
 

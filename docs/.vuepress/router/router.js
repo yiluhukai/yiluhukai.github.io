@@ -47,14 +47,15 @@ module.exports = {
 		'/es/debound',
 		'/es/vue_router',
 		'/es/vue-observer',
-		'/es/virtual-dom'
+		'/es/virtual-dom',
+		'/es/vuejs-source'
 	],
-	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go链接数据库', '/golang/beego', '/golang/beego2', '/golang/beego3'],
+	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go-connect-db', '/golang/beego', '/golang/beego2', '/golang/beego3'],
 	'/clang': [
-		'/clang/Linux命令',
-		'/clang/结构体',
-		'/clang/指针高级',
-		'/clang/stdlib标准库函数',
+		'/clang/linux',
+		'/clang/struct',
+		'/clang/point',
+		'/clang/stdlib',
 		'/clang/datastruct',
 		'/clang/uc1',
 		'/clang/uc2',
@@ -63,11 +64,14 @@ module.exports = {
 		'/clang/uc5',
 		'/clang/uc6',
 		'/clang/uc7',
-		'/clang/计算机网络',
-		'/clang/计算机网络2',
-		'/clang/网络编程3',
-		'/clang/网络编程udp',
+		'/clang/net1',
+		'/clang/net2',
+		'/clang/net3',
+		'/clang/net-udp',
 		'/clang/thread',
-		'/clang/信号集和信号屏蔽'
+		'/clang/signal'
+	],
+	'/nodejs':[
+		'/nodejs/express'
 	]
 }
