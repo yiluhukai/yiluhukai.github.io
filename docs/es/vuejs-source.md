@@ -8,9 +8,9 @@
 
 ## 准备工作
 
-## `Vue` 源码的获取
+##### `Vue` 源码的获取
 
-##### 项目地址：https://github.com/vuejs/vue
+- 项目地址：https://github.com/vuejs/vue
 
 - Fork 一份到自己仓库，克隆到本地，可以自己写注释提交到 github
 
@@ -39,7 +39,7 @@ src
 - 官网：https://flow.org/
 - `JavaScript`的 静态类型检查器
 - `Flow` 的静态类型检查错误是通过静态类型推断实现的
-  _ 文件开头通过 ``// @flow`或者`/_ @flow \*/ `声明
+  - 文件开头通过 ``// @flow`或者`/_ @flow \*/ `声明
 
 ```js
 /* @flow */
@@ -55,11 +55,10 @@ square("2"); // Error!
 #### 打包
 
 - 打包工具 `Rollup`
-
-      	* `Vue.js` 源码的打包工具使用的是 `Rollup`，比 `Webpack` 轻量
-	
-      	* `Webpack` 把所有文件当做模块，`Rollup` 只处理`js` 文件更适合在 `Vue.js` 这样的库中使用
-      	* `Rollup` 打包不会生成冗余的代码
+  - `Vue.js` 源码的打包工具使用的是 `Rollup`，比 `Webpack` 轻量
+  	
+  -	`Webpack` 把所有文件当做模块，`Rollup` 只处理`js` 文件更适合在 `Vue.js` 这样的库中使用
+  - `Rollup` 打包不会生成冗余的代码
 
 - 安装依赖
 
@@ -67,7 +66,8 @@ square("2"); // Error!
 yarn
 ```
 
-- 设置`sourcemap` \* `package.json` 文件中的 `dev` 脚本中添加参数 `--sourcemap`
+- 设置`sourcemap``
+  - `package.json` 文件中的 `dev` 脚本中添加参数 `--sourcemap`
 
 ```json
 "dev":"rollup -w -c scripts/config.js--sourcemap --environment TARGET:web-full-dev"
@@ -108,18 +108,18 @@ yarn
 
 - 编译器 ：用来将模板字符串编译成为 JavaScript 渲染函数的代码，体积大、效率低。
 
-- 运行时 ：用来创建`Vue`实例、渲染并处理虚拟 `DOM` 等的代码，体积小、效率高。基本上就是除 去编译器的代码。
+- 运行时 ：用来创建`Vue`实例、渲染并处理虚拟 `DOM` 等的代码，体积小、效率高。基本上就是除去编译器的代码。
 
 - [UMD](https://github.com/umdjs/umd) ：`UMD` 版本 通用的模块版本 ，支持多种模块方式。`vue.js`默认文件就是运行时 + 编译器的 `UMD` 版本
 
 - [CommonJS(cjs)](http://wiki.commonjs.org/wiki/Modules/1.1) ：`CommonJS` 版本用来配合老的打包工具比如[Browserif](https://browserify.org) 或 `webpack 1`。
 
-- [ES Module](https://exploringjs.com/es6/ch_modules.html) ：从 2.6 开始`Vue` 会提供两个 `ES Modules (ESM)` 构建文件，为现代打包工具提供的 版本。
-- ESM 格式被设计为可以被静态分析，所以打包工具可以利用这一点来进行`tree-shaking`并将用不到的代码排除出最终的包。
+- [ES Module](https://exploringjs.com/es6/ch_modules.html) ：从 2.6 开始`Vue` 会提供两个 `ES Modules (ESM)` 构建文件，为现代打包工具提供的版本。
+  - ESM 格式被设计为可以被静态分析，所以打包工具可以利用这一点来进行`tree-shaking`并将用不到的代码排除出最终的包。
 
-- ES6 模块与 CommonJS 模块的差异
+  - ES6 模块与 CommonJS 模块的差异
 
-Runtime + Compiler vs. Runtime-only
+### Runtime + Compiler vs. Runtime-only
 
 ```js
 // Compiler
@@ -139,7 +139,7 @@ const vm = new Vue({
   },
   data: {
     msg: "Hello Vue",
-  },
+  }
 });
 ```
 
@@ -154,7 +154,7 @@ const vm = new Vue({
 vue inspect>output.js
 ```
 
-- 注意 ：`*.vue` 文件中的模板是在构建时预编译的，最终打包后的结果不需要编译器，只需要运行 时版本即可
+- 注意 ：`*.vue` 文件中的模板是在构建时预编译的，最终打包后的结果不需要编译器，只需要运行时版本即可
 
 ## 寻找入口文件
 
@@ -266,9 +266,8 @@ const resolve = p => {
 
 ### 结果
 
-- 把`src/platforms/web/entry-runtime-with-compiler.js` 构建成 `dist/vue.js`，如果设置`--sourcemap` 会生成
+- 把`src/platforms/web/entry-runtime-with-compiler.js` 构建成 `dist/vue.js`，如果设置`--sourcemap` 会生成`vue.js.map`
 
-  `vue.js.map`
 
 * `src/platform`文件夹下是`Vue`可以构建成不同平台下使用的库，目前有`weex` 和`web`，还有服务器端渲染的库
 
@@ -293,20 +292,20 @@ const vm = new Vue({
 ```
 
 - 阅读源码记录
-  _ `el` 不能是 `body` 或者 `html` 标签
-  _ 如果没有 render，把 `template`转换成 `render` 函数 \* 如果有 render 方法，直接调用 mount 挂载 DOM
+  * `el` 不能是 `body` 或者 `html` 标签
+  * 如果没有 render，把 `template`转换成 `render` 函数
+  *  如果有 render 方法，直接调用 mount 挂载 DOM
 
 ```js
 // 1. el 不能是 body 或者 html
 if (el === document.body || el === document.documentElement) {
     process.env.NODE_ENV !== 'production' && warn(
       `Do not mount Vue to <html> or <body> - mount to normal elements
-instead.`
-)
-return this
-  }
-  const options = this.$options
-  if (!options.render) {
+instead.`)
+		return this
+}
+const options = this.$options
+if (!options.render) {
 // 2. 把 template/el 转换成 render 函数
 ......
 }
@@ -326,8 +325,9 @@ const vm = new Vue({
   },
 });
 ```
+![断点调试](/frontEnd/render-debugger.png)
+:::warning
 
-:::
 Vue 的构造函数在哪？
 Vue 实例的成员/Vue 的静态成员从哪里来的？
 :::
@@ -342,9 +342,9 @@ Vue 实例的成员/Vue 的静态成员从哪里来的？
   - 设置平台相关的指令和组件
     - 指令`v-model`、`v-show`
     - 组件 `transition`、`transition-group`
-
-- 设置平台相关的 **patch** 方法（打补丁方法，对比新旧的 VNode）
-- 设置 \$mount 方法，挂载 DOM
+    
+    - 设置平台相关的`__patch__ `方法（打补丁方法，对比新旧的 VNode）
+  - **设置 \$mount 方法，挂载 DOM**
 
 ```js
 // install platform runtime directives & components
@@ -365,10 +365,9 @@ Vue.prototype.$mount = function(
 - `src/platform/web/runtime/index.js`中引用了   `core/index`
 
 - `src/core/index.js`
-
   - 定义了 `Vue` 的静态方法
   - `initGlobalAPI(Vue)`
-
+  
 - `src/core/index.js` 中引用了 `./instance/index`
 
 - `src/core/instance/index.js`
@@ -398,27 +397,25 @@ renderMixin(Vue)
 
 ### 四个导出 Vue 的模块
 
-- `src/ platforms/web /entry-runtime-with-compiler.js`
-
+- `src/platforms/web/entry-runtime-with-compiler.js`
   - web 平台相关的入口
   - 重写了平台相关的  \$mount() 方法
   - 注册了 Vue.compile() 方法，传递一个 HTML 字符串返回 render 函数
-
-- `src/ platforms/web /runtime/index.js`
-
+  
+- `src/platforms/web/runtime/index.js`
   - web 平台相关
   - 注册和平台相关的全局指令：v-model、v-show
   - 注册和平台相关的全局组件： v-transition、v-transition-group
   - 全局方法：
     - **patch**：把虚拟 DOM 转换成真实 DOM
     - \$mount：挂载方法
-
-- src/ core /index.js
+  
+- src/**core** /index.js
 
   - 与平台无关
   - 设置了 Vue 的静态方法，initGlobalAPI(Vue)
 
-- `src/ core /instance/index.js`
+- `src/core/instance/index.js`
   - 与平台无关
   - 定义了构造函数，调用了 this.\_init(options) 方法
   - 给 Vue 中混入了常用的实例成员

@@ -14,7 +14,9 @@ module.exports = {
 		'/leetcode/ReverseWordsInAString',
 		'/leetcode/specialBinaryString',
 		'/leetcode/findMedianSortedArrays',
-		'/leetcode/lineSegmentTree'
+		'/leetcode/lineSegmentTree',
+		'/leetcode/isPerfectSquare',
+		'/leetcode/bit-use'
 	],
 	'/mysql': ['/mysql/mysql1', '/mysql/mysql2'],
 	'/es': [
@@ -50,7 +52,15 @@ module.exports = {
 		'/es/virtual-dom',
 		'/es/vuejs-source'
 	],
-	'/golang': ['/golang/cookie', '/golang/redis', '/golang/go-connect-db', '/golang/beego', '/golang/beego2', '/golang/beego3'],
+	'/golang': [
+		'/golang/cookie', 
+		'/golang/redis', 
+		'/golang/go-connect-db',
+		'/golang/beego', 
+		'/golang/beego2',
+		'/golang/beego3',
+		'/golang/go-jwt'
+	],
 	'/clang': [
 		'/clang/linux',
 		'/clang/struct',
