@@ -50,6 +50,12 @@ function square(n: number): number {
 square("2"); // Error!
 ```
 
+* vue源码中使用`vscode`中存在的问题
+  * 红线报错：可以配置`"javascript.validate.enable": false`来解决
+  * 不支持`flow`的范型语言，当出现范型语言后，后面的代码高亮失效
+    * 解决方法：安装`Babel JavaScript`扩展来解决
+    * 安装扩展后，虽然可以高亮显示，但是范型后面的代码跳转有问题
+
 ## 调试设置
 
 #### 打包
@@ -427,38 +433,64 @@ renderMixin(Vue)
 - 初始化 Vue 的静态方法
 
 ```js
-// 注册 Vue 的静态属性/方法 initGlobalAPI(Vue)
-// src/core/global-api/index.js
-// 初始化 Vue.config 对象 Object.defineProperty(Vue, 'config', configDef)
-// exposed util methods.
-// NOTE: these are not considered part of the public API - avoid relying on // them unless you are aware of the risk.
-// 这些工具方法不视作全局API的一部分，除非你已经意识到某些风险，否则不要去依赖他们 Vue.util = {
-  warn,
-  extend,
-  mergeOptions,
-  defineReactive
+export function initGlobalAPI (Vue: GlobalAPI) {
+  // config
+  const configDef = {}
+  configDef.get = () => config
+  if (process.env.NODE_ENV !== 'production') {
+    configDef.set = () => {
+      warn(
+        'Do not replace the Vue.config object, set individual fields instead.'
+      )
+    }
+  }
+  // 定义config对象
+  Object.defineProperty(Vue, 'config', configDef)
+
+  // exposed util methods.
+  // NOTE: these are not considered part of the public API - avoid relying on
+  // them unless you are aware of the risk.
+  // 定义一些不对外使用的工具方法
+  Vue.util = {
+    warn,
+    extend,
+    mergeOptions,
+    defineReactive
+  }
+  // 定义静态方法set/delete/nextTick
+  Vue.set = set
+  Vue.delete = del
+  Vue.nextTick = nextTick
+
+  // 2.6 explicit observable API
+  // 让一个对象可响应
+  Vue.observable = <T>(obj: T): T => {
+    observe(obj)
+    return obj
+  }
+  
+
+  // 创建options对象
+  Vue.options = Object.create(null)
+  // 对options对象进行扩展components/directives/filters
+  ASSET_TYPES.forEach(type => {
+    Vue.options[type + 's'] = Object.create(null)
+  })
+
+  // this is used to identify the "base" constructor to extend all plain-object
+  // components with in Weex's multi-instance scenarios.
+  Vue.options._base = Vue
+  //设置keep-alive组件
+  extend(Vue.options.components, builtInComponents)
+  // 注册Vue.used（）
+  initUse(Vue)
+  // 注册Vue.mixin()
+  initMixin(Vue)
+  // 注册Vue.extnend() 
+  initExtend(Vue)
+  // 注册Vue.directive/Vue.componnent()、Vue.filter()
+  initAssetRegisters(Vue)
 }
-// 静态方法 set/delete/nextTick Vue.set = set
-Vue.delete = del
-Vue.nextTick = nextTick
-// 2.6 explicit observable API
-// 让一个对象可响应
-Vue.observable = <T>(obj: T): T => {
-  observe(obj)
-return obj }
-// 初始化 Vue.options 对象，并给其扩展
-// components/directives/filters/_base Vue.options = Object.create(null) ASSET_TYPES.forEach(type => {
-  Vue.options[type + 's'] = Object.create(null)
-})
-// this is used to identify the "base" constructor to extend all plain-
-object
-// components with in Weex's multi-instance scenarios.
-Vue.options._base = Vue
-// 设置 keep-alive 组件 extend(Vue.options.components, builtInComponents)
-// 注册 Vue.use() 用来注册插件 initUse(Vue)
-// 注册 Vue.mixin() 实现混入 initMixin(Vue)
-// 注册 Vue.extend() 基于传入的 options 返回一个组件的构造函数 initExtend(Vue)
-// 注册 Vue.directive()、 Vue.component()、Vue.filter() initAssetRegisters(Vue)
 ```
 
 ### src/core/instance/index.js
@@ -467,24 +499,32 @@ Vue.options._base = Vue
 - 初始化 Vue 的实例成员
 
 ```js
-// 此处不用 class 的原因是因为方便，后续给 Vue 实例混入实例成员 function Vue (options) {
+// 此处不用 class 的原因是因为方便，后续给 Vue 实例混入实例成员 function Vue (options) 
+function Vue (options) {
   if (process.env.NODE_ENV !== 'production' &&
     !(this instanceof Vue)
-){
-warn('Vue is a constructor and should be called with the `new`
-keyword') }
+  ) {
+    warn('Vue is a constructor and should be called with the `new` keyword')
+  }
   this._init(options)
 }
+
+
 // 注册 vm 的 _init() 方法，初始化 vm initMixin(Vue)
+initMixin(Vue)
 // 注册 vm 的 $data/$props/$set/$delete/$watch stateMixin(Vue)
+stateMixin(Vue)
 // 初始化事件相关方法
 // $on/$once/$off/$emit
 eventsMixin(Vue)
 // 初始化生命周期相关的混入方法
-// _update/$forceUpdate/$destroy lifecycleMixin(Vue)
+// _update/$forceUpdate/$destroy
+lifecycleMixin(Vue)
 // 混入 render
 // $nextTick/_render
 renderMixin(Vue)
+
+export default Vue
 ```
 
 - initMixin(Vue)
@@ -492,57 +532,66 @@ renderMixin(Vue)
 
 ```js
 // src\core\instance\init.js
-export function initMixin (Vue: Class<Component>) { // 给 Vue 实例增加 _init() 方法
+export function initMixin (Vue: Class<Component>) {
+// 给 Vue 实例增加 _init() 方法
 // 合并 options / 初始化操作
 Vue.prototype._init = function (options?: Object) {
-// a flag to avoid this being observed // 如果是 Vue 实例不需要被 observe vm._isVue = true
+// a flag to avoid this being observed
+// 如果是 Vue 实例不需要被 observe
+vm._isVue = true
 // merge options
 // 合并 options
 if (options && options._isComponent) {
-        // optimize internal component instantiation
-        // since dynamic options merging is pretty slow, and none of the
-        // internal component options needs special treatment.
-        initInternalComponent(vm, options)
-      } else {
-        vm.$options = mergeOptions(
-          resolveConstructorOptions(vm.constructor),
-          options || {},
-          vm
-) }
-      /* istanbul ignore else */
-      if (process.env.NODE_ENV !== 'production') {
-        initProxy(vm)
-      } else {
-        vm._renderProxy = vm
+// optimize internal component instantiation
+// since dynamic options merging is pretty slow, and none of the
+// internal component options needs special treatment.
+initInternalComponent(vm, options)
+} else {
+vm.$options = mergeOptions(
+resolveConstructorOptions(vm.constructor),
+options || {},
+vm
+)
 }
-      // expose real self
- vm._self = vm
+/* istanbul ignore else */
+if (process.env.NODE_ENV !== 'production') {
+initProxy(vm)
+} else {
+vm._renderProxy = vm
+}
+// expose real self
+  vm._self = vm
 // vm 的生命周期相关变量初始化
 // $children/$parent/$root/$refs
 initLifecycle(vm)
-// vm 的事件监听初始化, 父组件绑定在当前组件上的事件 initEvents(vm)
+// vm 的事件监听初始化, 父组件绑定在当前组件上的事件
+initEvents(vm)
 // vm 的编译render初始化
-// $slots/$scopedSlots/_c/$createElement/$attrs/$listeners initRender(vm)
+// $slots/$scopedSlots/_c/$createElement/$attrs/$listeners
+initRender(vm)
 // beforeCreate 生命钩子的回调
 callHook(vm, 'beforeCreate')
 // 把 inject 的成员注入到 vm 上
-initInjections(vm) // resolve injections before data/props // 初始化状态 vm 的 _props/methods/_data/computed/watch initState(vm)
+initInjections(vm) // resolve injections before data/props
+// 初始化状态 vm 的 _props/methods/_data/computed/watch
+initState(vm)
 // 初始化 provide
 initProvide(vm) // resolve provide after data/props
 // created 生命钩子的回调
 callHook(vm, 'created')
-      /* istanbul ignore if */
-      if (process.env.NODE_ENV !== 'production' && config.performance &&
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'production' && config.performance &&
 mark) {
-        vm._name = formatComponentName(vm, false)
-        mark(endTag)
-        measure(`vue ${vm._name} init`, startTag, endTag)
+vm._name = formatComponentName(vm, false)
+mark(endTag)
+measure(`vue ${vm._name} init`, startTag, endTag)
 }
-// 如果没有提供 el，调用 $mount() 挂载 if (vm.$options.el) {
-        vm.$mount(vm.$options.el)
-      }
-} }
-
+// 如果没有提供 el，调用 $mount() 挂载
+if (vm.$options.el) {
+vm.$mount(vm.$options.el)
+}
+}
+}
 ```
 
 ---

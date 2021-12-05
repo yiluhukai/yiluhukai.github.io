@@ -20,7 +20,7 @@
 
 * [136. 只出现一次的数字](https://leetcode-cn.com/problems/single-number/)`
 
-```tex
+```tiki wiki
 //给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 
 //
 // 说明： 
@@ -126,10 +126,102 @@ func missingNumber(nums []int) int {
 	return x
 }
 ```
+* 与运算
+
+  * 它的运算规则就是：二进制位上都为1时，运算结果为1，否则运算结果位0.
+
+#### 使用与运算
+
+* [318. 最大单词长度乘积](https://leetcode-cn.com/problems/maximum-product-of-word-lengths/)
+
+```tiki wiki
+//给定一个字符串数组 words，找到 length(word[i]) * length(word[j]) 的最大值，并且这两个单词不含有公共字母。你可以认为
+//每个单词只包含小写字母。如果不存在这样的两个单词，返回 0。 
+//
+// 
+//
+// 示例 1: 
+//
+// 
+//输入: ["abcw","baz","foo","bar","xtfn","abcdef"]
+//输出: 16 
+//解释: 这两个单词为 "abcw", "xtfn"。 
+//
+// 示例 2: 
+//
+// 
+//输入: ["a","ab","abc","d","cd","bcd","abcd"]
+//输出: 4 
+//解释: 这两个单词为 "ab", "cd"。 
+//
+// 示例 3: 
+//
+// 
+//输入: ["a","aa","aaa","aaaa"]
+//输出: 0 
+//解释: 不存在这样的两个单词。
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 2 <= words.length <= 1000 
+// 1 <= words[i].length <= 1000 
+// words[i] 仅包含小写字母 
+// 
+// Related Topics 位运算 数组 字符串 
+// 👍 296 👎 0
+```
+
+  当拿到这个题时，我的第一想法时组合数组中的单词，当两个单词没有共同的字母时，我们计算他们的长度，当结果长度小于当前的长度时，替换结果长度。我们这么做需要遍历(N^2)次的数组，每次遍历过程我们还需要去遍历两个单词,遍历单词的时间复杂度为（`l1* l2`）.当我们这么做时时间复杂度会特别高，所以我们需要更好的方法去判断两个单词有没有重复的字母，我们可以利用位运算来完成。
+
+将单词中的每个字母a-z转成数字0-25，然后将其对应的二进制数`mask`的二进制位上.然后我们使用两个单词的mask做与运算，当`mask1&mask2!=0`,则说明两个单词有相同的字母。
+
+```go
+func maxProduct(words []string) (ans int) {
+    masks := map[int]int{}
+  	// 求每个单词的mask 
+    for _, word := range words {
+        mask := 0
+        for _, ch := range word {
+            mask |= 1 << (ch - 'a')
+        }
+      	// 当两个单词的mask相同时，保留较大长度的mask
+      	// meet 和met两个单词的mask相同，所以当一个和其他的单词有重复字母时，另一个也有
+      	// 而我们只需要用长度较长的单词去和其他没有重复字母的单词组合
+        if len(word) > masks[mask] {
+            masks[mask] = len(word)
+        }
+    }
+
+    for x, lenX := range masks {
+        for y, lenY := range masks {
+            if x&y == 0 && lenX*lenY > ans {
+                ans = lenX * lenY
+            }
+        }
+    }
+    return
+}
+```
 
 
 
+  
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
 
 
