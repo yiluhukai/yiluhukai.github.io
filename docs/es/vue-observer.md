@@ -165,7 +165,7 @@ addTodo(){
 
 :::tip
 
-发布者是`ComponentB`，订阅者是`ComponentA`、信号中心都是`eventBus`对象。
+发布者是`ComponentB`，订阅者是`ComponentA`、信号中心是`eventBus`对象。
 
 :::
 
