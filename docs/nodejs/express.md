@@ -10,7 +10,7 @@ yarn  init -y
 安装我们需要的依赖：
 
 ```shell
-yarn add -D ts-node typescipt
+yarn add -D ts-node typescript
 yarn add express
 ```
 

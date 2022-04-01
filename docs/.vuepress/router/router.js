@@ -84,4 +84,5 @@ module.exports = {
     "/clang/signal",
   ],
   "/nodejs": ["/nodejs/express"],
+  "/react": ["/react/react_basic", "react/virtualDom"],
 };

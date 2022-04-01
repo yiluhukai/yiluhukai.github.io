@@ -13,6 +13,10 @@ module.exports = {
       { text: "C语言", link: "/clang/" },
       { text: "前端", link: "/es/" },
       { text: "nodejs", link: "/nodejs/" },
+      {
+        text: "React",
+        link: "/react/",
+      },
     ],
     //sidebar: 'auto',
     sidebar: router,
