@@ -713,6 +713,8 @@ else if (oldVirtualDOM && virtualDOM.type === oldVirtualDOM.type) {
 
 <img src="/react/virtual_7.png"/>
 
+我们现在的比较算法是先进行同级节点的比较，如果节点类型相同，对比跟新当前节点然后对子节点进行深度有限遍历继续对比。
+
 #### 9.2 Virtual DOM 类型不同
 
 当对比的元素节点类型不同时，就不需要继续对比了，直接使用新的 Virtual DOM 创建 DOM 对象，用新的 DOM 对象直接替换旧的 DOM 对象。当前这种情况要将组件刨除，组件要被单独处理。
@@ -738,7 +740,7 @@ else if (
 
 在节点更新完成以后，如果旧节点对象的数量多于新 VirtualDOM 节点的数量，就说明有节点需要被删除。
 
-<img src="/react/virtual_5.png" width="40%" align="left"/>
+<img src="/react/virtual_5.png"/>
 
 ```jsx
 // 获取就节点的数量
