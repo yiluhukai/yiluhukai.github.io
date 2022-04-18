@@ -234,7 +234,7 @@ children: [
 ];
 ```
 
-通过以下代码对 Virtual DOM 进行改造，重新构建 Virtual DOM。
+通过以下代码对 Virtual DOM 进行改造，重新构建 Virtual DOM。我们这里使用`[].concat(...children)`看似没有必要，实则当我们传入的是一个数组是，数组会整个作为一个children[i],使用这中方法可以拆分数组到单个children.
 
 ```javascript
 // 将原有 children 拷贝一份 不要在原有数组上进行操作
@@ -697,6 +697,9 @@ export default function updateNodeElement(
       }
     }
   });
+  // 每次更新后我们还需要重新设置dom对应的虚拟dom
+  // 负责当我们添加事件时，不能清除之前的事件
+  newElement._virtualDOM = virtualDOM
 }
 ```
 
@@ -922,6 +925,7 @@ else if (typeof virtualDOM.type === "function") {
   // 2) 要更新的组件的实例对象 通过它可以调用组件的生命周期函数 可以更新组件的 props 属性 可以获取到组件返回的最新的 Virtual DOM
   // 3) 要更新的 DOM 象 在更新组件时 需要在已有DOM对象的身上进行修改 实现DOM最小化操作 获取旧的 Virtual DOM 对象
   // 4) 如果要更新的组件和旧组件不是同一个组件 要直接将组件返回的 Virtual DOM 显示在页面中 此时需要 container 做为父级容器
+  const oldComponent = oldVirtualDom && oldVirtualDom.component;
   diffComponent(virtualDOM, oldComponent, oldDOM, container)
 }
 ```
@@ -963,6 +967,28 @@ else {
 }
 ```
 
+`mountComponent`方法会调用`mountNativeElement`方法，也西药传入`oldDom`
+
+```js
+export default function mountElement(virtualDOM, container, oldDom) {
+
+	// virtualDom有可能是一个函数组件或者类组件
+	
+	// 如果是一个组件，virtualDom的type是一个函数
+
+	if (isFunction(virtualDOM)) {
+	
+	  mountComponent(virtualDOM, container, oldDom);
+	
+	} else {
+	
+	  mountNativeElement(virtualDOM, container, oldDom);
+	
+	}
+
+}
+```
+
 在 mountNativeElement 方法中删除原有的旧 DOM 对象
 
 ```javascript
@@ -972,6 +998,39 @@ export default function mountNativeElement(virtualDOM, container, oldDOM) {
   if (oldDOM) {
     unmount(oldDOM);
   }
+}
+```
+
+更新`mountComponent`函数
+
+```js
+export default function mountComponent(virtualDom, container, oldDom) {
+
+	// 判断是函数式组件还是类组件
+	
+	let nextVirtualDom = null;
+	
+	if (isFunctionComponent(virtualDom)) {
+	
+	nextVirtualDom = buildFunctionComponent(virtualDom);
+	
+	} else {
+	
+	//类组件
+	
+	nextVirtualDom = buildClassComponent(virtualDom);
+	
+	}
+	
+	if (isFunction(nextVirtualDom)) {
+	
+	mountComponent(nextVirtualDom, container, oldDom);
+	
+	} else {
+	
+	mountNativeElement(nextVirtualDom, container, oldDom);
+	
+	}
 }
 ```
 
@@ -1004,7 +1063,7 @@ export default class Component {
 
 新建 updateComponent 方法用于更新组件操作，并在 if 成立后调用
 
-```jsx
+```js
 // diffComponent.js
 if (isSameComponent(virtualDOM, oldComponent)) {
   // 属同一个组件 做组件更新
@@ -1302,11 +1361,181 @@ export default function unmount(dom) {
   // 递归删除子节点
   if (dom.childNodes.length > 0) {
     for (let i = 0; i < dom.childNodes.length; i++) {
-      unmount(dom.childNodes[i]);
-      i--;
+    // 如果是元素节点，才递归调用去卸载元素,如果是文本节点，我们删除当前节点就可以删除对应的文本节点
+		if (dom.childNodes[i].nodeType === 1) {	
+			unmount(dom.childNodes[i]);
+			i--;
+		}
     }
   }
 
   dom.remove();
 }
+```
+
+测试代码：
+```js
+import TinyReact from "./TinyCreactEmelent";
+// const virtualDOM = (
+//     <div className="container" data-test="container">
+//         <h1>你好 Tiny React</h1>
+//         <h2>(编码必杀技)</h2>
+//         <div>
+//             嵌套1 <div>嵌套 1.1</div>
+//         </div>
+//         <h3>(观察: 这个将会被改变)</h3>
+//         {2 == 1 && <div>如果2和1相等渲染当前内容</div>}
+//         {2 == 2 && <div>2</div>}
+//         <span>这是一段内容</span>
+//         <button onClick={() => alert("你好")}>点击我</button>
+//         <h3>这个将会被删除</h3>
+//         2, 3<input type="text" value="hello"></input>
+//     </div>
+// );
+const Heart = (props) => <div> &Heart {props.title}</div>;
+// console.log(virtualDOM);
+// 使用render方法将虚拟dom转换成真实dom
+const container = document.getElementById("root");
+
+// const virtualDOM = (
+//     <div>
+//         <Heart title="bruce"></Heart>;123
+//     </div>
+// );
+// console.log(virtualDOM);
+// const modifyVirtualDOM = (
+//     <div className="container">
+//         <h1>你好 Tiny React</h1>
+//         <h2>(编码必杀技)</h2>
+//         <div data-test="123">
+//             嵌套1 <div>嵌套 1.1</div>
+//         </div>
+//         <h3>(观察: 这个将会被改变)</h3>
+//         {2 == 1 && <div>如果2和1相等渲染当前内容</div>}
+//         {2 == 2 && <div>2</div>}
+//         <span>这是一段更新后的内容</span>
+//         <button onClick={() => alert("你好")}>点击我</button>
+//         <h6>这个将会被删除</h6>
+//         {/* 2, 3<input type="text" value="hello"></input> */}
+//     </div>
+// );
+
+// TinyReact.render(virtualDOM, container);
+
+// setTimeout(() => {
+//     TinyReact.render(modifyVirtualDOM, container);
+// }, 2000);
+
+// class Alert extends TinyReact.Component {
+//     constructor(props) {
+//         super(props);
+//         this.state = {
+//             title: "default title",
+//         };
+//         this.changeTitle = this.changeTitle.bind(this);
+//     }
+//     changeTitle() {
+//         this.setState({ title: "changed Title" });
+//     }
+//     render() {
+//         console.log(this.props);
+//         return (
+//             <div>
+//                 {this.props.name} {this.props.age}
+//                 <p>{this.state.title}</p>
+//                 <button onClick={this.changeTitle}>change Title</button>
+//             </div>
+//         );
+//     }
+// }
+
+// TinyReact.render(<Alert name="bruce" age="12"></Alert>, container);
+// export default class Hearts extends TinyReact.Component {
+//     render() {
+//         return <div>Heart !</div>;
+//     }
+// }
+
+// setTimeout(() => {
+//     // 更新的是同一个组件
+//     TinyReact.render(<Alert name="zce" age="20"></Alert>, container);
+//     // 不同的组件
+//     // TinyReact.render(<Hearts></Hearts>, container);
+// }, 2000);
+
+class RefDomo extends TinyReact.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            people: [
+                { name: "张三", id: "1" },
+                { name: "李四", id: "2" },
+                { name: "王五", id: "3" },
+            ],
+            count: 0,
+        };
+    }
+    changeOrder() {
+        const { people, count } = this.state;
+        const p = people.shift();
+        people.push(p);
+        this.setState({ people: people, count: count + 1 });
+    }
+
+    addPeople() {
+        const { people } = this.state;
+        people.splice(1, 0, { name: "zzz", id: "4" });
+        this.setState({ people });
+    }
+
+    deletePeople() {
+        const { people } = this.state;
+        // people.pop();
+        // console.error(people);
+
+        this.setState({ people: people.slice(1) });
+    }
+
+    render() {
+        console.log(this.state.people);
+        return (
+            <div>
+                {/* <input
+                    type="text"
+                    value="aaa"
+                    ref={(input) => (this.input = input)}
+                ></input>
+                <button onClick={this.handleClick.bind(this)}>test ref</button>
+                <Alert
+                    ref={(alert) => (this.alert = alert)}
+                    name="zce"
+                    age={12}
+                ></Alert> */}
+                <ul>
+                    {/* <li>1</li>
+                    <li>2</li> */}
+
+                    {this.state.people.map((item) => (
+                        <li key={item.id}>{item.name}</li>
+                    ))}
+                </ul>
+
+                <button onClick={this.changeOrder.bind(this)}>
+                    changeOrder{this.state.count}
+                </button>
+                <button onClick={this.addPeople.bind(this)}>Add people</button>
+                <button onClick={this.deletePeople.bind(this)}>
+                    delete people
+                </button>
+            </div>
+        );
+    }
+
+    handleClick() {
+        console.log(this.input.value);
+        console.log(this.alert);
+    }
+}
+
+TinyReact.render(<RefDomo />, container);
 ```
