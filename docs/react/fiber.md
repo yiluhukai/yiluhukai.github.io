@@ -573,7 +573,7 @@ const getTag = (vdom) => {
 export default getTag;
 ```
 
-目前我们只完成了最外层节点和其子节点的对fiber对象的转化工作，我们还需要完成下层节点的转化。
+目前我们只完成了最外层节点和其子节点的对fiber对象的转化工作，我们还需要完成下层节点的转化，以及使用`effects`收集子节点的`fiber`对象。
 
 ```js
 const executeTask = (fiber) => {
@@ -602,5 +602,245 @@ const executeTask = (fiber) => {
         // 向上去处理父节点subling节点
     }
     console.dir(fiber);
+};
+```
+
+完成了`fiber`对象的构建，接下来开始使用`fiber`对象完成初始渲染。
+
+```js
+let pendingCommit = null;
+
+const executeTask = (fiber) => {
+    /**
+     * 构建当前fiber对象的子fiber对象
+     */
+    reconcileChildren(fiber, fiber.props.children);
+
+    // 下次任务时继续构建fiber.child对象,z这块只处理了子节点，没有处理兄弟节点
+    if (fiber.child) {
+        return fiber.child;
+    }
+
+    // 当没有子节点的时候，开始去查找兄弟节点并构建fiber对象
+    let currentFiber = fiber;
+
+    while (currentFiber.parent) {
+        // 存放当前节点下的所有fiber对象，包含自身
+        currentFiber.parent.effects = currentFiber.parent.effects.concat(
+            currentFiber.effects.concat([currentFiber])
+        );
+        if (currentFiber.subling) {
+            return currentFiber.subling; // 基于该节点去构建
+        }
+        currentFiber = currentFiber.parent;
+        // 向上去处理父节点subling节点
+    }
+    // 执行完成后，currentFiber指向的最外层的fiber对象
+    console.dir(currentFiber);
+    pendingCommit = currentFiber;
+};```
+
+`pendingCommit`用来接受最外层存储最外层的`fiber`对象。
+
+```js
+const workLoop = (deadline) => {
+    if (!subTask) {
+        subTask = getFirstTask();
+        // console.log(subTask);
+    }
+
+    while (subTask && deadline.timeRemaining() > 1) {
+        // 执行任务并返回一个新的任务,这里的任务是构建好的fiber对象
+        subTask = executeTask(subTask);
+    }
+
+    // 当上面的fiber对象构建完成，subTask === undefined
+
+    if (pendingCommit) {
+        commitAllWork(pendingCommit);
+    }
+};
+
+
+// fiber对象是最外层的fiber对象
+const commitAllWork = (fiber) => {
+    fiber.effects.forEach((subFiber) => {
+        if (subFiber.effectTag === "placement") {
+            // 添加节点
+            subFiber.parent.stateNode.appendChild(subFiber.stateNode);
+        }
+    });
+};
+
+```
+
+调用`commitAllWork`来完成渲染，此时已经完成了普通的节点的渲染。
+
+目前我们只完成了普通节点的处理，接下来完成类组件和函数时组件的更新,添加一个`Component`l类供类组件继承：
+
+```js
+// Component/index.js
+export default class Component {
+    constructor(props) {
+        this.props = props;
+    }
+}
+```
+
+```js
+// react_fiber/src/index.js
+
+import React, { render, Component } from "./react";
+// const jsx = (
+//     <div>
+//         <p>Hello wolrd!</p>
+//         <h1>subling</h1>
+//     </div>
+// );
+
+// console.log(jsx);
+
+const root = document.getElementById("root");
+
+// render(jsx, root);
+
+class MyComponent extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div> Hello,{this.props.name}!</div>;
+    }
+}
+// function MyComponent(props) {
+//     return <div> Hello,{props.name}!</div>;
+// }
+
+render(<MyComponent name="zce" />, root);
+
+```
+
+首先在于`tag`的处理：
+
+```js
+//getTag.js
+
+import Component from "../../Component";
+const getTag = (vdom) => {
+    // 文本节点和元素节点
+    if (typeof vdom.type === "string") {
+        return "host_component";
+    } else if (Object.getPrototypeOf(vdom.type) === Component) {
+        // 类组件
+        return "class_component";
+    } else {
+        return "function_component";
+    }
+};
+export default getTag;
+
+```
+
+类组件和函数组件对应的`stateNode`分别为`类实例对象`和函数本身：
+
+```js
+
+// createStateNode.js
+
+import { createDOMElement } from "../../DOM";
+import { createReactInstance } from "../CreateReactInstance";
+const createStateNode = (fiber) => {
+    // 文本节点和元素节点
+    if (fiber.tag === "host_component") {
+        return createDOMElement(fiber);
+    } else {
+        return createReactInstance(fiber);
+    }
+};
+
+export default createStateNode;
+```
+
+`CreateReactInstance.js`文件：
+
+```js
+export const createReactInstance = (fiber) => {
+    let instance = null;
+    if (fiber.tag === "class_component") {
+        instance = new fiber.type(fiber.props);
+    } else {
+        instance = fiber.type;
+    }
+    return instance;
+};
+
+```
+
+接下来需要修改处理子组件的方法,不同的类型的`fiber`.获取子节点的虚拟对象的方式不同
+
+```js
+
+const executeTask = (fiber) => {
+    /**
+     * 构建当前fiber对象的子fiber对象
+     */
+    if (fiber.tag === "class_component") {
+        reconcileChildren(fiber, fiber.stateNode.render());
+    } else if (fiber.tag === "function_component") {
+        reconcileChildren(fiber, fiber.stateNode(fiber.props));
+    } else {
+        reconcileChildren(fiber, fiber.props.children);
+    }
+
+    // 下次任务时继续构建fiber.child对象,z这块只处理了子节点，没有处理兄弟节点
+    if (fiber.child) {
+        return fiber.child;
+    }
+
+    // 当没有子节点的时候，开始去查找兄弟节点并构建fiber对象
+    let currentFiber = fiber;
+
+    while (currentFiber.parent) {
+        // 存放当前节点下的所有fiber对象，包含自身
+        currentFiber.parent.effects = currentFiber.parent.effects.concat(
+            currentFiber.effects.concat([currentFiber])
+        );
+        if (currentFiber.subling) {
+            return currentFiber.subling; // 基于该节点去构建
+        }
+        currentFiber = currentFiber.parent;
+        // 向上去处理父节点subling节点
+    }
+    // 执行完成后，currentFiber指向的最外层的fiber对象
+    // console.dir(currentFiber);
+    pendingCommit = currentFiber;
+};
+```
+
+修改`commitAllWork`函数，当我们添加元素时，需要去忽略父元素时类组件和函数式组件的`fiber`对象。
+
+```js
+
+// fiber对象是最外层的fiber对象
+const commitAllWork = (fiber) => {
+    fiber.effects.forEach((subFiber) => {
+        // 添加的过程中忽略掉类组件和函数组件的fiber对象
+
+        if (subFiber.effectTag === "placement") {
+            let parentFiber = subFiber.parent;
+
+            while (
+                parentFiber.tag === "class_component" ||
+                parentFiber.tag === "function_component"
+            ) {
+                parentFiber = parentFiber.parent;
+            }
+            if (subFiber.tag === "host_component") {
+                // 添加节点
+                parentFiber.stateNode.appendChild(subFiber.stateNode);
+            }
+        }
+    });
 };
 ```
