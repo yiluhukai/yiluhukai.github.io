@@ -1,13 +1,15 @@
-### 3.  Fiber算法
-Fiber算法是diff算法中对比虚拟dom的一部分。
+### 3. Fiber 算法
+
+Fiber 算法是 diff 算法中对比虚拟 dom 的一部分。
 
 `1. 开发环境配置
 
 #### 1.1 文件夹结构
+
 ```shell
 ├── babel.config.json           // babel 配置文件
 ├── build                       // 存储服务端代码打包文件
-│   └── server.js 
+│   └── server.js
 ├── dist                        // 存储客户端代码打包文件
 │   ├── bundle.js
 │   └── bundle.js.map
@@ -53,9 +55,9 @@ npm install webpack webpack-cli webpack-node-externals @babel/core @babel/preset
 
 ```javascript
 // server.js
-import express from "express"
-const app = express()
-app.use(express.static("dist"))
+import express from "express";
+const app = express();
+app.use(express.static("dist"));
 const template = `
   <html>
     <head>
@@ -66,42 +68,42 @@ const template = `
 			<script src="bundle.js"></script>
     </body>
   </html>
-`
+`;
 app.get("*", (req, res) => {
-  res.send(template)
-})
-app.listen(3000, () => console.log("server is running"))
+    res.send(template);
+});
+app.listen(3000, () => console.log("server is running"));
 ```
 
 ##### 1.3.2 服务端 webpack 配置
 
 ```javascript
 // webpack.config.server.js
-const path = require("path")
-const nodeExternals = require("webpack-node-externals")
+const path = require("path");
+const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-  target: "node",
-  mode: "development",
-  entry: "./server.js",
-  output: {
-    filename: "server.js",
-    path: path.resolve(__dirname, "build")
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
-  },
-  // 只打包 server.js文件，它的依赖在node_module中不处理
-  externals: [nodeExternals()]
-}
+    target: "node",
+    mode: "development",
+    entry: "./server.js",
+    output: {
+        filename: "server.js",
+        path: path.resolve(__dirname, "build"),
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                },
+            },
+        ],
+    },
+    // 只打包 server.js文件，它的依赖在node_module中不处理
+    externals: [nodeExternals()],
+};
 ```
 
 ##### 1.3.3 babel 配置
@@ -115,29 +117,29 @@ module.exports = {
 ##### 1.3.4 客户端 webpack 配置
 
 ```javascript
-const path = require("path")
+const path = require("path");
 
 module.exports = {
-  target: "web",
-  mode: "development",
-  entry: "./src/index.js",
-  output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "dist")
-  },
-  devtool: "source-map",
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
-  }
-}
+    target: "web",
+    mode: "development",
+    entry: "./src/index.js",
+    output: {
+        filename: "bundle.js",
+        path: path.resolve(__dirname, "dist"),
+    },
+    devtool: "source-map",
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: "babel-loader",
+                },
+            },
+        ],
+    },
+};
 ```
 
 ##### 1.3.5 启动命令
@@ -159,21 +161,21 @@ module.exports = {
 
 ```javascript
 requestIdleCallback(function(deadline) {
-  // deadline.timeRemaining() 获取浏览器的空余时间
-})
+    // deadline.timeRemaining() 获取浏览器的空余时间
+});
 ```
 
 #### 2.2 浏览器空余时间
 
 页面是一帧一帧绘制出来的，当每秒绘制的帧数达到 60 时，页面是流畅的，小于这个值时， 用户会感觉到卡顿
 
-1s 60帧，每一帧分到的时间是 1000/60 ≈ 16 ms，如果每一帧执行的时间小于16ms，就说明浏览器有空余时间
+1s 60 帧，每一帧分到的时间是 1000/60 ≈ 16 ms，如果每一帧执行的时间小于 16ms，就说明浏览器有空余时间
 
 如果任务在剩余的时间内没有完成则会停止任务执行，继续优先执行主任务，也就是说 requestIdleCallback 总是利用浏览器的空余时间执行任务
 
 #### 2.3 API 功能体验
 
-页面中有两个按钮和一个DIV，点击第一个按钮执行一项昂贵的计算，使其长期占用主线程，当计算任务执行的时候去点击第二个按钮更改页面中 DIV 的背景颜色。
+页面中有两个按钮和一个 DIV，点击第一个按钮执行一项昂贵的计算，使其长期占用主线程，当计算任务执行的时候去点击第二个按钮更改页面中 DIV 的背景颜色。
 
 使用 requestIdleCallback 就可以完美解决这个卡顿问题。
 
@@ -194,36 +196,36 @@ requestIdleCallback(function(deadline) {
 ```
 
 ```javascript
-var play = document.getElementById("play")
-var workBtn = document.getElementById("work")
-var interactionBtn = document.getElementById("interaction")
-var iterationCount = 100000000
-var value = 0
+var play = document.getElementById("play");
+var workBtn = document.getElementById("work");
+var interactionBtn = document.getElementById("interaction");
+var iterationCount = 100000000;
+var value = 0;
 
-var expensiveCalculation = function (IdleDeadline) {
-  while (iterationCount > 0 && IdleDeadline.timeRemaining() > 1) {
-    value =
-      Math.random() < 0.5 ? value + Math.random() : value + Math.random()
-    iterationCount = iterationCount - 1
-  }
-  // 中断后需要再次调用才会继续执行
-  requestIdleCallback(expensiveCalculation)
-}
+var expensiveCalculation = function(IdleDeadline) {
+    while (iterationCount > 0 && IdleDeadline.timeRemaining() > 1) {
+        value =
+            Math.random() < 0.5 ? value + Math.random() : value + Math.random();
+        iterationCount = iterationCount - 1;
+    }
+    // 中断后需要再次调用才会继续执行
+    requestIdleCallback(expensiveCalculation);
+};
 
-workBtn.addEventListener("click", function () {
-  requestIdleCallback(expensiveCalculation)
-})
+workBtn.addEventListener("click", function() {
+    requestIdleCallback(expensiveCalculation);
+});
 
-interactionBtn.addEventListener("click", function () {
-  play.style.background = "palegreen"
-})
+interactionBtn.addEventListener("click", function() {
+    play.style.background = "palegreen";
+});
 ```
 
 ### 3 Fiber
 
 #### 3.1 问题
 
-React 16 之前的版本比对更新 VirtualDOM 的过程是采用循环加递归实现的，这种比对方式有一个问题，就是一旦任务开始进行就无法中断，如果应用中组件数量庞大，主线程被长期占用，直到整棵 VirtualDOM 树比对更新完成之后主线程才能被释放，主线程才能执行其他任务。这就会导致一些用户交互，动画等任务无法立即得到执行，页面就会产生卡顿, 非常的影响用户体验。 
+React 16 之前的版本比对更新 VirtualDOM 的过程是采用循环加递归实现的，这种比对方式有一个问题，就是一旦任务开始进行就无法中断，如果应用中组件数量庞大，主线程被长期占用，直到整棵 VirtualDOM 树比对更新完成之后主线程才能被释放，主线程才能执行其他任务。这就会导致一些用户交互，动画等任务无法立即得到执行，页面就会产生卡顿, 非常的影响用户体验。
 
 核心问题：递归无法中断，执行重任务耗时长。 JavaScript 又是单线程，无法同时执行其他任务，导致任务延迟页面卡顿，用户体验差。
 
@@ -235,17 +237,18 @@ React 16 之前的版本比对更新 VirtualDOM 的过程是采用循环加递�
 
 #### 3.3 实现思路
 
-在 Fiber 方案中，为了实现任务的终止再继续，DOM比对算法被分成了两部分：
+在 Fiber 方案中，为了实现任务的终止再继续，DOM 比对算法被分成了两部分：
 
-1. 构建 Fiber        (可中断)
-2. 提交 Commit   (不可中断)
+1. 构建 Fiber (可中断)
+2. 提交 Commit (不可中断)
 
 DOM 初始渲染: virtualDOM -> Fiber -> Fiber[] -> DOM
 
 DOM 更新操作: newFiber vs oldFiber -> Fiber[] -> DOM
 
 #### 3.4 Fiber 对象
-fiber对象也是一个`js`对象.
+
+fiber 对象也是一个`js`对象.
 
 ```
 {
@@ -266,7 +269,7 @@ fiber对象也是一个`js`对象.
 如何将虚拟`dom`对象转换成一个`fiber`对象？
 从dom树的最外面开始，将dom树根节点转成fiber对象，然后该节点的第一个子节点对应的`fiber`对象是该`fiber`对象的孩子，从第二个孩子开始，是前一个孩子的`fiber`对象的兄弟节点。
 
-#### 3.5 fiber的使用
+#### 3.5 fiber 的使用
 
 接下来我们实现一个`demo`,将虚拟`dom`先转成`fiber`对象，最后利用`fiber`对象来生成和跟新真实`dom`。
 
@@ -275,7 +278,7 @@ fiber对象也是一个`js`对象.
 ```shell
 src
 ├── index.js // 测试代码
-└── react 
+└── react
     ├── CreateElement // React.createElement方法
     │   └── createElement.js
     ├── Misc  // 一些工具方法
@@ -291,20 +294,13 @@ src
 `src/index.js`:
 
 ```jsx
-
 import React, { render } from "./react";
 
 const jsx = <div>Hello wolrd!</div>;
 
-  
-
 console.log(jsx);
 
-  
-
 const root = document.getElementById("root");
-
-  
 
 render(jsx, root);
 ```
@@ -312,7 +308,6 @@ render(jsx, root);
 `Misc/CreateTaskQueue/index.js`:
 
 ```js
-
 /**
 
 * 导入一个生成任务队列的方法
@@ -358,7 +353,6 @@ export function createElement(type, props, ...children) {
 `reconciliation/index.js`:
 
 ```js
-
 /**
  *
  * 实现render方法：
@@ -388,6 +382,7 @@ export function render(element, dom) {
 ```
 
 添加任务的调用逻辑：
+
 ```js
 */
 
@@ -529,7 +524,7 @@ const executeTask = (fiber) => {
 };
 ```
 
-`fiber`对象的`stateNode`属性中保存的是当前fiber对象对应生成的`dom`元素，当`fiber`对象的`tag`类型不同，生成`dom`的方式也不同，我们可以使用`createStateNode`去生成`fiber`对象的`stateNode`属性：
+`fiber`对象的`stateNode`属性中保存的是当前 fiber 对象对应生成的`dom`元素，当`fiber`对象的`tag`类型不同，生成`dom`的方式也不同，我们可以使用`createStateNode`去生成`fiber`对象的`stateNode`属性：
 
 ```JavaScript
 		// 将当前的虚拟dom构建成fiber对象
@@ -550,13 +545,13 @@ const executeTask = (fiber) => {
 
 ```js
 newFiber = {
-            type: element.type,
-            props: element.props,
-            tag: getTag(element),
-            effects: [],
-            effectTag: "placement", // 添加节点
-            // stateNode: null,
-            parent: fiber,
+    type: element.type,
+    props: element.props,
+    tag: getTag(element),
+    effects: [],
+    effectTag: "placement", // 添加节点
+    // stateNode: null,
+    parent: fiber,
 };
 ```
 
@@ -573,7 +568,7 @@ const getTag = (vdom) => {
 export default getTag;
 ```
 
-目前我们只完成了最外层节点和其子节点的对fiber对象的转化工作，我们还需要完成下层节点的转化，以及使用`effects`收集子节点的`fiber`对象。
+目前我们只完成了最外层节点和其子节点的对 fiber 对象的转化工作，我们还需要完成下层节点的转化，以及使用`effects`收集子节点的`fiber`对象。
 
 ```js
 const executeTask = (fiber) => {
@@ -607,7 +602,7 @@ const executeTask = (fiber) => {
 
 完成了`fiber`对象的构建，接下来开始使用`fiber`对象完成初始渲染。
 
-```js
+````js
 let pendingCommit = null;
 
 const executeTask = (fiber) => {
@@ -672,11 +667,11 @@ const commitAllWork = (fiber) => {
     });
 };
 
-```
+````
 
 调用`commitAllWork`来完成渲染，此时已经完成了普通的节点的渲染。
 
-目前我们只完成了普通节点的处理，接下来完成类组件和函数时组件的更新,添加一个`Component`l类供类组件继承：
+目前我们只完成了普通节点的处理，接下来完成类组件和函数时组件的更新,添加一个`Component`l 类供类组件继承：
 
 ```js
 // Component/index.js
@@ -718,7 +713,6 @@ class MyComponent extends Component {
 // }
 
 render(<MyComponent name="zce" />, root);
-
 ```
 
 首先在于`tag`的处理：
@@ -739,13 +733,11 @@ const getTag = (vdom) => {
     }
 };
 export default getTag;
-
 ```
 
 类组件和函数组件对应的`stateNode`分别为`类实例对象`和函数本身：
 
 ```js
-
 // createStateNode.js
 
 import { createDOMElement } from "../../DOM";
@@ -774,13 +766,11 @@ export const createReactInstance = (fiber) => {
     }
     return instance;
 };
-
 ```
 
 接下来需要修改处理子组件的方法,不同的类型的`fiber`.获取子节点的虚拟对象的方式不同
 
 ```js
-
 const executeTask = (fiber) => {
     /**
      * 构建当前fiber对象的子fiber对象
@@ -821,7 +811,6 @@ const executeTask = (fiber) => {
 修改`commitAllWork`函数，当我们添加元素时，需要去忽略父元素时类组件和函数式组件的`fiber`对象。
 
 ```js
-
 // fiber对象是最外层的fiber对象
 const commitAllWork = (fiber) => {
     fiber.effects.forEach((subFiber) => {
@@ -841,6 +830,458 @@ const commitAllWork = (fiber) => {
                 parentFiber.stateNode.appendChild(subFiber.stateNode);
             }
         }
+    });
+};
+```
+
+节点更新操作：
+
+测试代码：
+
+```js
+import React, { render, Component } from "./react";
+const jsx = (
+    <div>
+        <p>Hello world!</p>
+        <h1>subling</h1>
+    </div>
+);
+
+// console.log(jsx);
+
+const root = document.getElementById("root");
+
+render(jsx, root);
+
+setTimeout(() => {
+    render(
+        <div>
+            <div>奥利给</div>
+            <h1>subling</h1>
+        </div>,
+        root
+    );
+}, 2000);
+```
+
+我们需要去缓存上一次的`fiber`对象，然后利用两次的`fiber`对象做比较去完成 dom 节点更新：
+
+```js
+const commitAllWork = (fiber) => {
+    fiber.effects.forEach((subFiber) => {
+        if (subFiber.effectTag === "update") {
+            // 更新dom节点
+            if (subFiber.type !== subFiber.alternate.type) {
+                /**
+                 * dom节点的类型不同，创建一个新的节点去替换旧的节点
+                 */
+                subFiber.parent.stateNode.replaceChild(
+                    subFiber.stateNode,
+                    subFiber.alternate.stateNode
+                );
+            } else {
+                /**
+                 * 类型相同，更新节点的内容
+                 */
+                updateElementNode(
+                    subFiber,
+                    subFiber.stateNode,
+                    subFiber.alternate
+                );
+            }
+        } else if (subFiber.effectTag === "placement") {
+            // 添加的过程中忽略掉类组件和函数组件的fiber对象
+            let parentFiber = subFiber.parent;
+
+            while (
+                parentFiber.tag === "class_component" ||
+                parentFiber.tag === "function_component"
+            ) {
+                parentFiber = parentFiber.parent;
+            }
+            if (subFiber.tag === "host_component") {
+                // 添加节点
+                parentFiber.stateNode.appendChild(subFiber.stateNode);
+            }
+        }
+
+        /**
+         * 缓存旧的的fiber节点，为下次比对准备
+         */
+
+        fiber.stateNode.__rootFiberContainer = fiber;
+    });
+};
+```
+
+每次生成新的`dom`后，我们都需要去存储旧的`fiber对象`。在每次创建新的`fiber`对象时获取：
+
+```js
+const getFirstTask = () => {
+    /**
+     * 获取任务队列队列中第一个任务的子任务
+     *
+     */
+
+    const subTask = taskQueue.pop();
+    // console.error(subTask);
+
+    /**
+     * 构建fiber对象(最晚层元素root对应的fiber对象)
+     */
+
+    return {
+        props: subTask.props,
+        stateNode: subTask.dom, //当前fiber对象对应的dom
+        tag: "hostRoot", //根节点
+        effects: [],
+        child: null, //后面构建了子fiber节点再去设置,
+        alternate: subTask.dom.__rootFiberContainer, // 替换的节点对应的fiber对象
+    };
+};
+```
+
+然后构建子`fiber`对象是找出对应的旧`fiber`对象去对比,然后重新创建`stateNode`属性还是去更新
+`stateNode`属性：
+
+```js
+
+const reconcileChildren = (fiber, children) => {
+    //当children是根fiber对象时，children是对象，当是用creaeElement方法创建的，则是数组
+    // 将children转成数组统一处理
+    const arrifiedChildren = arrified(children);
+    let index = 0,
+        element = null,
+        length = arrifiedChildren.length,
+        newFiber = null,
+        prevFiber = null;
+    let alternate = null; // 存储每一个子节点对应的旧fiber节点
+    if (fiber.alternate && fiber.alternate.child) {
+        alternate = fiber.alternate.child;
+    }
+
+    while (index < length) {
+        element = arrifiedChildren[index];
+        if (element && alternate) {
+            // 节点的类型不同
+            newFiber = {
+                type: element.type,
+                props: element.props,
+                tag: getTag(element),
+                effects: [],
+                effectTag: "update", // 更新节点
+                // stateNode: null,
+                parent: fiber,
+                alternate, // 当前节点对应的旧的fiber对象
+            };
+            // 更新节点
+            if (element.type !== alternate.type) {
+                // 给新创建的fiber对象添加stateNode属性
+                newFiber.stateNode = createStateNode(newFiber);
+            } else {
+                // 节点的类型相同，用旧的几点代替新的节点
+                newFiber.stateNode = alternate.stateNode;
+            }
+        } else if (element && !alternate) {
+            // 初始渲染
+            // 将当前的虚拟dom构建成fiber对象
+            newFiber = {
+                type: element.type,
+                props: element.props,
+                tag: getTag(element),
+                effects: [],
+                effectTag: "placement", // 添加节点
+                // stateNode: null,
+                parent: fiber,
+            };
+            // 给新创建的fiber对象添加stateNode属性
+            newFiber.stateNode = createStateNode(newFiber);
+        }
+
+        // 更新胡后续的child节点对应的alternate
+        if (alternate && alternate.subling) {
+            alternate = alternate.subling;
+        } else {
+            alternate = null;
+        }
+
+        if (index == 0) {
+            // 作为当前节点的child
+            fiber.child = newFiber;
+        } else {
+            //作为前一个兄弟节点的邻居节点
+            prevFiber.subling = newFiber;
+        }
+        prevFiber = newFiber;
+        index++;
+    }
+};
+
+```
+
+更新完成在后续提交中更新`dom`;
+
+```js
+
+// fiber对象是最外层的fiber对象
+const commitAllWork = (fiber) => {
+    fiber.effects.forEach((subFiber) => {
+        if (subFiber.effectTag === "update") {
+            // 更新dom节点
+            if (subFiber.type !== subFiber.alternate.type) {
+                /**
+                 * dom节点的类型不同，创建一个新的节点去替换旧的节点
+                 */
+                subFiber.parent.stateNode.replaceChild(
+                    subFiber.stateNode,
+                    subFiber.alternate.stateNode
+                );
+            } else {
+                /**
+                 * 类型相同，更新节点的内容
+                 */
+                updateElementNode(
+                    subFiber,
+                    subFiber.stateNode,
+                    subFiber.alternate
+                );
+            }
+        } else if (subFiber.effectTag === "placement") {
+            // 添加的过程中忽略掉类组件和函数组件的fiber对象
+            let parentFiber = subFiber.parent;
+
+            while (
+                parentFiber.tag === "class_component" ||
+                parentFiber.tag === "function_component"
+            ) {
+                parentFiber = parentFiber.parent;
+            }
+            if (subFiber.tag === "host_component") {
+                // 添加节点
+                parentFiber.stateNode.appendChild(subFiber.stateNode);
+            }
+        }
+
+        /**
+         * 缓存旧的的fiber节点，为下次比对准备
+         */
+
+        fiber.stateNode.__rootFiberContainer = fiber;
+    });
+};
+
+```
+
+由于`updateElementNode`方法只能更新元素节点，我们需要添加对文本节点的更新：
+
+```js
+export default function updateElementNode(
+    virtualDom,
+    newElement,
+    oldVirtualDom = {}
+) {
+    const propsObj = virtualDom.props || {};
+    const oldPropsObj = oldVirtualDom.props || {};
+
+    // 对文本节点的更新
+    if (virtualDom.type === "text") {
+        // 文本的属性不同
+        if (propsObj.textContent !== oldPropsObj.textContent) {
+            // 更新的时候需要去对比父元素的类型,为什么呢 ，因为父元素的类型不同，更新完子节点后回去创建新的父节点替换节点时找不到子文本节点，替换失败，
+            // 因为原来的子节点oldVirtualDom.stateNode，不存在virtualDom.parent.stateNode上
+            if (virtualDom.parent.type !== oldVirtualDom.parent.type) {
+                // 父元素的类型不同
+                virtualDom.parent.stateNode.appendChild(
+                    document.createTextNode(propsObj.textContent)
+                );
+            } else {
+                // 父元素的类型相同
+                virtualDom.parent.stateNode.replaceChild(
+                    document.createTextNode(propsObj.textContent),
+                    oldVirtualDom.stateNode
+                );
+            }
+        }
+        return;
+    }
+
+    Object.keys(propsObj).forEach((prop) => {
+        const propValue = propsObj[prop];
+        const oldPropValue = oldPropsObj[prop];
+        if (propValue !== oldPropValue) {
+            if (prop.slice(0, 2) === "on") {
+                // 当我们要添加的属性是元素的事件
+                const eventName = prop.slice(2).toLowerCase();
+                if (oldPropValue) {
+                    // 删除旧的事件
+                    newElement.removeEventListener(eventName, oldPropValue);
+                }
+                newElement.addEventListener(eventName, propValue);
+            } else if (prop === "value" || prop === "checked") {
+                // bool属性
+                newElement[prop] = propValue;
+            } else if (prop !== "children") {
+                // class属性和其他的属性
+                if (prop === "className") {
+                    newElement.setAttribute("class", propValue);
+                } else {
+                    newElement.setAttribute(prop, propValue);
+                }
+            }
+        }
+    });
+    // 判断属性被删除的情况(旧的虚拟上有但是新的没有)
+
+    Object.keys(oldPropsObj).forEach((prop) => {
+        const propValue = propsObj[prop];
+        const oldPropValue = oldPropsObj[prop];
+        if (!propValue) {
+            if (prop.slice(0, 2) === "on") {
+                const eventName = prop.slice(2).toLowerCase();
+                newElement.removeEventListener(eventName, oldPropValue);
+            } else if (prop !== "children") {
+                newElement.removeAttribute(prop);
+            }
+        }
+    });
+    newElement._virtualDom = virtualDom;
+}
+
+```
+
+删除节点操作：
+
+```js
+const reconcileChildren = (fiber, children) => {
+    //当children是根fiber对象时，children是对象，当是用creaeElement方法创建的，则是数组
+    // 将children转成数组统一处理
+    const arrifiedChildren = arrified(children);
+    let index = 0,
+        element = null,
+        length = arrifiedChildren.length,
+        newFiber = null,
+        prevFiber = null;
+    let alternate = null; // 存储每一个子节点对应的旧fiber节点
+    if (fiber.alternate && fiber.alternate.child) {
+        alternate = fiber.alternate.child;
+    }
+    // 保证我们删除的时候可以进入
+    while (index < length || alternate) {
+        element = arrifiedChildren[index];
+        if (!element && alternate) {
+            //说明子节点中有删除
+            alternate.effectTag = "delete";
+            // 将删除操作添加到新的fiber对象中
+            fiber.effects.push(alternate);
+        } else if (element && alternate) {
+            // 更新节点
+            // 节点的类型不同
+            newFiber = {
+                type: element.type,
+                props: element.props,
+                tag: getTag(element),
+                effects: [],
+                effectTag: "update", // 更新节点
+                // stateNode: null,
+                parent: fiber,
+                alternate, // 当前节点对应的旧的fiber对象
+            };
+            // 更新节点
+            if (element.type !== alternate.type) {
+                // 给新创建的fiber对象添加stateNode属性
+                newFiber.stateNode = createStateNode(newFiber);
+            } else {
+                // 节点的类型相同，用旧的几点代替新的节点
+                newFiber.stateNode = alternate.stateNode;
+            }
+        } else if (element && !alternate) {
+            // 初始渲染
+            // 将当前的虚拟dom构建成fiber对象
+            newFiber = {
+                type: element.type,
+                props: element.props,
+                tag: getTag(element),
+                effects: [],
+                effectTag: "placement", // 添加节点
+                // stateNode: null,
+                parent: fiber,
+            };
+            // 给新创建的fiber对象添加stateNode属性
+            newFiber.stateNode = createStateNode(newFiber);
+        }
+
+        // 更新胡后续的child节点对应的alternate
+        if (alternate && alternate.subling) {
+            alternate = alternate.subling;
+        } else {
+            alternate = null;
+        }
+
+        if (index == 0) {
+            // 作为当前节点的child
+            fiber.child = newFiber;
+        } else if (element) {
+            //避免删除节点的时候去添加过去的节点
+            //作为前一个兄弟节点的邻居节点
+            prevFiber.subling = newFiber;
+        }
+        prevFiber = newFiber;
+        index++;
+    }
+};
+
+```
+
+`alternate`存在时且`element`不存在时(本质上是子节点的数量减少，先更新同位置的子节点，再去删除多余子节点)。然后在`commit`的时候去处理`dom`:
+
+```js
+
+const commitAllWork = (fiber) => {
+    fiber.effects.forEach((subFiber) => {
+        if (subFiber.effectTag === "delete") {
+            // 删除节点
+            subFiber.parent.stateNode.removeChild(subFiber.stateNode);
+        } else if (subFiber.effectTag === "update") {
+            // 更新dom节点
+            if (subFiber.type !== subFiber.alternate.type) {
+                /**
+                 * dom节点的类型不同，创建一个新的节点去替换旧的节点
+                 */
+                subFiber.parent.stateNode.replaceChild(
+                    subFiber.stateNode,
+                    subFiber.alternate.stateNode
+                );
+            } else {
+                /**
+                 * 类型相同，更新节点的内容
+                 */
+                updateElementNode(
+                    subFiber,
+                    subFiber.stateNode,
+                    subFiber.alternate
+                );
+            }
+        } else if (subFiber.effectTag === "placement") {
+            // 添加的过程中忽略掉类组件和函数组件的fiber对象
+            let parentFiber = subFiber.parent;
+
+            while (
+                parentFiber.tag === "class_component" ||
+                parentFiber.tag === "function_component"
+            ) {
+                parentFiber = parentFiber.parent;
+            }
+            if (subFiber.tag === "host_component") {
+                // 添加节点
+                parentFiber.stateNode.appendChild(subFiber.stateNode);
+            }
+        }
+
+        /**
+         * 缓存旧的的fiber节点，为下次比对准备
+         */
+
+        fiber.stateNode.__rootFiberContainer = fiber;
     });
 };
 ```
