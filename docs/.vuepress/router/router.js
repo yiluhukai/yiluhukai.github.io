@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-03 18:52:19
- * @LastEditTime: 2022-08-24 00:34:51
+ * @LastEditTime: 2022-08-25 00:29:02
  * @LastEditors: yiluhuakai
  * @Description: In User Settings Edit
  * @FilePath: /yiluhukai.github.io/docs/.vuepress/router/router.js
@@ -92,5 +92,5 @@ module.exports = {
 		'/react/hooks',
 		'/react/jest'
 	],
-	'/java': ['/java/index']
+	'/java': ['/java/java_basic']
 }
