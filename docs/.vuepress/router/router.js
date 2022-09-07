@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-01-03 18:52:19
- * @LastEditTime: 2022-09-05 00:32:05
+ * @LastEditTime: 2022-09-08 00:36:09
  * @LastEditors: yiluhuakai
  * @Description: In User Settings Edit
  * @FilePath: /yiluhukai.github.io/docs/.vuepress/router/router.js
@@ -98,6 +98,7 @@ module.exports = {
 		'java/java_operator',
 		'java/java_var',
 		'java/object',
-		'java/inherit'
+		'java/inherit',
+		'java/polymorphism'
 	]
 }
