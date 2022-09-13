@@ -226,3 +226,98 @@ public class ShapeTest {
 ```
 
 - 上面的一个`draw`方法，可以接受不同的`Shape`类型，调用他们的`draw`方法，来展示不同的信息，这就是多态。
+
+##### 抽象方法的概念
+- 抽象方法主要指不能具体实现的方法并且使用abstract关键字修饰，也就 是没有方法体。
+- 具体格式如下:
+    - 访问权限 abstract 返回值类型 方法名(形参列表);
+    - `public abstract void cry()`;
+
+
+##### 抽象类的概念
+- 抽象类主要指不能具体实例化的类并且使用abstract关键字修饰，也就是不能创建对象。
+
+##### 抽象类和抽象方法的关系
+- 抽象类中可以有成员变量、构造方法、成员方法;
+- 抽象类中可以没有抽象方法，也可以有抽象方法;
+- 拥有抽象方法的类必须是抽象类，因此真正意义上的抽象类应该是具有 抽象方法并且使用abstract关键字修饰的类。
+
+##### 抽象类的实际意义
+- 抽象类的实际意义不在于创建对象而在于被继承。
+- 当一个类继承抽象类后必须重写抽象方法，否则该类也变成抽象类，也 就是抽象类对子类具有强制性和规范性，因此叫做模板设计模式。
+
+##### 开发经验分享
+- 在以后的开发中推荐使用多态的格式，此时父类类型引用直接调用的所 有方法一定是父类中拥有的方法，若以后更换子类时，只需要将new关键 字后面的子类类型修改而其它地方无需改变就可以立即生效，从而提高 了代码的可维护性和可扩展型。
+- 该方式的缺点就是:父类引用不能直接调用子类独有的方法，若调用则 需要强制类型转换。
+
+抽象类的应用
+- 银行有 定期账户和活期账户。继承自 账户类。账户类中: 
+- getLixi()和具体存取方式又关系，不能直接实现，定义成抽象的方法更合理。
+
+```java
+// Account.java
+
+public class Account{
+    private double money;
+    public double getLixi(){}
+}
+```
+
+```java
+package com.bruce.classSample;
+
+public abstract class Account {
+    public Account(double money) {
+        this.money = money;
+    }
+
+    public double getMoney() {
+        return money;
+    }
+
+    public void setMoney(double money) {
+        if(money >=0){
+            this.money = money;
+        }else{
+            System.out.println("money is invalid!");
+        }
+    }
+
+    private double money;
+
+    // 计算利息
+    public abstract double getInterest();
+}
+
+```
+
+```java
+// FixedAccount.java
+
+public class FixedAccount extends Account{
+    public FixedAccount(double money) {
+        super(money);
+    }
+
+    @Override
+    public double getInterest() {
+        // 定期：利息 = 本金 *  利率 * 时间
+        return this.getMoney() * 0.01 * 1;
+    }
+
+    public static void main(String[] args) {
+        Account ac = new FixedAccount(1000);
+        ac.getInterest();
+    }
+
+}
+
+
+```
+
+##### 关于抽象类的注意使用
+
+- 不能同时使用`final`和`abstract`修饰类，不能继承且不能实例化的类毫无意义。`public final abstrabct Account`.
+- 不能用`final`和`abstract`同时修饰方法，这样方法没有方法体且不能被重写。
+- 不能用`private`和`abstract`同时修饰方法，因为这个方法不能被子类继承和重写。
+- 不能用`static`和`abstract`修饰方法，因为可以通过类去掉用，但是方法有没有具体实现，没有意义。
