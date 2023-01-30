@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>面向对象编程 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/77.d287e80f.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/14.40115781.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/19.a72c6116.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/70.ff7211f3.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/73.d8356ad1.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/82.bf81591e.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link router-link-active">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link router-link-active">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/java/java_basic.html" class="sidebar-link">Java学习笔记</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/array.html" class="sidebar-link">数组</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/java_operator.html" class="sidebar-link">Java运算符</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/java_var.html" class="sidebar-link">Java变量和数据类型</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/object.html" aria-current="page" class="active sidebar-link">面向对象编程</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/inherit.html" class="sidebar-link">Static关键字和继承</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/polymorphism.html" class="sidebar-link">多态</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="面向对象编程"><a href="#面向对象编程" class="header-anchor">#</a> 面向对象编程</h4> <h5 id="_1-面向对象编程的概念"><a href="#_1-面向对象编程的概念" class="header-anchor">#</a> 1.面向对象编程的概念</h5> <ul><li>万物皆对象。</li> <li>面向对象指以属性和行为的观点去分析现实生活中的事物。</li> <li>面向对象编程指先以面向对象的思想进行分析，然后使用面向对象的编程语言 进行表达的过程。</li> <li>面向对象编程是软件产业化发展的需求。</li> <li>理解面向对象的思想精髓(封装、继承、多态)，至少掌握一种编程语言。</li></ul> <h5 id="_2-类和对象的概念"><a href="#_2-类和对象的概念" class="header-anchor">#</a> 2.类和对象的概念</h5> <ul><li>对象主要指现实生活中客观存在的实体，在Java语言中对象体现为内存空 间中的一块存储区域。</li> <li>类简单来就是“分类”，是对具有相同特征和行为的多个对象共性的抽象描 述，在Java语言中体现为一种引用数据类型，里面包含了描述特征/属性 的成员变量以及描述行为的成员方法。</li> <li>类是用于构建对象的模板，对象的数据结构由定义它的类来决定。</li></ul> <h5 id="_3-类的定义"><a href="#_3-类的定义" class="header-anchor">#</a> 3.类的定义</h5> <ul><li>class 类名 { 类体;
+}
+class Person { }</li> <li>注意: 通常情况下，当类名由多个单词组成时，要求每个单词首字母都要大写</li></ul> <h5 id="_3-1-成员变量的定义"><a href="#_3-1-成员变量的定义" class="header-anchor">#</a> 3.1 成员变量的定义</h5> <ul><li>class 类名 {
+数据类型 成员变量名 = 初始值;
+}</li> <li>注意:当成员变量由多个单词组成时，通常要求从第二个单词起每个单词的首 字母大写 。</li></ul> <h5 id="_3-2-对象的创建"><a href="#_3-2-对象的创建" class="header-anchor">#</a> 3.2 对象的创建</h5> <ul><li><p>new 类名();<code>eg:new Person()</code>;</p></li> <li><p>注意:</p> <ul><li>a.当一个类定义完毕后，可以使用new关键字来创建该类的对象，这个 过程叫做类的实例化。</li> <li>b.创建对象的本质就是在内存空间的堆区申请一块存储区域， 用于存放 该对象独有特征信息。</li></ul></li></ul> <h5 id="_3-3-引用的定义"><a href="#_3-3-引用的定义" class="header-anchor">#</a> 3.3 引用的定义</h5> <ul><li>基本概念
+<ul><li>a.使用引用数据类型定义的变量叫做引用型变量，简称为&quot;引用&quot;。</li> <li>b.引用变量主要用于记录对象在堆区中的内存地址信息，便于下次访问。</li></ul></li> <li>语法格式 Person p = new Person();类名 引用变量名; 引用变量名.成员变量名;</li></ul> <h4 id="_3-4-成员变量的初始值"><a href="#_3-4-成员变量的初始值" class="header-anchor">#</a> 3.4 成员变量的初始值</h4> <ul><li>基本数据类型为其默认值</li> <li>引用数据类型为<code>null</code></li></ul> <h5 id="_3-5-成员方法的定义"><a href="#_3-5-成员方法的定义" class="header-anchor">#</a> 3.5 成员方法的定义</h5> <ul><li>class 类名 {
+返回值类型 成员方法名(形参列表) {
+成员方法体; }
+}</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span> 
+    <span class="token keyword">void</span> <span class="token function">show</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;没事秀一下!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><ul><li>当成员方法名由多个单词组成时，要求从第二个单词起每个单词的首字母大写。</li></ul> <h5 id="_3-6-方法的返回值类型的详解"><a href="#_3-6-方法的返回值类型的详解" class="header-anchor">#</a> 3.6 方法的返回值类型的详解</h5> <ul><li>返回值主要指从方法体内返回到方法体外的数据内容。</li> <li>返回值类型主要指返回值的数据类型，可以是基本数据类型，也可以是
+引用数据类型。</li> <li>当返回的数据内容是66时，则返回值类型写 int 即可</li> <li>在方法体中使用return关键字可以返回具体的数据内容并结束当前方法。</li> <li>当返回的数据内容是66时，则方法体中写 return 66; 即可</li> <li>当该方法不需要返回任何数据内容时，则返回值类型写void即可。</li></ul> <h5 id="_3-7-方法体的详解"><a href="#_3-7-方法体的详解" class="header-anchor">#</a> 3.7 方法体的详解</h5> <ul><li>成员方法体主要用于编写描述该方法功能的语句块。</li> <li>成员方法可以实现代码的重用，简化代码。</li></ul> <h5 id="_3-8方法的调用"><a href="#_3-8方法的调用" class="header-anchor">#</a> 3.8方法的调用</h5> <ul><li>引用变量名.成员方法名(实参列表);</li> <li>实际参数列表主要用于对形式参数列表进行初始化操作，因此参数的个
+数、类型以及顺序都要完全一致。</li> <li>实际参数可以传递直接量、变量、表达式、方法的调用等。</li></ul> <h5 id="_3-9-可变长参数"><a href="#_3-9-可变长参数" class="header-anchor">#</a> 3.9 可变长参数</h5> <ul><li>返回值类型 方法名(参数的类型... 参数名)</li> <li>方法参数部分指定类型的参数个数是可以改变的，也就是0~n个 。</li> <li>一个方法的形参列表中最多只能声明一个可变长形参，并且需要放到参 数列表的末尾。</li></ul> <h5 id="_3-10-参数传递的注意事项"><a href="#_3-10-参数传递的注意事项" class="header-anchor">#</a> 3.10 参数传递的注意事项</h5> <ul><li>基本数据类型的变量作为方法的参数传递时，形参变量数值的改变通常 不会影响到实参变量的数值，因为两个变量有各自独立的内存空间;</li> <li>引用数据类型的变量作为方法的参数传递时，形参变量指向内容的改变 会影响到实参变量指向内容的数值，因为两个变量指向同一块内存空间</li> <li>当引用数据类型的变量作为方法的参数传递时，若形参变量改变指向后 再改变指定的内容，则通常不会影响到实参变量指向内容的改变，因为 两个变量指向不同的内存空间。</li></ul> <h5 id="_4-1-构造方法的基本概念"><a href="#_4-1-构造方法的基本概念" class="header-anchor">#</a> 4.1 构造方法的基本概念</h5> <ul><li>构造函数的写法：
+<ul><li><div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">class</span> 类名 <span class="token punctuation">{</span> 
+    类名<span class="token punctuation">(</span>形参列表<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        构造方法体<span class="token punctuation">;</span>    
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Person</span> <span class="token punctuation">{</span> 
+    <span class="token class-name">Person</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">}</span> 
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div></li></ul></li> <li>构造方法名与类名完全相同并且没有返回值类型，连void都不许有。</li> <li>当一个类中没有定义任何构造方法时，编译器会自动添加一个无参空构 造构造方法，叫做默认/缺省构造方法，如:Person(){}</li> <li>若类中出现了构造方法，则编译器不再提供任何形式的构造方法。</li></ul> <h5 id="_4-2-构造方法的作用"><a href="#_4-2-构造方法的作用" class="header-anchor">#</a> 4.2 构造方法的作用</h5> <ul><li>使用new关键字创建对象时会自动调用构造方法实现成员变量初始化工作。</li></ul> <h5 id="_5-1-方法重载的概念"><a href="#_5-1-方法重载的概念" class="header-anchor">#</a> 5.1 方法重载的概念</h5> <ul><li>若方法名称相同，参数列表不同，这样的方法之间构成重载关系 (Overload)。</li> <li>方法重载的主要形式体现在:参数的个数不同、参数的类型不同、参数 的顺序不同，与返回值类型和形参变量名无关，但建议返回值类型最好相同。</li> <li>判断方法能否构成重载的核心:调用方法时能否加以区分。</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code>
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>bruce<span class="token punctuation">.</span>classSample</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Point</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> x<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> y<span class="token punctuation">;</span>
+
+    <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>x <span class="token operator">=</span> x <span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>y <span class="token operator">=</span> y<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">up</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>y<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">up</span><span class="token punctuation">(</span><span class="token keyword">int</span> sub<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>y<span class="token operator">-=</span>sub<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">void</span> <span class="token function">printfPoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;(&quot;</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token operator">+</span><span class="token string">&quot;,&quot;</span><span class="token operator">+</span><span class="token keyword">this</span><span class="token punctuation">.</span>y<span class="token operator">+</span><span class="token string">&quot;)&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Point</span> point <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        point<span class="token punctuation">.</span><span class="token function">printfPoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//(1,3)</span>
+        point<span class="token punctuation">.</span><span class="token function">up</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        point<span class="token punctuation">.</span><span class="token function">printfPoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// (1,2)</span>
+        point<span class="token punctuation">.</span><span class="token function">up</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        point<span class="token punctuation">.</span><span class="token function">printfPoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// (1,-8)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br></div></div><h5 id="_5-2-重载的实际意义"><a href="#_5-2-重载的实际意义" class="header-anchor">#</a> 5.2 重载的实际意义</h5> <ul><li>方法重载的实际意义在于调用者只需要记住一个方法名就可以调用各种 不同的版本，来实现各种不同的功能。</li> <li>如:<code>java.io.PrintStream</code>类中的<code>println</code>方法。</li></ul> <h5 id="_6-1-this的基本概念"><a href="#_6-1-this的基本概念" class="header-anchor">#</a> 6.1 this的基本概念</h5> <ul><li>若在构造方法中出现了this关键字，则代表当前正在构造的对象。</li> <li>若在成员方法中出现了this关键字，则代表当前正在调用的对象。</li> <li>this关键字本质上就是当前类类型的引用变量。</li> <li>在构造方法中和成员方法中访问成员变量时，编译器会加上this.的前缀， 而this.相当于汉语中&quot;我的&quot;，当不同的对象调用同一个方法时，由于调用 方法的对象不同导致this关键字不同，从而this.方式访问的结果也就随之不同。</li></ul> <h5 id="_6-2-this使用方法"><a href="#_6-2-this使用方法" class="header-anchor">#</a> 6.2 <code>this</code>使用方法</h5> <ul><li>当局部变量名与成员变量名相同时，在方法体中会优先使用局部变量(就 近原则)，若希望使用成员变量，则需要在成员变量的前面加上this.的前 缀，明确要求该变量是成员变量(重中之重)。</li> <li>this关键字除了可以通过this.的方式调用成员变量和成员方法外，还可以 作为方法的返回值(重点)。</li> <li>在构造方法的第一行可以使用this()的方式来调用本类中的其它构造方法 (了解)。</li> <li>方法和调用方法和成员变量可以省略<code>this.</code>，但是最好不要这样。</li></ul> <h5 id="_7-对象类型的变量-引用类型变量-注意事项"><a href="#_7-对象类型的变量-引用类型变量-注意事项" class="header-anchor">#</a> 7. 对象类型的变量（引用类型变量）注意事项</h5> <ul><li>引用类型变量用于存放对象的地址，可以给引用类型赋值为null，表示不 指向任何对象。</li> <li>当某个引用类型变量为null时无法对对象实施访问(因为它没有指向任何 对象)。此时，如果通过引用访问成员变量或调用方法，会产生 <code>NullPointerException</code>异常。</li></ul> <h5 id="_8-1-封装的概念"><a href="#_8-1-封装的概念" class="header-anchor">#</a> 8.1 封装的概念</h5> <ul><li>通常情况下可以在测试类给成员变量赋值一些合法但不合理的数值，无 论是编译阶段还是运行阶段都不会报错或者给出提示，此时与现实生活 不符。</li> <li>为了避免上述错误的发生，就需要对成员变量进行密封包装处理，来隐 藏成员变量的细节以及保证成员变量数值的合理性，该机制就叫做封装。</li></ul> <h5 id="_8-2-封装的实现流程"><a href="#_8-2-封装的实现流程" class="header-anchor">#</a> 8.2 封装的实现流程</h5> <ul><li>私有化成员变量，使用private关键字修饰。</li> <li>提供公有的get和set方法，并在方法体中进行合理值的判断。</li> <li>在构造方法中调用set方法进行合理值的判断。</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code>
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>bruce<span class="token punctuation">.</span>classSample</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> age<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAge</span><span class="token punctuation">(</span><span class="token keyword">int</span> age<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>age <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> age <span class="token operator">&gt;</span><span class="token number">200</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;age is invalid!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Student</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">&quot;bruce&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br></div></div><h5 id="_9-javabean的概念-了解"><a href="#_9-javabean的概念-了解" class="header-anchor">#</a> 9.JavaBean的概念(了解)</h5> <ul><li>JavaBean是一种Java语言写成的可重用组件，其它Java 类可以通过反射机
+制发现和操作这些JavaBean 的属性。</li> <li>JavaBean本质上就是符合以下标准的Java类: 
+<ul><li>类是公共的</li> <li>有一个无参的公共的构造器</li> <li>有属性，且有对应的get、set方法</li></ul></li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/java/java_var.html" class="prev">
+        Java变量和数据类型
+      </a></span> <span class="next"><a href="/java/inherit.html">
+        Static关键字和继承
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/77.d287e80f.js" defer></script>
+  </body>
+</html>

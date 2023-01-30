@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>位运算 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/82.bf81591e.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/14.40115781.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/19.a72c6116.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/70.ff7211f3.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/73.d8356ad1.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/77.d287e80f.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link router-link-active">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/leetcode/hanota.html" class="sidebar-link">汉诺塔问题</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#循环解法" class="sidebar-link">循环解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归解法" class="sidebar-link">递归解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/hanota.html#递归总结" class="sidebar-link">递归总结</a></li></ul></li><li><a href="/leetcode/link.html" class="sidebar-link">链表反序</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#题目描述" class="sidebar-link">题目描述</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/link.html#解答" class="sidebar-link">解答</a></li></ul></li></ul></li><li><a href="/leetcode/longestSubStr.html" class="sidebar-link">无重复字符的最长子串</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/longestSubStr.html#哈希表" class="sidebar-link">哈希表</a></li></ul></li><li><a href="/leetcode/ReverseWordsInAString.html" class="sidebar-link">单词反转</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法" class="sidebar-link">解法—：</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法一优化" class="sidebar-link">解法一优化</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法二" class="sidebar-link">解法二</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#双端队列" class="sidebar-link">双端队列</a></li><li class="sidebar-sub-header"><a href="/leetcode/ReverseWordsInAString.html#解法三" class="sidebar-link">解法三</a></li></ul></li><li><a href="/leetcode/specialBinaryString.html" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#特殊的二进制序列" class="sidebar-link">特殊的二进制序列</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#理解题意" class="sidebar-link">理解题意</a></li></ul></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#解题思路" class="sidebar-link">解题思路</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#代码实现" class="sidebar-link">代码实现</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#排序" class="sidebar-link">排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#冒泡排序" class="sidebar-link">冒泡排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#插入排序" class="sidebar-link">插入排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/specialBinaryString.html#快速排序" class="sidebar-link">快速排序</a></li></ul></li><li><a href="/leetcode/findMedianSortedArrays.html" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#数组的中位数" class="sidebar-link">数组的中位数</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#题目描述" class="sidebar-link">题目描述</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#归并排序" class="sidebar-link">归并排序</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#基本解法" class="sidebar-link">基本解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#优化解法" class="sidebar-link">优化解法</a></li><li class="sidebar-sub-header"><a href="/leetcode/findMedianSortedArrays.html#折半查找" class="sidebar-link">折半查找</a></li></ul></li></ul></li><li><a href="/leetcode/lineSegmentTree.html" class="sidebar-link">线段树</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/leetcode/isPerfectSquare.html" class="sidebar-link">367. 有效的完全平方数</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/leetcode/bit-use.html" aria-current="page" class="active sidebar-link">位运算</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h3 id="位运算"><a href="#位运算" class="header-anchor">#</a> 位运算</h3> <p>对于一个前端程序员，几乎用不到位运算，所以在位运算方面只能停留在语法层面，再不断的刷题过程中，也见到了各种各样关于位元素的秒用，不断的积累，逐步去强化这方面的缺失吧。</p> <ul><li><p>异或运算</p> <ul><li><p>和命名一样，它的运算规则就是：二进制位上相同的时运算结果为0，不同时运算结果为1.</p></li> <li><p>性质一：x^x = 0 ,这个容易理解，因为x和x的二进制形式上对应的位置的数字上相同的。</p></li> <li><p>性质二：x^0 = x, eg:<code>0000 1111</code>^<code>0000 0000</code> = <code>0000 1111</code> ,每个位置的结果都是取决于x.</p></li> <li><p>性质三：满足结合律和交换律：</p> <ul><li><p>x ^ y ^ z = x ^ z ^ y = x ^ (z ^y)</p></li> <li><p>x ^ y ^ x = x ^ x ^ y = 0 ^ y = y(结合上面的性质)</p></li></ul></li></ul></li></ul> <h4 id="使用异或"><a href="#使用异或" class="header-anchor">#</a> 使用异或:</h4> <ul><li><a href="https://leetcode-cn.com/problems/single-number/" target="_blank" rel="noopener noreferrer">136. 只出现一次的数字<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>`</li></ul> <div class="language-tiki wiki line-numbers-mode"><pre class="language-text"><code>//给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。 
+//
+// 说明： 
+//
+// 你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？ 
+//
+// 示例 1: 
+//
+// 输入: [2,2,1]
+//输出: 1
+// 
+//
+// 示例 2: 
+//
+// 输入: [4,1,2,1,2]
+//输出: 4 
+// Related Topics 位运算 数组 
+// 👍 2094 👎 0
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><p>根据题意我们可以知道数组元素满足：<strong>某个元素只出现一次以外，其余每个元素均出现两次</strong>,那么我可以将数组中元素全部进行异或运算：<code>x ^ x ^ y ^ y ^ z = z</code>,最终得到的结果就是只出现一次的数字：</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">singleNumber</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	ans <span class="token operator">:=</span> <span class="token number">0</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span>num <span class="token operator">:=</span><span class="token keyword">range</span> nums<span class="token punctuation">{</span>
+		ans <span class="token operator">^=</span> num
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> ans
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><ul><li><h4 id="_268-丢失的数字"><a href="#_268-丢失的数字" class="header-anchor">#</a> <a href="https://leetcode-cn.com/problems/missing-number/" target="_blank" rel="noopener noreferrer">268. 丢失的数字<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></h4></li></ul> <div class="language-tex line-numbers-mode"><pre class="language-tex"><code>//给定一个包含 <span class="token punctuation">[</span>0, n<span class="token punctuation">]</span> 中 n 个数的数组 nums ，找出 <span class="token punctuation">[</span>0, n<span class="token punctuation">]</span> 这个范围内没有出现在数组中的那个数。
+//
+// 
+// 
+//
+// 
+//
+// 示例 1： 
+//
+// 
+//输入：nums = <span class="token punctuation">[</span>3,0,1<span class="token punctuation">]</span>
+//输出：2
+//解释：n = 3，因为有 3 个数字，所以所有的数字都在范围 <span class="token punctuation">[</span>0,3<span class="token punctuation">]</span> 内。2 是丢失的数字，因为它没有出现在 nums 中。 
+//
+// 示例 2： 
+//
+// 
+//输入：nums = <span class="token punctuation">[</span>0,1<span class="token punctuation">]</span>
+//输出：2
+//解释：n = 2，因为有 2 个数字，所以所有的数字都在范围 <span class="token punctuation">[</span>0,2<span class="token punctuation">]</span> 内。2 是丢失的数字，因为它没有出现在 nums 中。 
+//
+// 示例 3： 
+//
+// 
+//输入：nums = <span class="token punctuation">[</span>9,6,4,2,3,5,7,0,1<span class="token punctuation">]</span>
+//输出：8
+//解释：n = 9，因为有 9 个数字，所以所有的数字都在范围 <span class="token punctuation">[</span>0,9<span class="token punctuation">]</span> 内。8 是丢失的数字，因为它没有出现在 nums 中。 
+//
+// 示例 4： 
+//
+// 
+//输入：nums = <span class="token punctuation">[</span>0<span class="token punctuation">]</span>
+//输出：1
+//解释：n = 1，因为有 1 个数字，所以所有的数字都在范围 <span class="token punctuation">[</span>0,1<span class="token punctuation">]</span> 内。1 是丢失的数字，因为它没有出现在 nums 中。 
+//
+// 
+//
+// 提示： 
+//
+// 
+// n == nums.length 
+// 1 &lt;= n &lt;= 104 
+// 0 &lt;= nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span> &lt;= n 
+// nums 中的所有数字都 独一无二 
+// 
+//
+// 
+//
+// 进阶：你能否实现线性时间复杂度、仅使用额外常数空间的算法解决此问题? 
+// Related Topics 位运算 数组 哈希表 数学 排序 
+// 👍 490 👎 0
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br></div></div><p>nums中的数字是[0,n] - x,nums1 =[0,n]nums 中的元素和nums1中的所有元素异或，得到的值就x.</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">missingNumber</span><span class="token punctuation">(</span>nums <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+	<span class="token comment">// n的值等于nums</span>
+	n <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span>
+	x <span class="token operator">:=</span><span class="token number">0</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span>num <span class="token operator">:=</span> <span class="token keyword">range</span> nums<span class="token punctuation">{</span>
+		x <span class="token operator">^=</span> num
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span>n<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">{</span>
+		x <span class="token operator">^=</span> i
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> x
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><ul><li><p>与运算</p> <ul><li>它的运算规则就是：二进制位上都为1时，运算结果为1，否则运算结果位0.</li></ul></li></ul> <h4 id="使用与运算"><a href="#使用与运算" class="header-anchor">#</a> 使用与运算</h4> <ul><li><a href="https://leetcode-cn.com/problems/maximum-product-of-word-lengths/" target="_blank" rel="noopener noreferrer">318. 最大单词长度乘积<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li></ul> <div class="language-tiki wiki line-numbers-mode"><pre class="language-text"><code>//给定一个字符串数组 words，找到 length(word[i]) * length(word[j]) 的最大值，并且这两个单词不含有公共字母。你可以认为
+//每个单词只包含小写字母。如果不存在这样的两个单词，返回 0。 
+//
+// 
+//
+// 示例 1: 
+//
+// 
+//输入: [&quot;abcw&quot;,&quot;baz&quot;,&quot;foo&quot;,&quot;bar&quot;,&quot;xtfn&quot;,&quot;abcdef&quot;]
+//输出: 16 
+//解释: 这两个单词为 &quot;abcw&quot;, &quot;xtfn&quot;。 
+//
+// 示例 2: 
+//
+// 
+//输入: [&quot;a&quot;,&quot;ab&quot;,&quot;abc&quot;,&quot;d&quot;,&quot;cd&quot;,&quot;bcd&quot;,&quot;abcd&quot;]
+//输出: 4 
+//解释: 这两个单词为 &quot;ab&quot;, &quot;cd&quot;。 
+//
+// 示例 3: 
+//
+// 
+//输入: [&quot;a&quot;,&quot;aa&quot;,&quot;aaa&quot;,&quot;aaaa&quot;]
+//输出: 0 
+//解释: 不存在这样的两个单词。
+// 
+//
+// 
+//
+// 提示： 
+//
+// 
+// 2 &lt;= words.length &lt;= 1000 
+// 1 &lt;= words[i].length &lt;= 1000 
+// words[i] 仅包含小写字母 
+// 
+// Related Topics 位运算 数组 字符串 
+// 👍 296 👎 0
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br></div></div><p>当拿到这个题时，我的第一想法时组合数组中的单词，当两个单词没有共同的字母时，我们计算他们的长度，当结果长度小于当前的长度时，替换结果长度。我们这么做需要遍历(N^2)次的数组，每次遍历过程我们还需要去遍历两个单词,遍历单词的时间复杂度为（<code>l1* l2</code>）.当我们这么做时时间复杂度会特别高，所以我们需要更好的方法去判断两个单词有没有重复的字母，我们可以利用位运算来完成。</p> <p>将单词中的每个字母a-z转成数字0-25，然后将其对应的二进制数<code>mask</code>的二进制位上.然后我们使用两个单词的mask做与运算，当<code>mask1&amp;mask2!=0</code>,则说明两个单词有相同的字母。</p> <div class="language-go line-numbers-mode"><pre class="language-go"><code><span class="token keyword">func</span> <span class="token function">maxProduct</span><span class="token punctuation">(</span>words <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>ans <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    masks <span class="token operator">:=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+  	<span class="token comment">// 求每个单词的mask </span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> word <span class="token operator">:=</span> <span class="token keyword">range</span> words <span class="token punctuation">{</span>
+        mask <span class="token operator">:=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> ch <span class="token operator">:=</span> <span class="token keyword">range</span> word <span class="token punctuation">{</span>
+            mask <span class="token operator">|=</span> <span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token punctuation">(</span>ch <span class="token operator">-</span> <span class="token string">'a'</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      	<span class="token comment">// 当两个单词的mask相同时，保留较大长度的mask</span>
+      	<span class="token comment">// meet 和met两个单词的mask相同，所以当一个和其他的单词有重复字母时，另一个也有</span>
+      	<span class="token comment">// 而我们只需要用长度较长的单词去和其他没有重复字母的单词组合</span>
+        <span class="token keyword">if</span> <span class="token function">len</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span> <span class="token operator">&gt;</span> masks<span class="token punctuation">[</span>mask<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+            masks<span class="token punctuation">[</span>mask<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">len</span><span class="token punctuation">(</span>word<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> x<span class="token punctuation">,</span> lenX <span class="token operator">:=</span> <span class="token keyword">range</span> masks <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> y<span class="token punctuation">,</span> lenY <span class="token operator">:=</span> <span class="token keyword">range</span> masks <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> x<span class="token operator">&amp;</span>y <span class="token operator">==</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> lenX<span class="token operator">*</span>lenY <span class="token operator">&gt;</span> ans <span class="token punctuation">{</span>
+                ans <span class="token operator">=</span> lenX <span class="token operator">*</span> lenY
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/leetcode/isPerfectSquare.html" class="prev">
+        367. 有效的完全平方数
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/82.bf81591e.js" defer></script>
+  </body>
+</html>

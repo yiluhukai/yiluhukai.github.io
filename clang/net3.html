@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>对tcp编程的代码进行封装 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/14.40115781.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/19.a72c6116.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/70.ff7211f3.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/73.d8356ad1.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/77.d287e80f.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/82.bf81591e.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link router-link-active">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link router-link-active">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/clang/linux.html" class="sidebar-link">Linux命令</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/clang/linux.html#位运算符-操作比特位" class="sidebar-link">位运算符（操作比特位）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/clang/linux.html#条件运算符" class="sidebar-link" style="padding-left:3rem;">条件运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#比较运算符" class="sidebar-link" style="padding-left:3rem;">比较运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#逻辑运算符" class="sidebar-link" style="padding-left:3rem;">逻辑运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#流程控制语句" class="sidebar-link" style="padding-left:3rem;">流程控制语句</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#函数" class="sidebar-link">函数</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#递归和循环" class="sidebar-link" style="padding-left:3rem;">递归和循环</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#变量的作用域和及生命周期" class="sidebar-link">变量的作用域和及生命周期</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#局部变量" class="sidebar-link" style="padding-left:3rem;">局部变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#全局变量" class="sidebar-link" style="padding-left:3rem;">全局变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#static变量" class="sidebar-link" style="padding-left:3rem;">static变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针" class="sidebar-link">指针</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针的作用" class="sidebar-link" style="padding-left:3rem;">指针的作用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#野指针" class="sidebar-link" style="padding-left:3rem;">野指针</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#不要在函数中返回一个局部变量的地址" class="sidebar-link" style="padding-left:3rem;">不要在函数中返回一个局部变量的地址</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针的运算" class="sidebar-link" style="padding-left:3rem;">指针的运算</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#数组名相当于一个不能移动的指针。" class="sidebar-link" style="padding-left:3rem;">数组名相当于一个不能移动的指针。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#const关键字" class="sidebar-link">const关键字</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#数组和指针的区别" class="sidebar-link" style="padding-left:3rem;">数组和指针的区别</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符和字符串" class="sidebar-link">字符和字符串</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的输出" class="sidebar-link" style="padding-left:3rem;">字符串的输出</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的运算" class="sidebar-link">字符串的运算</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#copy" class="sidebar-link" style="padding-left:3rem;">copy</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的比较-strcmp" class="sidebar-link" style="padding-left:3rem;">字符串的比较（strcmp）</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#strlen-char-str-不包括-0" class="sidebar-link" style="padding-left:3rem;">strlen(char * str)，不包括'\0';</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#char-strcat-char-dest-const-char-src-将b连接在a的后面。" class="sidebar-link" style="padding-left:3rem;">char strcat(char dest, const char *src);将b连接在a的后面。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#memset-char-a-0-20-清空字符串-使用20个0来填充。" class="sidebar-link" style="padding-left:3rem;">memset(char * a ,0,20),清空字符串，使用20个0来填充。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指向多个字符串" class="sidebar-link">指向多个字符串</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#main函数的函数原型" class="sidebar-link">main函数的函数原型</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#c程序的编译过程" class="sidebar-link">c程序的编译过程</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_1-预处理" class="sidebar-link" style="padding-left:3rem;">1.预处理</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_2-编译" class="sidebar-link" style="padding-left:3rem;">2.编译</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_3-汇编" class="sidebar-link" style="padding-left:3rem;">3.汇编</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_4-链接" class="sidebar-link" style="padding-left:3rem;">4.链接</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#预处理指令" class="sidebar-link">预处理指令</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_1-头文件" class="sidebar-link" style="padding-left:3rem;">1.头文件</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_2-宏" class="sidebar-link" style="padding-left:3rem;">2.宏</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#条件编译" class="sidebar-link">条件编译</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#内置宏变量" class="sidebar-link">内置宏变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#include-和-include-的区别" class="sidebar-link">#include 和 #include &quot;&quot;的区别</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#分文件调用" class="sidebar-link">分文件调用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#static-和-extern" class="sidebar-link">static 和 extern</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#头文件的引用" class="sidebar-link">头文件的引用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#make-和makefile" class="sidebar-link">make 和makefile</a></li></ul></li></ul></li><li><a href="/clang/struct.html" class="sidebar-link">结构体</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/point.html" class="sidebar-link">指针高级</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/stdlib.html" class="sidebar-link">标准库函数</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/datastruct.html" class="sidebar-link">数据结构主要研究的如何使用存储区(内存)存储数字</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc1.html" class="sidebar-link">复习:uc1</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc2.html" class="sidebar-link">uc2</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc3.html" class="sidebar-link">uc3</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc4.html" class="sidebar-link">uc4</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc5.html" class="sidebar-link">uc5</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc6.html" class="sidebar-link">uc6</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc7.html" class="sidebar-link">uc7</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net1.html" class="sidebar-link">网络基础</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net2.html" class="sidebar-link">ip地址</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net3.html" aria-current="page" class="active sidebar-link">对tcp编程的代码进行封装</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net-udp.html" class="sidebar-link">udp编程模型</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/thread.html" class="sidebar-link">线程基础</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/signal.html" class="sidebar-link">信号阻塞</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="对tcp编程的代码进行封装"><a href="#对tcp编程的代码进行封装" class="header-anchor">#</a> 对tcp编程的代码进行封装</h4> <p>对已有的server.c 和client.c进行封装。代码参见package_tcp/*</p> <p>提取server.c中的头文件</p> <div class="language-h line-numbers-mode"><pre class="language-text"><code>#ifndef __T_NET_TCP_H__
+#define __T_NET_TCP_H__
+
+
+
+#include &lt;sys/types.h&gt; /* See NOTES */
+#include &lt;sys/socket.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;netinet/ip.h&gt;
+#include &lt;arpa/inet.h&gt;
+
+typedef struct sockaddr_in ipv4_addr;
+typedef struct sockaddr normal_addr;
+
+int s_bind(int domain, int type,short int port);
+void do_request_handle(int fd);
+#endif
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><p>封装创建socket和绑定ip地址的函数 s_bind.c</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&quot;t_net_tcp.h&quot;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">s_bind</span><span class="token punctuation">(</span><span class="token keyword">int</span> domain<span class="token punctuation">,</span><span class="token keyword">int</span> type<span class="token punctuation">,</span><span class="token keyword">short</span> <span class="token keyword">int</span> port<span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+        <span class="token comment">// 创建一个用于通信的socket</span>
+        ipv4_addr addr<span class="token punctuation">;</span>
+        <span class="token keyword">int</span>  sfd <span class="token operator">=</span>  <span class="token function">socket</span><span class="token punctuation">(</span>domain<span class="token punctuation">,</span>type<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span><span class="token punctuation">(</span>sfd<span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;socket&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 绑定具体的地址</span>
+        addr<span class="token punctuation">.</span>sin_family <span class="token operator">=</span>AF_INET<span class="token punctuation">;</span>
+        addr<span class="token punctuation">.</span>sin_port <span class="token operator">=</span>  <span class="token function">htons</span><span class="token punctuation">(</span>port<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        addr<span class="token punctuation">.</span>sin_addr<span class="token punctuation">.</span>s_addr <span class="token operator">=</span> INADDR_ANY<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> res <span class="token operator">=</span>  <span class="token function">bind</span><span class="token punctuation">(</span>sfd<span class="token punctuation">,</span><span class="token punctuation">(</span>normal_addr <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>addr<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>addr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>res <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;bind&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> sfd<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><p>封装处理客户端连接相关的socket cfd的函数 do_request_handle.c</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&quot;t_net_tcp.h&quot;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token keyword">void</span> <span class="token function">do_request_handle</span><span class="token punctuation">(</span><span class="token keyword">int</span> cfd<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         <span class="token keyword">char</span> <span class="token operator">*</span> msg <span class="token operator">=</span><span class="token string">&quot;receive ok\n&quot;</span><span class="token punctuation">;</span>
+         <span class="token keyword">char</span> buff<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+         <span class="token comment">// 从文件描述读取请求内容</span>
+
+         <span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span>cfd<span class="token punctuation">,</span>buff<span class="token punctuation">,</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment">//  输出到屏幕上</span>
+         <span class="token function">write</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span>buff<span class="token punctuation">,</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment">// 向客户端返回在数据</span>
+         <span class="token function">write</span><span class="token punctuation">(</span>cfd<span class="token punctuation">,</span>msg<span class="token punctuation">,</span><span class="token function">strlen</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>在server.c中调用</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&quot;t_net_tcp.h&quot;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+        <span class="token comment">// 接受客户端socket的addr</span>
+        ipv4_addr client<span class="token punctuation">;</span>
+        socklen_t addrlen <span class="token operator">=</span><span class="token punctuation">(</span>socklen_t<span class="token punctuation">)</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>client<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">char</span> ip<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">int</span> sfd <span class="token operator">=</span><span class="token function">s_bind</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span>SOCK_STREAM<span class="token punctuation">,</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>sfd <span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 将socket 设置为被动监听状态</span>
+        <span class="token comment">// 未决队列的最大容量为5</span>
+        <span class="token keyword">int</span> res <span class="token operator">=</span> <span class="token function">listen</span><span class="token punctuation">(</span>sfd<span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>res <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;listen&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">//  </span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;listen successfully\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token comment">// 当未决队列为空时，处于阻塞状态，</span>
+                <span class="token comment">// 否则取出第一个请求连接</span>
+                <span class="token comment">// 不获取客户端socket的地址和大小</span>
+                <span class="token comment">// 创建一个新的socket文件描述符</span>
+                <span class="token comment">//int cfd = accept(sfd,NULL,NULL);</span>
+                <span class="token comment">//获取客户端的地址</span>
+                <span class="token keyword">int</span> cfd <span class="token operator">=</span> <span class="token function">accept</span><span class="token punctuation">(</span>sfd<span class="token punctuation">,</span><span class="token punctuation">(</span>normal_addr <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>client<span class="token punctuation">,</span><span class="token operator">&amp;</span>addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 打印客户端的地址信息,需要经ip地址从binary 转到字符串</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;%s\n&quot;</span><span class="token punctuation">,</span><span class="token function">inet_ntop</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span><span class="token operator">&amp;</span>client<span class="token punctuation">.</span>sin_addr<span class="token punctuation">,</span>ip<span class="token punctuation">,</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">do_request_handle</span><span class="token punctuation">(</span>cfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">close</span><span class="token punctuation">(</span>cfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br></div></div><p>编译</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>gcc server.c s_bind.c do_request_handle.c -o. server 
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>一个我们只需要处理do_request_handle.c中的代码，其他两部分我们编译成动态库。</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>
+gcc -c -fPIC  server.c s_bind.c
+
+gcc -shared -o libt_net.so server.o s_bind.o
+
+gcc  do_request_handle.c  -lt_net.so
+
+// 设置环境变量
+<span class="token builtin class-name">export</span> <span class="token assign-left variable">LD_LIBRARY_PATH</span><span class="token operator">=</span><span class="token variable">$LD_LIBRARY_PATH</span>:.
+
+
+./a.out 
+
+
+因为我们只改变do_reuest_handle.c中的内容
+
+所以我们可以设置别名
+<span class="token builtin class-name">alias</span> <span class="token assign-left variable">gnn</span><span class="token operator">=</span><span class="token string">&quot;gcc  -L. -lt_net&quot;</span>
+
+gnn  do_request_handle.c 
+
+./a.out
+
+// g++ 编译器就是利用上面的原理
+<span class="token builtin class-name">alias</span> g+<span class="token operator">+=</span><span class="token string">&quot;gcc -lstdc++&quot;</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br></div></div><h4 id="并发服务器的实现"><a href="#并发服务器的实现" class="header-anchor">#</a> 并发服务器的实现</h4> <p>使用三种方式实现服务器的并发：</p> <ol><li>多线程</li> <li>多进程</li> <li>多路复用</li></ol> <p>使用多进程实现并发服务器。</p> <p>父进程：负责从未决队列中取出连接请求对应的socket cfd.
+1 .从未决队列中取出请求
+2. 创建子进程处理业务
+3. 关闭父进程中请求连接的socket cfd.
+4. 非阻塞等待子进程的结束，回收子进程的资源。</p> <p>子进程：负责去根据请求内容处理具体的业务。</p> <ol><li>关闭从父进程继承来的socket文件描述符。</li> <li>从父进程继承来的文件描述符cfd中读取内容并处理</li> <li>向客户端返回内容</li> <li>关闭cfd文件描述符</li></ol> <p>代码参见：/net/multi-process/*
+server.c</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&quot;t_net_tcp.h&quot;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/wait.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+
+        <span class="token comment">// 接受客户端socket的addr</span>
+        ipv4_addr client<span class="token punctuation">;</span>
+        socklen_t addrlen <span class="token operator">=</span><span class="token punctuation">(</span>socklen_t<span class="token punctuation">)</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>client<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">char</span> ip<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">int</span> sfd <span class="token operator">=</span><span class="token function">s_bind</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span>SOCK_STREAM<span class="token punctuation">,</span><span class="token number">8080</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>sfd <span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 将socket 设置为被动监听状态</span>
+        <span class="token comment">// 未决队列的最大容量为5</span>
+        <span class="token keyword">int</span> res <span class="token operator">=</span> <span class="token function">listen</span><span class="token punctuation">(</span>sfd<span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>res <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;listen&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">//  </span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;listen successfully\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token comment">// 当未决队列为空时，处于阻塞状态，</span>
+                <span class="token comment">// 否则取出第一个请求连接</span>
+                <span class="token comment">// 不获取客户端socket的地址和大小</span>
+                <span class="token comment">// 创建一个新的socket文件描述符</span>
+                <span class="token comment">//int cfd = accept(sfd,NULL,NULL);</span>
+                <span class="token comment">//获取客户端的地址</span>
+                <span class="token keyword">int</span> cfd <span class="token operator">=</span> <span class="token function">accept</span><span class="token punctuation">(</span>sfd<span class="token punctuation">,</span><span class="token punctuation">(</span>normal_addr <span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">&amp;</span>client<span class="token punctuation">,</span><span class="token operator">&amp;</span>addrlen<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 打印客户端的地址信息,需要经ip地址从binary 转到字符串</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;%s\n&quot;</span><span class="token punctuation">,</span><span class="token function">inet_ntop</span><span class="token punctuation">(</span>AF_INET<span class="token punctuation">,</span><span class="token operator">&amp;</span>client<span class="token punctuation">.</span>sin_addr<span class="token punctuation">,</span>ip<span class="token punctuation">,</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token comment">// 启用多进程去处理请求</span>
+
+
+                <span class="token keyword">int</span> pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;fork&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                        <span class="token comment">// 子进程</span>
+                        <span class="token function">close</span><span class="token punctuation">(</span>sfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">do_request_handle</span><span class="token punctuation">(</span>cfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">close</span><span class="token punctuation">(</span>cfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+                        <span class="token function">close</span><span class="token punctuation">(</span>cfd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token comment">//  非阻塞等待</span>
+                        <span class="token function">waitpid</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>WNOHANG<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>
+
+
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br></div></div><p>do_request_handle.c</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&quot;t_net_tcp.h&quot;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;ctype.h&gt;</span></span>
+<span class="token keyword">void</span> <span class="token function">do_request_handle</span><span class="token punctuation">(</span><span class="token keyword">int</span> cfd<span class="token punctuation">)</span><span class="token punctuation">{</span>
+         <span class="token keyword">char</span> <span class="token operator">*</span> msg <span class="token operator">=</span><span class="token string">&quot;receive ok\n&quot;</span><span class="token punctuation">;</span>
+         <span class="token keyword">char</span> buff<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+         <span class="token comment">// 从文件描述读取请求内容</span>
+
+         <span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span>cfd<span class="token punctuation">,</span>buff<span class="token punctuation">,</span><span class="token number">128</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+         <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>r<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                buff<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">toupper</span><span class="token punctuation">(</span>buff<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token punctuation">}</span>
+         <span class="token comment">//  输出到屏幕上</span>
+         <span class="token function">write</span><span class="token punctuation">(</span>cfd<span class="token punctuation">,</span>buff<span class="token punctuation">,</span>r<span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment">// 向客户端返回在数据</span>
+         <span class="token function">write</span><span class="token punctuation">(</span>cfd<span class="token punctuation">,</span>msg<span class="token punctuation">,</span><span class="token function">strlen</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+         <span class="token comment">// 模拟复杂业务的处理</span>
+         <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br></div></div><p>其他的代码没有改变</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/clang/net2.html" class="prev">
+        ip地址
+      </a></span> <span class="next"><a href="/clang/net-udp.html">
+        udp编程模型
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/14.40115781.js" defer></script>
+  </body>
+</html>

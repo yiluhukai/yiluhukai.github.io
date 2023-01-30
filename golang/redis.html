@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>redis 的使用 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/70.ff7211f3.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/14.40115781.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/19.a72c6116.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/73.d8356ad1.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/77.d287e80f.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/82.bf81591e.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link router-link-active">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link router-link-active">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/golang/cookie.html" class="sidebar-link">cookie 和 session</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/redis.html" aria-current="page" class="active sidebar-link">redis 的使用</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/go-connect-db.html" class="sidebar-link">golang 链接数据库</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#原理" class="sidebar-link">原理</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#查询数据" class="sidebar-link">查询数据</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#预处理" class="sidebar-link">预处理</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#事务" class="sidebar-link">事务</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#sqlx-库" class="sidebar-link">sqlx 库</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#sql-注入" class="sidebar-link">sql 注入</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#防止-sql-注入的方法" class="sidebar-link">防止 sql 注入的方法：</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#数据库查询错误" class="sidebar-link">数据库查询错误</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#查询的字段值包含关键字" class="sidebar-link">查询的字段值包含关键字</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#分页查询" class="sidebar-link">分页查询</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#in-模糊查询" class="sidebar-link">in 模糊查询</a></li><li class="sidebar-sub-header"><a href="/golang/go-connect-db.html#错误" class="sidebar-link">错误</a></li></ul></li><li><a href="/golang/beego.html" class="sidebar-link">创建一个beego应用</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/beego2.html" class="sidebar-link">配置文件</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/beego3.html" class="sidebar-link">session</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/golang/go-jwt.html" class="sidebar-link">什么是jwt</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="redis-的使用"><a href="#redis-的使用" class="header-anchor">#</a> redis 的使用</h4> <h5 id="mac-os-安装"><a href="#mac-os-安装" class="header-anchor">#</a> mac os 安装</h5> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code>brew <span class="token function">install</span> redis
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>完成后可以使用下面的命令启动 redis 服务器</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>brew services start redis
+<span class="token comment"># 或者</span>
+redis-server /usr/local/etc/redis.conf
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><h5 id="搭建-redis-集群"><a href="#搭建-redis-集群" class="header-anchor">#</a> 搭建 redis 集群</h5> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>
+redis-server
+
+<span class="token comment">#创建slave</span>
+<span class="token function">mkdir</span> redis
+<span class="token function">cp</span> /usr/local/etc/redis.config ./redis
+<span class="token builtin class-name">cd</span> redis
+<span class="token comment"># redis.config文件的端口号，然后添加slaveof localhost 6379</span>
+<span class="token function">vim</span> redis.conf
+
+redis-serve ./redis.conf
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>连接 master</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment">#connect</span>
+redis-cli -p <span class="token number">6369</span>
+<span class="token comment">#查看关系</span>
+<span class="token operator">&gt;</span>INFO replication
+
+<span class="token comment">#设置数据</span>
+
+SET key value
+
+<span class="token comment">#查看数据</span>
+
+GET key
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>连接 slave0</p> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code><span class="token comment">#connect</span>
+redis-cli -p <span class="token number">16369</span>
+<span class="token comment">#查看关系</span>
+<span class="token operator">&gt;</span>INFO replication
+<span class="token comment"># master和slave可以及时同步数据</span>
+GET key
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h5 id="主从切换"><a href="#主从切换" class="header-anchor">#</a> 主从切换</h5> <p>1.从库的 config 文件去掉 slaveof localhost 6379 重新启动下 2.主库设置为 16379 的从库</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/golang/cookie.html" class="prev">
+        cookie 和 session
+      </a></span> <span class="next"><a href="/golang/go-connect-db.html">
+        golang 链接数据库
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/70.ff7211f3.js" defer></script>
+  </body>
+</html>

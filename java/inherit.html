@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Static关键字和继承 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/73.d8356ad1.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/14.40115781.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/19.a72c6116.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/70.ff7211f3.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/77.d287e80f.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/82.bf81591e.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link router-link-active">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link router-link-active">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/java/java_basic.html" class="sidebar-link">Java学习笔记</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/array.html" class="sidebar-link">数组</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/java_operator.html" class="sidebar-link">Java运算符</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/java_var.html" class="sidebar-link">Java变量和数据类型</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/object.html" class="sidebar-link">面向对象编程</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/inherit.html" aria-current="page" class="active sidebar-link">Static关键字和继承</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/java/polymorphism.html" class="sidebar-link">多态</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="static关键字和继承"><a href="#static关键字和继承" class="header-anchor">#</a> Static关键字和继承</h4> <h5 id="_1-1-基本概念"><a href="#_1-1-基本概念" class="header-anchor">#</a> 1.1 基本概念</h5> <ul><li>使用static关键字修饰成员变量表示静态的含义，此时成员变量由对象层 级提升为类层级，也就是整个类只有一份并被所有对象共享，该成员变 量随着类的加载准备就绪，与是否创建对象无关。</li> <li>static关键字修饰的成员可以使用对象.的方式访问，但推荐类名.的方式。</li></ul> <h5 id="_1-2-使用方式"><a href="#_1-2-使用方式" class="header-anchor">#</a> 1.2 使用方式</h5> <ul><li>在非静态成员方法中既能访问非静态的成员又能访问静态的成员。 (成员:成员变量 + 成员方法， 静态成员被所有对象共享)</li> <li>在静态成员方法中只能访问静态成员不能访问非静态成员。 (成员:成员变量 + 成员方法， 因为此时可能还没有创建对象)</li> <li>在以后的开发中只有隶属于类层级并被所有对象共享的内容才可以使用 static关键字修饰。(不能滥用static关键字)</li></ul> <h5 id="_2-1-构造块和静态代码块-熟悉"><a href="#_2-1-构造块和静态代码块-熟悉" class="header-anchor">#</a> 2.1 构造块和静态代码块(熟悉)</h5> <ul><li>构造块:在类体中直接使用{}括起来的代码块。</li> <li>每创建一个对象都会执行一次构造块。</li> <li>静态代码块:使用static关键字修饰的构造块。</li> <li>静态代码块随着类加载时执行一次。</li> <li>当继承的父类有静态块，会先执行父类的静态块，在执行子类的，</li> <li>创建子类对象时，会先执行父类的构造块，在执行子类的构造块。</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Student</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;构造快&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;静态块&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> age<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">getAge</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> age<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setAge</span><span class="token punctuation">(</span><span class="token keyword">int</span> age<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>age <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> age <span class="token operator">&gt;</span><span class="token number">200</span> <span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;age is invalid!&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Student</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">setAge</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        s<span class="token punctuation">.</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">&quot;bruce&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br></div></div><h5 id="_3-1-又见main方法"><a href="#_3-1-又见main方法" class="header-anchor">#</a> 3.1 又见main方法</h5> <ul><li>语法格式:<code>public static void main(String[] args){}</code></li> <li>参数使用的举例</li></ul> <div class="language-shell line-numbers-mode"><pre class="language-shell"><code>javac className.java
+java className-<span class="token operator">&gt;</span> args 是一个空数组
+
+java className brue-<span class="token operator">&gt;</span> args是<span class="token variable"><span class="token variable">`</span><span class="token punctuation">[</span><span class="token string">&quot;bruce&quot;</span><span class="token punctuation">]</span><span class="token variable">`</span></span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h5 id="_4-1-单例设计模式的概念"><a href="#_4-1-单例设计模式的概念" class="header-anchor">#</a> 4.1 单例设计模式的概念</h5> <ul><li>在某些特殊场合中，一个类对外提供且只提供一个对象时，这样的类叫 做单例类，而设计单例的流程和思想叫做单例设计模式。</li></ul> <h5 id="_4-2-单例设计模式的实现流程"><a href="#_4-2-单例设计模式的实现流程" class="header-anchor">#</a> 4.2 单例设计模式的实现流程</h5> <ul><li><p>私有化构造方法，使用private关键字修饰。</p></li> <li><p>声明本类类型的引用指向本类类型的对象，并使用private static关键字共同修饰。</p></li> <li><p>提供公有的get方法负责将对象返回出去，并使用public static关键字共同修饰。</p></li> <li><p>单例设计模式的实现方式有两种:饿汉式 和 懒汉式，在以后的开发中推荐饿汉式(因为可以在多线程中不会存在竞争问题)。</p></li> <li><p>饿汉式</p></li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code>    <span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>bruce<span class="token punctuation">.</span>classSample</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SingleTon</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 1。使用静态的成员变量</span>
+        <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">SingleTon</span> st <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SingleTon</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 2.设置私有的构造函数</span>
+        <span class="token keyword">private</span> <span class="token class-name">SingleTon</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token comment">//</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">// 3.提供一个静态方法给外界使用</span>
+        <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">SingleTon</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> st<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br></div></div><ul><li>懒汉式</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>bruce<span class="token punctuation">.</span>classSample</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SingleTon</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 1。使用静态的成员变量</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">SingleTon</span> st <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token comment">// 2.设置私有的构造函数</span>
+    <span class="token keyword">private</span> <span class="token class-name">SingleTon</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// 3.提供一个静态方法给外界使用</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">SingleTon</span> <span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">null</span> <span class="token operator">==</span> st<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            st <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SingleTon</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> st<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><h5 id="_5-1-继承的概念"><a href="#_5-1-继承的概念" class="header-anchor">#</a> 5.1 继承的概念</h5> <ul><li>当多个类之间有相同的特征和行为时，可以将相同的内容提取出来组成 一个公共类，让多个类吸收公共类中已有特征和行为而在多个类型只需 要编写自己独有特征和行为的机制，叫做继承。</li> <li>在Java语言中使用extends(扩展)关键字来表示继承关系。
+<ul><li>如:<code>public class Worker extends Person{}</code></li> <li>表示Worker类继承自Person类</li> <li>其中Person类叫做超类、父类、基类。</li> <li>其中Worker类叫做派生类、子类、孩子类。</li></ul></li> <li>使用继承提高了代码的复用性，可维护性及扩展性，是多态的前提条件</li></ul> <h5 id="_5-2-继承的特点"><a href="#_5-2-继承的特点" class="header-anchor">#</a> 5.2 继承的特点</h5> <ul><li>子类不能继承父类的构造方法和私有方法，但私有成员变量可以被继承 只是不能直接访问。</li> <li>无论使用何种方式构造子类的对象时都会自动调用父类的无参构造方法， 来初始化从父类中继承的成员变量，相当于在构造方法的第一行增加代 码super()的效果。</li> <li>使用继承必须满足逻辑关系:子类 is a 父类，也就是不能滥用继承。</li> <li>Java语言中只支持单继承不支持多继承，也就是说一个子类只能有一个父 类，但一个父类可以有多个子类。</li></ul> <h5 id="_5-3-方法重写的概念"><a href="#_5-3-方法重写的概念" class="header-anchor">#</a> 5.3 方法重写的概念</h5> <ul><li>从父类中继承下来的方法不满足子类的需求时，就需要在子类中重新写 一个和父类一样的方法来覆盖从父类中继承下来的版本，该方式就叫做方法的重写(Override)。</li></ul> <h5 id="_5-4-方法重写的原则"><a href="#_5-4-方法重写的原则" class="header-anchor">#</a> 5.4 方法重写的原则</h5> <ul><li>要求方法名相同、参数列表相同以及返回值类型相同，从Java5开始允许返回子类类型。</li> <li>要求方法的访问权限不能变小，可以相同或者变大。</li> <li>要求方法不能抛出更大的异常(异常机制)。</li></ul> <div class="language-Java line-numbers-mode"><pre class="language-java"><code>
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>bruce<span class="token punctuation">.</span>classSample</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Teacher</span> <span class="token keyword">extends</span> <span class="token class-name">Person</span><span class="token punctuation">{</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> education<span class="token punctuation">;</span>
+
+    <span class="token class-name">Teacher</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">,</span><span class="token class-name">String</span> age<span class="token punctuation">,</span> <span class="token class-name">String</span> education<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// 默认会调用父类午餐的构造函数</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span>age<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>education <span class="token operator">=</span> education<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 注解的作用表示这个方法是重写的，且不能和继承的相同，否则报错</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">printInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">printInfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">&quot;education =&quot;</span><span class="token operator">+</span>education<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br></div></div><h5 id="_6-常用的访问控制符"><a href="#_6-常用的访问控制符" class="header-anchor">#</a> 6.常用的访问控制符</h5> <table><thead><tr><th>修饰符</th> <th>本类</th> <th>同一个包中的类</th> <th>子类</th> <th>其他类</th></tr></thead> <tbody><tr><td>public</td> <td>可以访问</td> <td>可以访问</td> <td>可以访问</td> <td>可以访问</td></tr> <tr><td>protected</td> <td>可以访问</td> <td>可以访问</td> <td>可以访问</td> <td>不能访问</td></tr> <tr><td>默认</td> <td>可以访问</td> <td>可以访问</td> <td>不能访问</td> <td>不能访问</td></tr> <tr><td>private</td> <td>可以访问</td> <td>不能访问</td> <td>不能访问</td> <td>不能访问</td></tr></tbody></table> <ul><li>public修饰的成员可以在任意位置使用。</li> <li>private修饰的成员只能在本类内部使用。</li> <li>通常情况下，成员方法都使用public关键字修饰，成员变量都使用private 关键字修饰。</li></ul> <h5 id="_6-1-package语句的由来"><a href="#_6-1-package语句的由来" class="header-anchor">#</a> 6.1 package语句的由来</h5> <ul><li>定义类时需要指定类的名称，但如果仅仅将类名作为类的唯一标识，则 不可避免的出现命名冲突的问题。这会给组件复用以及团队间的合作造 成很大的麻烦!</li> <li>在Java语言中，用包(package)的概念来解决命名冲突的问题。</li></ul> <h5 id="_6-2-包的定义"><a href="#_6-2-包的定义" class="header-anchor">#</a> 6.2 包的定义</h5> <ul><li>在定义一个类时，除了定义类的名称一般还要指定一个包名，格式如下: package 包名;
+package 包名1.包名2.包名3...包名n;</li> <li>为了实现项目管理、解决命名冲突以及权限控制的效果。</li></ul> <h5 id="_6-3-定义包的规范"><a href="#_6-3-定义包的规范" class="header-anchor">#</a> 6.3 定义包的规范</h5> <ul><li>如果各个公司或开发组织的程序员都随心所欲的命名包名的话，仍然不 能从根本上解决命名冲突的问题。因此，在指定包名的时候应该按照一 定的规范。</li> <li><code>org.apache.commons.lang.StringUtil</code></li> <li>其中StringUtils是类名而org.apache.commons.lang是多层包名，其含义 如下:org.apache表示公司或组织的信息(是这个公司(或组织)域名的 反写);common 表示项目的名称信息;lang 表示模块的名称信息。</li></ul> <h4 id="_6-4-包的导入"><a href="#_6-4-包的导入" class="header-anchor">#</a> 6.4 包的导入</h4> <ul><li>使用import关键字导入包。</li> <li>使用import关键字导入静态成员，从Java5.0开始支持。</li></ul> <div class="language-java line-numbers-mode"><pre class="language-java"><code>
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">;</span>
+
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+out<span class="token punctuation">.</span><span class="token function">printfln</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h5 id="_7-1-final关键字"><a href="#_7-1-final关键字" class="header-anchor">#</a> 7.1 final关键字</h5> <ul><li>final本意为&quot;最终的、不可改变的&quot;，可以修饰类、成员方法以及成员变量。</li> <li>final关键字修饰类体现在该类不能被继承。
+<ul><li>主要用于防止滥用继承，如:java.lang.String类等。</li></ul></li> <li>final关键字修饰成员方法体现在该方法不能被重写但可以被继承。
+<ul><li>主要用于防止不经意间造成重写，如:java.text.Dateformat类中format方法等。</li></ul></li> <li>final关键字修饰成员变量体现在该变量必须初始化且不能改变。
+<ul><li>主要用于防止不经意间造成改变，如:java.lang.Thread类中MAX_PRIORITY等。</li></ul></li></ul> <h5 id="_7-2常量的概念"><a href="#_7-2常量的概念" class="header-anchor">#</a> 7.2常量的概念</h5> <ul><li>在以后的开发中很少单独使用final关键字来修饰成员变量，通常使用 public static final关键字共同修饰成员变量来表达常量的含义，常量的命 名规范要求是所有字母都要大写，不同的单词之间采用下划线连。</li> <li><code>public static final double PI = 3.14</code>;</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/java/object.html" class="prev">
+        面向对象编程
+      </a></span> <span class="next"><a href="/java/polymorphism.html">
+        多态
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/73.d8356ad1.js" defer></script>
+  </body>
+</html>

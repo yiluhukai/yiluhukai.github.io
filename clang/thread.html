@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>线程基础 | yiluhuakai</title>
+    <meta name="generator" content="VuePress 1.7.1">
+    
+    <meta name="description" content="">
+    
+    <link rel="preload" href="/assets/css/0.styles.992cb7aa.css" as="style"><link rel="preload" href="/assets/js/app.9b56a05a.js" as="script"><link rel="preload" href="/assets/js/2.b22280cb.js" as="script"><link rel="preload" href="/assets/js/19.a72c6116.js" as="script"><link rel="prefetch" href="/assets/js/10.413ab2ab.js"><link rel="prefetch" href="/assets/js/100.2d785741.js"><link rel="prefetch" href="/assets/js/101.a9fd3349.js"><link rel="prefetch" href="/assets/js/11.99f54ddd.js"><link rel="prefetch" href="/assets/js/12.c46f64f3.js"><link rel="prefetch" href="/assets/js/13.6add00c5.js"><link rel="prefetch" href="/assets/js/14.40115781.js"><link rel="prefetch" href="/assets/js/15.c3827c6c.js"><link rel="prefetch" href="/assets/js/16.304d275d.js"><link rel="prefetch" href="/assets/js/17.006e2fe4.js"><link rel="prefetch" href="/assets/js/18.7f93828f.js"><link rel="prefetch" href="/assets/js/20.d175ff74.js"><link rel="prefetch" href="/assets/js/21.7092a034.js"><link rel="prefetch" href="/assets/js/22.1419ba41.js"><link rel="prefetch" href="/assets/js/23.ce5e3c1b.js"><link rel="prefetch" href="/assets/js/24.9f9edaa3.js"><link rel="prefetch" href="/assets/js/25.a57ae5dc.js"><link rel="prefetch" href="/assets/js/26.5ba697f1.js"><link rel="prefetch" href="/assets/js/27.9ecaa5dc.js"><link rel="prefetch" href="/assets/js/28.290c65fe.js"><link rel="prefetch" href="/assets/js/29.bdbc3eeb.js"><link rel="prefetch" href="/assets/js/3.ac44586b.js"><link rel="prefetch" href="/assets/js/30.6f37d998.js"><link rel="prefetch" href="/assets/js/31.b1ac1238.js"><link rel="prefetch" href="/assets/js/32.024f8182.js"><link rel="prefetch" href="/assets/js/33.202e11b5.js"><link rel="prefetch" href="/assets/js/34.e755ffc0.js"><link rel="prefetch" href="/assets/js/35.376b8f63.js"><link rel="prefetch" href="/assets/js/36.56735f24.js"><link rel="prefetch" href="/assets/js/37.b7d03c63.js"><link rel="prefetch" href="/assets/js/38.d9407e30.js"><link rel="prefetch" href="/assets/js/39.4f87e45d.js"><link rel="prefetch" href="/assets/js/4.a4a037c8.js"><link rel="prefetch" href="/assets/js/40.5a53ee48.js"><link rel="prefetch" href="/assets/js/41.f7fa6a68.js"><link rel="prefetch" href="/assets/js/42.3c07d4ad.js"><link rel="prefetch" href="/assets/js/43.2965402d.js"><link rel="prefetch" href="/assets/js/44.fef5da48.js"><link rel="prefetch" href="/assets/js/45.ff058ba7.js"><link rel="prefetch" href="/assets/js/46.5a74f2cd.js"><link rel="prefetch" href="/assets/js/47.5931bb97.js"><link rel="prefetch" href="/assets/js/48.cbf85ab3.js"><link rel="prefetch" href="/assets/js/49.0319f8e4.js"><link rel="prefetch" href="/assets/js/5.d0d45788.js"><link rel="prefetch" href="/assets/js/50.497cb73f.js"><link rel="prefetch" href="/assets/js/51.4b6e5c5b.js"><link rel="prefetch" href="/assets/js/52.f4edf34f.js"><link rel="prefetch" href="/assets/js/53.df9c0557.js"><link rel="prefetch" href="/assets/js/54.1654be3b.js"><link rel="prefetch" href="/assets/js/55.c9e37e1f.js"><link rel="prefetch" href="/assets/js/56.052c5808.js"><link rel="prefetch" href="/assets/js/57.cf8cebef.js"><link rel="prefetch" href="/assets/js/58.220252cd.js"><link rel="prefetch" href="/assets/js/59.7e76271a.js"><link rel="prefetch" href="/assets/js/6.b5583d51.js"><link rel="prefetch" href="/assets/js/60.38c88311.js"><link rel="prefetch" href="/assets/js/61.c4b0da1c.js"><link rel="prefetch" href="/assets/js/62.d8be952c.js"><link rel="prefetch" href="/assets/js/63.19c02fd0.js"><link rel="prefetch" href="/assets/js/64.9d51d342.js"><link rel="prefetch" href="/assets/js/65.31c63e7c.js"><link rel="prefetch" href="/assets/js/66.badcb6df.js"><link rel="prefetch" href="/assets/js/67.83764c63.js"><link rel="prefetch" href="/assets/js/68.152c45b6.js"><link rel="prefetch" href="/assets/js/69.2119cafb.js"><link rel="prefetch" href="/assets/js/7.d21b1042.js"><link rel="prefetch" href="/assets/js/70.ff7211f3.js"><link rel="prefetch" href="/assets/js/71.26e7783e.js"><link rel="prefetch" href="/assets/js/72.dc5a3ba6.js"><link rel="prefetch" href="/assets/js/73.d8356ad1.js"><link rel="prefetch" href="/assets/js/74.10184aff.js"><link rel="prefetch" href="/assets/js/75.716811ca.js"><link rel="prefetch" href="/assets/js/76.046e6155.js"><link rel="prefetch" href="/assets/js/77.d287e80f.js"><link rel="prefetch" href="/assets/js/78.635ed9d3.js"><link rel="prefetch" href="/assets/js/79.4485123f.js"><link rel="prefetch" href="/assets/js/8.8bd3dfa9.js"><link rel="prefetch" href="/assets/js/80.74fc122c.js"><link rel="prefetch" href="/assets/js/81.cb3ce31c.js"><link rel="prefetch" href="/assets/js/82.bf81591e.js"><link rel="prefetch" href="/assets/js/83.01b0002d.js"><link rel="prefetch" href="/assets/js/84.6af4ae46.js"><link rel="prefetch" href="/assets/js/85.31122a7c.js"><link rel="prefetch" href="/assets/js/86.7641b1ab.js"><link rel="prefetch" href="/assets/js/87.63912fdd.js"><link rel="prefetch" href="/assets/js/88.01d6d061.js"><link rel="prefetch" href="/assets/js/89.ec494ad7.js"><link rel="prefetch" href="/assets/js/9.17f8341c.js"><link rel="prefetch" href="/assets/js/90.a2905192.js"><link rel="prefetch" href="/assets/js/91.5b1b5e00.js"><link rel="prefetch" href="/assets/js/92.f8112523.js"><link rel="prefetch" href="/assets/js/93.8e9fd5a8.js"><link rel="prefetch" href="/assets/js/94.41217af6.js"><link rel="prefetch" href="/assets/js/95.b253d44f.js"><link rel="prefetch" href="/assets/js/96.76495ed0.js"><link rel="prefetch" href="/assets/js/97.9f48729e.js"><link rel="prefetch" href="/assets/js/98.0e36c4a8.js"><link rel="prefetch" href="/assets/js/99.5b6ab9af.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.992cb7aa.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">yiluhuakai</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link router-link-active">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/" class="nav-link">
+  Home
+</a></div><div class="nav-item"><a href="/leetcode/" class="nav-link">
+  LeetCode
+</a></div><div class="nav-item"><a href="/golang/" class="nav-link">
+  Go
+</a></div><div class="nav-item"><a href="/mysql/" class="nav-link">
+  Mysql
+</a></div><div class="nav-item"><a href="/clang/" class="nav-link router-link-active">
+  C语言
+</a></div><div class="nav-item"><a href="/es/" class="nav-link">
+  前端
+</a></div><div class="nav-item"><a href="/nodejs/" class="nav-link">
+  nodejs
+</a></div><div class="nav-item"><a href="/react/" class="nav-link">
+  React
+</a></div><div class="nav-item"><a href="/java/" class="nav-link">
+  Java
+</a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/clang/linux.html" class="sidebar-link">Linux命令</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/clang/linux.html#位运算符-操作比特位" class="sidebar-link">位运算符（操作比特位）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/clang/linux.html#条件运算符" class="sidebar-link" style="padding-left:3rem;">条件运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#比较运算符" class="sidebar-link" style="padding-left:3rem;">比较运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#逻辑运算符" class="sidebar-link" style="padding-left:3rem;">逻辑运算符</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#流程控制语句" class="sidebar-link" style="padding-left:3rem;">流程控制语句</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#函数" class="sidebar-link">函数</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#递归和循环" class="sidebar-link" style="padding-left:3rem;">递归和循环</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#变量的作用域和及生命周期" class="sidebar-link">变量的作用域和及生命周期</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#局部变量" class="sidebar-link" style="padding-left:3rem;">局部变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#全局变量" class="sidebar-link" style="padding-left:3rem;">全局变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#static变量" class="sidebar-link" style="padding-left:3rem;">static变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针" class="sidebar-link">指针</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针的作用" class="sidebar-link" style="padding-left:3rem;">指针的作用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#野指针" class="sidebar-link" style="padding-left:3rem;">野指针</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#不要在函数中返回一个局部变量的地址" class="sidebar-link" style="padding-left:3rem;">不要在函数中返回一个局部变量的地址</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指针的运算" class="sidebar-link" style="padding-left:3rem;">指针的运算</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#数组名相当于一个不能移动的指针。" class="sidebar-link" style="padding-left:3rem;">数组名相当于一个不能移动的指针。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#const关键字" class="sidebar-link">const关键字</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#数组和指针的区别" class="sidebar-link" style="padding-left:3rem;">数组和指针的区别</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符和字符串" class="sidebar-link">字符和字符串</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的输出" class="sidebar-link" style="padding-left:3rem;">字符串的输出</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的运算" class="sidebar-link">字符串的运算</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#copy" class="sidebar-link" style="padding-left:3rem;">copy</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#字符串的比较-strcmp" class="sidebar-link" style="padding-left:3rem;">字符串的比较（strcmp）</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#strlen-char-str-不包括-0" class="sidebar-link" style="padding-left:3rem;">strlen(char * str)，不包括'\0';</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#char-strcat-char-dest-const-char-src-将b连接在a的后面。" class="sidebar-link" style="padding-left:3rem;">char strcat(char dest, const char *src);将b连接在a的后面。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#memset-char-a-0-20-清空字符串-使用20个0来填充。" class="sidebar-link" style="padding-left:3rem;">memset(char * a ,0,20),清空字符串，使用20个0来填充。</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#指向多个字符串" class="sidebar-link">指向多个字符串</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#main函数的函数原型" class="sidebar-link">main函数的函数原型</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#c程序的编译过程" class="sidebar-link">c程序的编译过程</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_1-预处理" class="sidebar-link" style="padding-left:3rem;">1.预处理</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_2-编译" class="sidebar-link" style="padding-left:3rem;">2.编译</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_3-汇编" class="sidebar-link" style="padding-left:3rem;">3.汇编</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_4-链接" class="sidebar-link" style="padding-left:3rem;">4.链接</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#预处理指令" class="sidebar-link">预处理指令</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_1-头文件" class="sidebar-link" style="padding-left:3rem;">1.头文件</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#_2-宏" class="sidebar-link" style="padding-left:3rem;">2.宏</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#条件编译" class="sidebar-link">条件编译</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#内置宏变量" class="sidebar-link">内置宏变量</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#include-和-include-的区别" class="sidebar-link">#include 和 #include &quot;&quot;的区别</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#分文件调用" class="sidebar-link">分文件调用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#static-和-extern" class="sidebar-link">static 和 extern</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#头文件的引用" class="sidebar-link">头文件的引用</a></li><li class="sidebar-sub-header"><a href="/clang/linux.html#make-和makefile" class="sidebar-link">make 和makefile</a></li></ul></li></ul></li><li><a href="/clang/struct.html" class="sidebar-link">结构体</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/point.html" class="sidebar-link">指针高级</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/stdlib.html" class="sidebar-link">标准库函数</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/datastruct.html" class="sidebar-link">数据结构主要研究的如何使用存储区(内存)存储数字</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc1.html" class="sidebar-link">复习:uc1</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc2.html" class="sidebar-link">uc2</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc3.html" class="sidebar-link">uc3</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc4.html" class="sidebar-link">uc4</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc5.html" class="sidebar-link">uc5</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc6.html" class="sidebar-link">uc6</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/uc7.html" class="sidebar-link">uc7</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net1.html" class="sidebar-link">网络基础</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net2.html" class="sidebar-link">ip地址</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net3.html" class="sidebar-link">对tcp编程的代码进行封装</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/net-udp.html" class="sidebar-link">udp编程模型</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/thread.html" aria-current="page" class="active sidebar-link">线程基础</a><ul class="sidebar-sub-headers"></ul></li><li><a href="/clang/signal.html" class="sidebar-link">信号阻塞</a><ul class="sidebar-sub-headers"></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h4 id="线程基础"><a href="#线程基础" class="header-anchor">#</a> 线程基础</h4> <p>线程是执行的基本单位，而进程是资源分配的基本单位，线程共享进程的资源，一个进程中至少包含一个线程，这个线程叫做主线程，进程有自己的 pid,还有自己的 pcb,线程有自己的 tid,也有自己的 tcb.</p> <p>有了进程为什么还有线程？</p> <p>首先进程之间共享资源比较简单，不需要借助其他的工具，其实进程间切换的开销比较大，需要从用户态到内核态的转化，而线程之间是异步的，切换的代价较小。</p> <h4 id="创建一个新的线程"><a href="#创建一个新的线程" class="header-anchor">#</a> 创建一个新的线程</h4> <div class="language- line-numbers-mode"><pre class="language-text"><code>
+#include &lt;pthread.h&gt;
+
+int pthread_create(pthread_t *thread, const pthread_attr_t *attr,void *(*start_routine) (void *), void *arg);
+
+Compile and link with -pthread.
+
+使用该函数需要去编译和链接pthead库，
+
+* 描述
+The pthread_create() function starts a new thread in the calling process.  The new thread starts execution by invoking start_routine(); arg is passed as the sole argument of start_routine().
+
+
+* 参数
+
+1.thread 用来保存新创建的线程的tid.
+2. attr  一般用NULL -&gt; default attributes
+The  attr  argument  points  to  a  pthread_attr_t  structure  whose contents are used at thread creation time to determine attributes for the new thread;If attr is NULL, then the thread is created with default attributes.
+3. start_routine
+
+4.arg
+The new thread starts execution by invoking start_routine(); arg is passed as the sole argument of start_routine().
+
+* 返回值
+
+On success, pthread_create() returns 0; on error, it returns an error number, and the contents of *thread are undefined.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><p>在进程中创建一个新的线程</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">doit</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>arg<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;this is %s\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//创建一个新的线程</span>
+        pthread_t  pid<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>pid<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>doit<span class="token punctuation">,</span><span class="token string">&quot;NEW&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>r<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;pthread_create&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">//  在主线程中执行代码</span>
+        <span class="token comment">//  防止主线程提前退出</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">doit</span><span class="token punctuation">(</span><span class="token string">&quot;main&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>bruce@bruce-VirtualBox:~/C-/uc/ptread$ gcc ptread_create.c -lpthread
+bruce@bruce-VirtualBox:~/C-/uc/ptread$ ./a.out
+this is NEW
+this is main
+bruce@bruce-VirtualBox:~/C-/uc/ptread$ ldd a.out
+	linux-vdso.so.1 <span class="token punctuation">(</span>0x00007ffdccfec000<span class="token punctuation">)</span>
+	libpthread.so.0 <span class="token operator">=</span><span class="token operator">&gt;</span> /lib/x86_64-linux-gnu/libpthread.so.0 <span class="token punctuation">(</span>0x00007ff3cab0b000<span class="token punctuation">)</span>
+	libc.so.6 <span class="token operator">=</span><span class="token operator">&gt;</span> /lib/x86_64-linux-gnu/libc.so.6 <span class="token punctuation">(</span>0x00007ff3ca919000<span class="token punctuation">)</span>
+	/lib64/ld-linux-x86-64.so.2 <span class="token punctuation">(</span>0x00007ff3cab46000<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>获取线程的 tid</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>
+#include &lt;pthread.h&gt;
+
+pthread_t pthread_self(void);
+
+Compile and link with -pthread.
+
+
+* 描述
+
+获取执行线程的tid
+
+* 返回值
+
+This function always succeeds, returning the calling thread's ID.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><p>代码参见：</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">void</span> <span class="token operator">*</span><span class="token function">doit</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>arg<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;this is %s thread,pid=%d\ttid=%lu\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>arg<span class="token punctuation">,</span><span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token function">pthread_self</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">//创建一个新的线程</span>
+        pthread_t  pid<span class="token punctuation">;</span>
+        <span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>pid<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>doit<span class="token punctuation">,</span><span class="token string">&quot;NEW&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>r<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">&quot;pthread_create&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token comment">//  在主线程中执行代码</span>
+        <span class="token comment">//  防止主线程提前退出</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">doit</span><span class="token punctuation">(</span><span class="token string">&quot;main&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br></div></div><div class="language-shell line-numbers-mode"><pre class="language-shell"><code>bruce@bruce-VirtualBox:~/C-/uc/ptread$ gcc ptread_create.c -lpthread
+bruce@bruce-VirtualBox:~/C-/uc/ptread$ ./a.out
+this is NEW thread,pid<span class="token operator">=</span><span class="token number">16531</span>	<span class="token assign-left variable">tid</span><span class="token operator">=</span><span class="token number">140154763650816</span>
+this is main thread,pid<span class="token operator">=</span><span class="token number">16531</span>	<span class="token assign-left variable">tid</span><span class="token operator">=</span><span class="token number">140154763654976</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>可以看出来线程位于同一个进程中，并且每个线程也有自己的 id.</p> <h4 id="线程的终止-线程的汇合和分离"><a href="#线程的终止-线程的汇合和分离" class="header-anchor">#</a> 线程的终止 线程的汇合和分离</h4> <p>线程执行期间会占用系统资源，当线程执行结束后，要回收线程占用的资源，
+有两种情况：1.等待线程执行结束后，回收线程的资源 —&gt;线程的汇合 2.线程开始执行的时候就被分离，分离出去的线程执行结束后自动释放所占用的资源。 线程的分离</p> <h4 id="return-和-exit-3-的区别"><a href="#return-和-exit-3-的区别" class="header-anchor">#</a> return 和 exit(3)的区别</h4> <p>在线程执行函数中用 return,只代表该线程终止，并不会终止该进程，但无论在什么地方使用 exit(),进程都会终止，进程终止了，进程中的所有线程也会终止。</p> <p>1.pthread_exit(3)终止当前线程</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;pthread.h&gt;
+
+void pthread_exit(void *retval);
+
+Compile and link with -pthread.
+* 描述
+terminate calling thread，  The  pthread_exit()  function  terminates  the  calling  thread  and returns a value via retval that (if the thread is joinable) is available to another thread in the same process that calls pthread_join(3).When  a  thread terminates, process-shared resources (e.g., mutexes, condition variables, semaphores, and file descriptors) are not released, and functions registered using atexit(3) are not called. After the last thread in a process terminates, the process terminates as by calling exit(3) with an exit status of zero; thus, process-shared resources are released and functions  registered using atexit(3) are called.
+
+终止一个线程，当线程终止后retval可以被进程的其他线程通过pthread_join(3)接受，当线程终止时，进程共享的资源不会被释放，at_exit()注册的遗言函数也不会执行，直到最后一个线程终止才会释放资源和执行遗言函数。
+
+* 参数
+retval:传递给其他的终止状态
+* 返回值
+void
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><ol start="2"><li>pthread_cancel(3) 向线程发送取消请求</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;pthread.h&gt;
+
+int pthread_cancel(pthread_t thread);
+
+Compile and link with -pthread.
+
+* 描述
+The pthread_cancel() function sends a cancellation request to the thread thread.  Whether and when the target thread reacts to the cancellation request depends on two attributes that are under the control of that thread: its cancelability state and type.
+
+* 参数
+thread 取消线程的id
+
+* 返回值
+On success, pthread_cancel() returns 0; on error, it returns a nonzero error number.
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><p>3.pthread_join(3) 汇合终止线程</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;pthread.h&gt;
+
+int pthread_join(pthread_t thread, void **retval);
+
+Compile and link with -pthread.
+
+
+* 描述
+The  pthread_join()  function waits for the thread specified by thread to terminate.  If that thread has already terminated, then pthread_join() returns immediately.  The thread specified by
+thread must be joinable.
+
+
+
+If multiple threads simultaneously try to join with the same thread, the results are undefined.  If the thread calling pthread_join() is canceled, then the target thread will remain joinable
+(i.e., it will not be detached).
+
+等待线程的终止（pthread_exit(3) or pthread_cancel()）
+
+* 参数
+
+1.thread 取消线程的id
+2.retval 接受终止线程传过来的状态
+
+If retval is not NULL, then pthread_join() copies the exit status of the target thread (i.e., the value that the target thread supplied to pthread_exit(3)) into the location  pointed  to  by
+retval.  If the target thread was canceled, then PTHREAD_CANCELED is placed in the location pointed to by retval.
+
+* 返回值
+On success, pthread_join() returns 0; on error, it returns an error number.
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br></div></div><ol start="4"><li>pthread_detach（3）分离当前线程</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;pthread.h&gt;
+
+int pthread_detach(pthread_t thread);
+
+Compile and link with -pthread.
+* 描述
+The  pthread_detach()  function marks the thread identified by thread as detached.  When a detached thread terminates, its resources are automatically released back to the system without the need for another thread to join with the terminated thread.Attempting to detach an already detached thread results in unspecified behavior.
+
+分离一个线程，分离出去的线程可以自己释放资源，不可以多次分离一个线程
+
+* 参数
+thread  线程的id
+
+* 返回值
+
+On success, pthread_detach() returns 0; on error, it returns an error number
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><p>进程的退出和汇合</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">func1</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> retval<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread1 is running\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">func2</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> retval<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread2 is running\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">func3</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> retval<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread3 is running\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        pthread_t thread1<span class="token punctuation">,</span>thread2<span class="token punctuation">,</span>thread3<span class="token punctuation">;</span>
+        <span class="token keyword">void</span> <span class="token operator">*</span> retval<span class="token punctuation">;</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>func1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 等待目标线程的终止,是同步的执行的，所以又叫线程的同步</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread1<span class="token punctuation">,</span><span class="token operator">&amp;</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread1 exit code = %d\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>func2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 等待目标线程的终止,是同步的执行的，所以又叫线程的同步</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread2<span class="token punctuation">,</span><span class="token operator">&amp;</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread2 exit code = %d\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread3<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>func3<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//  取消thread3线程</span>
+        <span class="token function">pthread_cancel</span><span class="token punctuation">(</span>thread3<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread3<span class="token punctuation">,</span><span class="token operator">&amp;</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;thread3 exit code = %d\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span>retval<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;main thread exit\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br></div></div><h4 id="线程的同步"><a href="#线程的同步" class="header-anchor">#</a> 线程的同步</h4> <p>一个进程中创建的多个线程处于异步模式，线程的同步指的是异步的线程在访问临界资源时，变为同步访问。
+临界资源：被多个线程争夺的资源。
+多个线程访问临界资源，需要注意什么？
+两个线程访问同一个资源的问题，代码参见：count.c</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">handle</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span><span class="token number">5000</span><span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                i<span class="token operator">=</span>count<span class="token punctuation">;</span>
+                <span class="token comment">//  count++ 在汇编成机器指令是多条指令的</span>
+                i<span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;args=%s,count = %d\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>args<span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                count <span class="token operator">=</span> i<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        pthread_t thread1<span class="token punctuation">,</span>thread2<span class="token punctuation">;</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>handle<span class="token punctuation">,</span><span class="token string">&quot;thread1&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>handle<span class="token punctuation">,</span><span class="token string">&quot;thread2&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//printf(&quot;count=%d\n&quot;,count);</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;main thread exit...\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><p>保证线程同步的方法：</p> <ol><li>mutex 锁</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>1. 访问临界资源前先试探是否可以加锁，不可以加锁等待或者直接返回
+2. 直接加锁
+3. 访问临界资源
+4. 释放锁
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><ol start="2"><li>条件变量</li> <li>信号量</li></ol> <h4 id="pthread-mutex-t-类型和操作"><a href="#pthread-mutex-t-类型和操作" class="header-anchor">#</a> pthread_mutex_t 类型和操作</h4> <div class="language- line-numbers-mode"><pre class="language-text"><code>
+#include &lt;pthread.h&gt;
+
+1. pthread_mutex_t fastmutex = PTHREAD_MUTEX_INITIALIZER;
+
+Variables  of type pthread_mutex_t can also be initialized statically, using the constants PTHREAD_MUTEX_INITIALIZER (for fast mutexes)
+
+
+静态初始化mutex
+
+2. int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *mutexattr);
+* 描述
+pthread_mutex_init initializes the mutex object pointed to by mutex according to the mutex     attributes specified in mutexattr.  If mutexattr is NULL, default attributes are used instead.
+
+* 参数
+1. mutex  锁的地址，
+2. mutexattr NULL
+
+
+
+
+3. int pthread_mutex_lock(pthread_mutex_t *mutex);
+* 描述
+pthread_mutex_lock locks the given mutex. If the mutex is currently unlocked, it becomes locked and owned by the calling thread, and pthread_mutex_lock returns immediately. If the  mutex  is already locked by another thread, pthread_mutex_lock suspends the calling thread until the mutex is unlocked.
+
+给mutex加锁，如果mutex已经是加锁状态，那么线程会被阻塞
+
+* 参数 mutex的地址
+
+
+
+4. int pthread_mutex_trylock(pthread_mutex_t *mutex);
+
+* 描述
+pthread_mutex_trylock behaves identically to pthread_mutex_lock, except that it does not block the calling thread if the mutex is already locked by another thread (or by the  calling  thread
+in the case of a ``fast'' mutex). Instead, pthread_mutex_trylock returns immediately with the error code EBUSY.
+给mutex加锁，如果mutex已经是加锁状态，那么线程不会被阻塞，而是返回错误码EBUSY。
+
+* 参数
+
+mutex mutex的地址
+
+
+5. int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+* 描述
+pthread_mutex_unlock  unlocks  the  given  mutex. The mutex is assumed to be locked and owned by the calling thread on entrance to pthread_mutex_unlock.
+
+解除mutex上的锁
+* 参数
+mutex mutex的地址
+
+
+6. int pthread_mutex_destroy(pthread_mutex_t *mutex);
+
+* 描述
+pthread_mutex_destroy  destroys  a  mutex object, freeing the resources it might hold. The mutex must be unlocked on entrance.
+* 参数
+mutex mutex的地址
+
+* 返回值
+
+pthread_mutex_init always returns 0. The other mutex functions return 0 on success and a non-zero error code on error.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br></div></div><p>用 mutex 锁去解决线程同步的问题</p> <div class="language-c line-numbers-mode"><pre class="language-c"><code><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token comment">// 初始化一个mutex</span>
+
+pthread_mutex_t mutex <span class="token operator">=</span> PTHREAD_MUTEX_INITIALIZER<span class="token punctuation">;</span>
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">handle</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> j<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>j<span class="token operator">&lt;</span><span class="token number">5000</span><span class="token punctuation">;</span>j<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token function">pthread_mutex_lock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                i<span class="token operator">=</span>count<span class="token punctuation">;</span>
+                <span class="token comment">// 在汇编成机器指令是多条指令的</span>
+                i<span class="token operator">++</span><span class="token punctuation">;</span>
+                <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;args=%s,count = %d\n&quot;</span><span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span>args<span class="token punctuation">,</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                count <span class="token operator">=</span> i<span class="token punctuation">;</span>
+                <span class="token function">pthread_mutex_unlock</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        pthread_t thread1<span class="token punctuation">,</span>thread2<span class="token punctuation">;</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>handle<span class="token punctuation">,</span><span class="token string">&quot;thread1&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>thread2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">,</span>handle<span class="token punctuation">,</span><span class="token string">&quot;thread2&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread1<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">pthread_join</span><span class="token punctuation">(</span>thread2<span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//printf(&quot;count=%d\n&quot;,count);</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">&quot;main thread exit...\n&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//  销毁一个mutex</span>
+        <span class="token function">pthread_mutex_destroy</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><h4 id="条件变量"><a href="#条件变量" class="header-anchor">#</a> 条件变量</h4> <p>什么是条件变量</p> <p>两个线程 a 和 b,线程 a 由于不满足某个条件而阻塞，等待条件变为真执行，线程 b 在执行的过程中会将条件变为真让线程 a 继续执行，这个条件就是条件变量类型的一个变量。</p> <p>pthread_cond_t 类型的一些操作</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;pthread.h&gt;
+
+1.pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+
+静态初始化一个条件变量
+
+2.int pthread_cond_init(pthread_cond_t *cond, pthread_condattr_t *cond_attr);
+
+* 描述
+pthread_cond_init initializes the condition variable cond, using the condition attributes specified in cond_attr, or default attributes if cond_attr is NULL.
+* 参数
+
+cond 条件变量类型的地址
+cond_attr NULL
+
+3.int pthread_cond_signal(pthread_cond_t *cond);
+
+* 描述
+pthread_cond_signal  restarts  one of the threads that are waiting on the condition variable cond. If no threads are waiting on cond, nothing happens. If several threads are waiting on cond,
+exactly one is restarted, but it is not specified which.
+
+* 参数
+
+cond 条件变量类型的地址
+
+4.int pthread_cond_broadcast(pthread_cond_t *cond);
+
+* 描述
+pthread_cond_broadcast restarts all the threads that are waiting on the condition variable cond. Nothing happens if no threads are waiting on cond.
+* 参数
+cond 条件变量类型的地址
+
+5.int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex);
+
+* 描述
+pthread_cond_wait atomically unlocks the mutex (as per pthread_unlock_mutex) and waits for the condition variable cond to be signaled. The thread execution is suspended and does not  consume
+any  CPU  time  until  the  condition  variable  is  signaled.  The  mutex  must  be  locked  by  the calling thread on entrance to pthread_cond_wait. Before returning to the calling thread,
+pthread_cond_wait re-acquires mutex (as per pthread_lock_mutex).
+
+1. 这个函数原子的取消mutex上的锁，等待cond北singal
+2. 在这个线程返回前重新获取锁。
+
+* 参数
+cond 条件变量类型的地址
+mutex 一个mutex锁
+
+
+
+6.int pthread_cond_timedwait(pthread_cond_t *cond, pthread_mutex_t *mutex, const struct timespec *abstime);
+
+* 描述
+和pthread_cond_wait，不用的是有时间的限制，超过时间范围自动返回，If cond has not been signaled within the amount of time specified by abstime, the mutex mutex is re-acquired and pthread_cond_timedwait returns the error ETIMEDOUT.
+* 参数
+
+1. cond
+2. mutex
+3. abstime
+
+The abstime parameter specifies an absolute time, with the same  origin  as
+time(2) and gettimeofday(2): an abstime of 0 corresponds to 00:00:00 GMT, January 1, 1970.
+
+
+7.int pthread_cond_destroy(pthread_cond_t *cond);
+
+* 描述
+销毁一个条件变量
+* 参数
+
+1. cond
+
+
+* 返回值
+
+All condition variable functions return 0 on success and a non-zero error code on error.
+
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br></div></div><h4 id="信号量"><a href="#信号量" class="header-anchor">#</a> 信号量</h4> <p>信号量一般用于同一个资源,多个。</p> <p>信号量类型 sem_t,相关的操作</p> <p>1.sem_init(3) 初始化一个匿名信号量</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;semaphore.h&gt;
+
+int sem_init(sem_t *sem, int pshared, unsigned int value);
+
+Link with -pthread.
+
+* 描述
+initialize an unnamed semaphore
+
+* 参数
+1. sem
+unnamed semaphore at the address pointed to by sem
+
+2. pshared
+The pshared argument indicates whether this semaphore is to be shared between the threads of a process, or between processes.
+
+信号量是进程之间的还是线程之间的。0 线程间，1进程间
+
+3.value
+The value argument specifies the initial value for the semaphore.资源的可用数
+
+* 返回值
+sem_init() returns 0 on success; on error, -1 is returned, and errno is set to indicate the error.
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br></div></div><ol start="2"><li>sem_destroy(3)</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;semaphore.h&gt;
+
+int sem_destroy(sem_t *sem);
+
+Link with -pthread.
+
+* 描述
+sem_destroy() destroys the unnamed semaphore at the address pointed to by sem.
+
+* 参数
+1. sem
+unnamed semaphore at the address pointed to by sem
+
+* 返回值
+
+sem_destroy() returns 0 on success; on error, -1 is returned, and errno is set to indicate the error.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br></div></div><ol start="3"><li>sem_post(3)</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;semaphore.h&gt;
+
+int sem_post(sem_t *sem);
+
+Link with -pthread.
+* 描述
+sem_post()  increments  (unlocks)  the  semaphore pointed to by sem.  If the semaphore's value consequently becomes greater than zero, then another process or thread blocked in a sem_wait(3)
+call will be woken up and proceed to lock the semaphore.
+
+解锁一个信号量,如果value变得大于0，sem_wait()阻塞的一个线程或者进程被唤醒
+
+* 参数
+1. sem
+unnamed semaphore at the address pointed to by sem
+
+* 返回值
+sem_post() returns 0 on success; on error, the value of the semaphore is left unchanged, -1 is returned, and errno is set to indicate the error.
+
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><ol start="4"><li>sem_wait(3)</li></ol> <div class="language- line-numbers-mode"><pre class="language-text"><code>#include &lt;semaphore.h&gt;
+
+int sem_wait(sem_t *sem);
+
+int sem_trywait(sem_t *sem);
+
+int sem_timedwait(sem_t *sem, const struct timespec *abs_timeout);
+
+Link with -pthread.
+
+* 描述
+sem_wait()  decrements  (locks)  the  semaphore pointed to by sem.  If the semaphore's value is greater than zero, then the decrement proceeds, and the function returns, immediately.  If the
+semaphore currently has the value zero, then the call blocks until either it becomes possible to perform the decrement (i.e., the semaphore value rises above zero), or a signal  handler  in‐
+terrupts the call.
+
+信号量的值-1，当值变为0时不能-1时，线程或者进程被阻塞。
+
+sem_trywait() is the same as sem_wait(), except that if the decrement cannot be immediately performed,then call returns an error
+信号量的值-1，当值变为0时不能-1时，线程或者进程不糊被阻塞，返回一个错误
+
+sem_timedwait()  is  the same as sem_wait(), except that abs_timeout specifies a limit on the amount of time that the call should block if the decrement cannot be immediately performed.  The abs_timeout argument points to a structure that specifies an absolute timeout in seconds and nanoseconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC).
+
+信号量的值-1，当值变为0时不能-1时，线程或者进程不糊被阻塞在指定的时间内被阻塞。
+
+* 参数
+
+1. sem
+unnamed semaphore at the address pointed to by sem
+
+* 返回值
+
+All of these functions return 0 on success; on error, the value of the semaphore is left unchanged, -1 is returned, and errno is set to indicate the error.
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br></div></div><h4 id="http-服务器"><a href="#http-服务器" class="header-anchor">#</a> http 服务器</h4> <p>http 服务器本质上 tcp 服务器，通过浏览器直接请求服务器可以打印出 http 的请求数据。我们响应的时候只需在数据前加上 http 的响应头即可响应数据。</p> <p>post 请求 ，提交方式 application/x-www-form-urlencoded</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>POST /hello HTTP/1.1
+Host: 192.168.43.99:8080
+Connection: keep-alive
+Content-Length: 33
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Origin: http://192.168.43.99:8080
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://192.168.43.99:8080/form.html
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+
+username=lijunjie&amp;password=123445
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>post 请求 ，提交方式 application/json</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>POST /hello HTTP/1.1
+Host: 192.168.43.99:8080
+Connection: keep-alive
+Content-Length: 28
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+Content-Type: application/json
+Accept: */*
+Origin: chrome-extension://aejoelaoggembcahagimdiliamlcdmfm
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+
+{
+  name:&quot;hello&quot;,
+  age:12
+}
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br></div></div><p>get 请求时：</p> <div class="language- line-numbers-mode"><pre class="language-text"><code>GET /hello?username=lijunjie&amp;password=123456 HTTP/1.1
+Host: 192.168.43.99:8080
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://192.168.43.99:8080/form.html
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+
+
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><p>请求体是空的，数据在 path 上</p> <p>参见文稿下的 ppt.htm 和 nginx.htm</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/clang/net-udp.html" class="prev">
+        udp编程模型
+      </a></span> <span class="next"><a href="/clang/signal.html">
+        信号阻塞
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.9b56a05a.js" defer></script><script src="/assets/js/2.b22280cb.js" defer></script><script src="/assets/js/19.a72c6116.js" defer></script>
+  </body>
+</html>
