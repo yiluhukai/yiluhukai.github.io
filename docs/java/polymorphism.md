@@ -321,3 +321,88 @@ public class FixedAccount extends Account{
 - 不能用`final`和`abstract`同时修饰方法，这样方法没有方法体且不能被重写。
 - 不能用`private`和`abstract`同时修饰方法，因为这个方法不能被子类继承和重写。
 - 不能用`static`和`abstract`修饰方法，因为可以通过类去掉用，但是方法有没有具体实现，没有意义。
+
+##### 接口
+
+- 接口就是一种比抽象类还抽象的类，体现在所有方法都为抽象方法。
+- 定义类的关键字是class，而定义接口的关键字是interface。
+- 如:金属接口、货币接口、黄金类，黄金类可以实现金属借口和和货币借口，接口正是为了解决java中不支持类的多继承。
+  - 接口中只能有常量
+  - 接口中只能有抽象方法(默认方法例外)
+  - 接口中可以有私有方法
+  - 接口中可以有默认方法
+  - 接口中可以有静态方法
+
+```java
+package com.bruce.classSample;
+
+public interface Money {
+    // 常量：public final static可省略
+    public final static String UNIT = "$";
+
+    // 私有方法，为了在借口内部复用，jdk1.9开始支持
+    private void show(){
+        System.out.println("这是一个私有的方法");
+    };
+
+    // 默认方法，子类实现时可以重写也可以不重写
+    public default void show1(){
+        show();
+        System.out.println("show1");
+    }
+
+    // 抽象方法：public abstract 可以省略
+    public abstract void  buy();
+
+    //静态方法
+    public static void descriptor(){
+        System.out.println("this is a money");
+    }
+}
+
+```
+
+```java
+
+package com.bruce.classSample;
+
+public class Gold implements Money{
+    @Override
+    public void show1() {
+        Money.super.show1();
+        System.out.println("this is show1");
+    }
+
+    @Override
+    public void buy() {
+        System.out.println("this is bud method");
+    }
+
+    public static void main(String[] args) {
+        Money m1= new Gold();
+        m1.buy();
+        m1.show1();
+    }
+}
+
+```
+
+##### 接口和类的关系
+
+|名称|关键字|关系|
+|----|----|----|
+| 类和类之间的关系 | 使用extends关键字表达继承关系 |支持单继承|
+ 类和接口之间的关系|使用implements关键字表达实现关系|支持多实现|
+|接口和接口之间的关系|使用extends关键字表达继承关系|支持多继承|
+
+##### 抽象类和接口的主要区别(笔试题)
+- 定义抽象类的关键字是abstract class，而定义接口的关键字是interface。 - 继承抽象类的关键字是extends，而实现接口的关键字是implements。
+- 继承抽象类支持单继承，而实现接口支持多实现。
+- 抽象类中可以有构造方法，而接口中不可以有构造方法。
+- 抽象类中可以有成员变量，而接口中只可以有常量。
+- 抽象类中可以有成员方法，而接口中只可以有抽象方法。
+- 抽象类中增加方法时子类可以不用重写，而接口中增加方法时实现类需
+要重写(Java8以前的版本)。
+- 从Java8开始增加新特性，接口中允许出现非抽象方法和静态方法，但非
+抽象方法需要使用default关键字修饰。
+- 从Java9开始增加新特性，接口中允许出现私有方法。
